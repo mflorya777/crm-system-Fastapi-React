@@ -1,0 +1,23 @@
+services:
+  crm-system:
+    build:
+      context: ..
+      dockerfile: compose/Dockerfile
+      target: production
+    image: ${IMAGE_NAME}
+    hostname: crm-system-${ENV}
+    container_name: crm-system-${ENV}
+    ports:
+      - "8081:8081"
+    networks:
+      - vps-network
+    env_file:
+      - ../prod.env
+    volumes:
+      - ${PWD}:/opt/app
+      - ${PWD}/files_storage_directory:/opt/crm-system/files_storage_directory
+
+networks:
+  vps-network:
+    name: vps-network
+    driver: bridge
