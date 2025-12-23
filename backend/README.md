@@ -1,5 +1,20 @@
 # crm-system
 
+```commandline
+cd backend
+uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+
+Проверка Swagger:
+После запуска откройте в браузере:
+Swagger UI: http://localhost:8000/docs
+ReDoc: http://localhost:8000/redoc
+API корень: http://localhost:8000/
+В Swagger UI можно:
+Просмотреть все эндпоинты
+Протестировать API прямо в браузере
+Увидеть схемы данных
+```
+
 Crm-system — это CRM-система, которая ...
 
 ## Ключевые аспекты проекта
