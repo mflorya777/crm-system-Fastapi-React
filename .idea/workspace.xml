@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="167c811c-8371-42b8-b513-c7776e6bdf79" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.dockerignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ansible/generate_secrets.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ansible/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ansible/set_env.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ansible/tpl.j2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/compose/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/compose/base.Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/compose/docker-compose.local.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/compose/docker-compose.prod.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/compose/docker-compose.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deploy_scripts/deploy.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/load_env_file.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/local.env_example" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prod.env_example" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements-dev.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/asgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/manage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/posts/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/posts/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/posts/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/posts/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/posts/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/posts/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/posts/views.py" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="37Cuatqt2Umgj2GgyeQDrFs4Upc" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "crm-2/backend-part"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-348a24fa61fa-5312c7369657-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.23774.444" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="167c811c-8371-42b8-b513-c7776e6bdf79" name="Changes" comment="" />
+      <created>1766419441007</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1766419441007</updated>
+    </task>
+    <servers />
+  </component>
+</project>
