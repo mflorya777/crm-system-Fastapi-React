@@ -37,17 +37,17 @@ const SessionsByCountry = () => {
   return (
     <Card>
       <CardHeader className="d-flex  justify-content-between align-items-center border-bottom border-dashed">
-        <CardTitle>Sessions by Country</CardTitle>
+        <CardTitle>Сессии по странам</CardTitle>
         <Dropdown>
           <DropdownToggle as={'a'} role="button" className="arrow-none btn btn-sm btn-outline-light icons-center gap-2">
-            View Data <IconifyIcon icon="bx:chevron-down" className="fs-16" />
+            Просмотр данных <IconifyIcon icon="bx:chevron-down" className="fs-16" />
           </DropdownToggle>
           <DropdownMenu className="dropdown-menu-end">
-            <DropdownItem href="">Download</DropdownItem>
+            <DropdownItem href="">Скачать</DropdownItem>
 
-            <DropdownItem href="">Export</DropdownItem>
+            <DropdownItem href="">Экспорт</DropdownItem>
 
-            <DropdownItem href="">Import</DropdownItem>
+            <DropdownItem href="">Импорт</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </CardHeader>

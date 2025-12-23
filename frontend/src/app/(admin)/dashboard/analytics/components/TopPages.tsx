@@ -6,10 +6,10 @@ const TopPages = () => {
   return (
     <Card>
       <CardHeader className="d-flex align-items-center justify-content-between gap-2">
-        <CardTitle className="flex-grow-1">Top Pages</CardTitle>
+        <CardTitle className="flex-grow-1">Топ страниц</CardTitle>
         <div>
           <Button variant="soft-primary" size="sm">
-            View All
+            Показать все
           </Button>
         </div>
       </CardHeader>
@@ -17,10 +17,10 @@ const TopPages = () => {
         <Table hover className="table-nowrap table-centered m-0">
           <thead className="bg-light bg-opacity-50">
             <tr>
-              <th className="text-muted py-1">Page Path</th>
-              <th className="text-muted py-1">Page Views</th>
-              <th className="text-muted py-1">Avg Time on Page</th>
-              <th className="text-muted py-1">Exit Rate</th>
+              <th className="text-muted py-1">Путь страницы</th>
+              <th className="text-muted py-1">Просмотры страниц</th>
+              <th className="text-muted py-1">Среднее время на странице</th>
+              <th className="text-muted py-1">Процент уходов</th>
             </tr>
           </thead>
           <tbody>
