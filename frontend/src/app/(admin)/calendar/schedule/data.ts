@@ -3,27 +3,27 @@ import { EventInput } from '@fullcalendar/core'
 export const defaultEvents: EventInput[] = [
   {
     id: '1',
-    title: 'Meeting with Mr. Nik',
+    title: 'Встреча с г-ном Ником',
     start: new Date(Date.now() + 158000000),
     end: new Date(Date.now() + 338000000),
     className: 'bg-warning',
   },
   {
     id: '2',
-    title: 'Interview - Backend Engineer',
+    title: 'Собеседование - Backend инженер',
     start: new Date(),
     end: new Date(),
     className: 'bg-success',
   },
   {
     id: '3',
-    title: 'Phone Screen - Frontend Engineer',
+    title: 'Телефонное собеседование - Frontend инженер',
     start: new Date(Date.now() + 168000000),
     className: 'bg-info',
   },
   {
     id: '4',
-    title: 'Buy Design Assets',
+    title: 'Купить дизайн-материалы',
     start: new Date(Date.now() + 338000000),
     end: new Date(Date.now() + 338000000 * 1.2),
     className: 'bg-primary',
