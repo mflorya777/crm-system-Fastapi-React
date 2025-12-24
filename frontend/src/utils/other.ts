@@ -76,3 +76,20 @@ export const getThemeName = (theme: 'light' | 'dark' | string) => {
   }
   return themeMap[theme] || theme
 }
+
+export const getActivityStreamStatus = (status: 'completed' | 'latest' | string) => {
+  const statusMap: Record<string, string> = {
+    completed: 'Завершено',
+    latest: 'Последнее',
+  }
+  return statusMap[status] || status
+}
+
+export const getActivityStreamType = (type: 'task' | 'design' | 'achievement' | string) => {
+  const typeMap: Record<string, string> = {
+    task: 'Задача',
+    design: 'Дизайн',
+    achievement: 'Достижение',
+  }
+  return typeMap[type] || type
+}
