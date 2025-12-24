@@ -24,8 +24,8 @@ const Draft = () => {
         <>
           <hr />
           <div className="text-center mt-2">
-            <p className="mb-0">You don&apos;t have any saved drafts.</p>
-            <p className="mb-0">Saving a draft allows you to keep a message you aren&apos;t ready to send yet.</p>
+            <p className="mb-0">У вас нет сохранённых черновиков.</p>
+            <p className="mb-0">Сохранение черновика позволяет сохранить сообщение, которое вы ещё не готовы отправить.</p>
           </div>
           <hr className="mb-0" />
         </>

@@ -31,42 +31,42 @@ const NavBar = () => {
       <CardBody className="card-body">
         <div className="d-grid">
           <button onClick={toggle} type="button" className="btn btn-danger">
-            Compose
+            Написать
           </button>
         </div>
         <Nav className="nav flex-column mt-3" id="email-tab" role="tablist" aria-orientation="vertical">
           <NavLink as="span" role="button" eventKey="Inbox" onClick={() => changeActiveLabel('Primary')} className="px-0 py-1">
             <span className="text-danger fw-bold">
-              <IconifyIcon icon="bxs:inbox" className="fs-16 me-2 align-middle" /> Inbox
+              <IconifyIcon icon="bxs:inbox" className="fs-16 me-2 align-middle" /> Входящие
               <span className="badge badge-soft-danger float-end ms-2">{emailsCount.inbox}</span>
             </span>
           </NavLink>
           <NavLink as="span" role="button" eventKey="Starred" className="px-0 py-1">
             <IconifyIcon icon="bx:star" className="fs-16 align-middle me-2" />
-            Starred
+            Избранное
             <span className="badge badge-soft-warning float-end ms-2">{emailsCount.starred}</span>
           </NavLink>
           <NavLink as="span" role="button" eventKey="Draft" className="px-0 py-1">
             <IconifyIcon icon="bxs:file-doc" className="fs-16 align-middle me-2" />
-            Draft
+            Черновики
             <span className="badge badge-soft-dark float-end ms-2">{emailsCount.draft}</span>
           </NavLink>
           <NavLink as="span" role="button" eventKey="Sent" className="px-0 py-1">
             <IconifyIcon icon="bx:send" className="fs-16 align-middle me-2" />
-            Sent Mail
+            Отправленные
             <span className="badge badge-soft-info float-end ms-2">{emailsCount.sent}</span>
           </NavLink>
           <NavLink as="span" role="button" eventKey="Trash" className="px-0 py-1">
             <IconifyIcon icon="bx:trash" className="fs-16 align-middle me-2" />
-            Trash Mail
+            Корзина
             <span className="badge badge-soft-primary float-end ms-2">{emailsCount.deleted}</span>
           </NavLink>
           <NavLink as="span" role="button" eventKey="Important" className="px-0 py-1">
             <IconifyIcon icon="bx:tag" className="fs-16 align-middle me-2" />
-            Important
+            Важные
             <span className="badge badge-soft-success float-end ms-2">{emailsCount.important}</span>
           </NavLink>
-          <h6 className="text-uppercase mt-4">Labels</h6>
+          <h6 className="text-uppercase mt-4">Метки</h6>
           <NavLink
             as="span"
             role="button"
@@ -74,7 +74,7 @@ const NavBar = () => {
             eventKey="Inbox"
             className={clsx('px-0 py-1 icons-center', { 'text-muted': activeLabel !== 'Social' })}>
             <IconifyIcon icon="bxs:circle" className="font-13 text-primary me-2" />
-            Social
+            Социальные
           </NavLink>
           <NavLink
             as="span"
@@ -83,7 +83,7 @@ const NavBar = () => {
             eventKey="Inbox"
             className={clsx('px-0 py-1 icons-center', { 'text-muted': activeLabel !== 'Promotions' })}>
             <IconifyIcon icon="bxs:circle" className="font-13 text-secondary me-2" />
-            Promotions
+            Реклама
           </NavLink>
           <NavLink
             as="span"
@@ -92,7 +92,7 @@ const NavBar = () => {
             eventKey="Inbox"
             className={clsx('px-0 py-1 icons-center', { 'text-muted': activeLabel !== 'Updates' })}>
             <IconifyIcon icon="bxs:circle" className="font-13 text-info me-2" />
-            Updates
+            Обновления
           </NavLink>
           <NavLink
             as="span"
@@ -101,16 +101,16 @@ const NavBar = () => {
             eventKey="Inbox"
             className={clsx('px-0 py-1 icons-center', { 'text-muted': activeLabel !== 'Forums' })}>
             <IconifyIcon icon="bxs:circle" className="font-13 text-success me-2" />
-            Forums
+            Форумы
           </NavLink>
         </Nav>
         <div className="mt-5">
           <h4>
             <span className="badge rounded-pill p-1 px-2 badge-soft-secondary">FREE</span>
           </h4>
-          <h6 className="text-uppercase mt-3">Storage</h6>
+          <h6 className="text-uppercase mt-3">Хранилище</h6>
           <ProgressBar variant="success" className="my-2 progress-sm" now={46} />
-          <p className="text-muted font-13 mb-0">7.02 GB (46%) of 15 GB used</p>
+          <p className="text-muted font-13 mb-0">7.02 GB (46%) из 15 GB использовано</p>
         </div>
       </CardBody>
     </SimplebarReactClient>

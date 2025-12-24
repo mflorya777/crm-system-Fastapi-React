@@ -24,8 +24,8 @@ const Starred = () => {
         <>
           <hr />
           <div className="text-center mt-2">
-            <p className="mb-0">You don&apos;t have any starred emails.</p>
-            <p className="mb-0">Star Emails to see them here</p>
+            <p className="mb-0">У вас нет избранных писем.</p>
+            <p className="mb-0">Отметьте письма звездочкой, чтобы увидеть их здесь</p>
           </div>
           <hr className="mb-0" />
         </>

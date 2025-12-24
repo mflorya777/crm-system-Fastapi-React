@@ -24,8 +24,8 @@ const Important = () => {
         <>
           <hr />
           <div className="text-center mt-2">
-            <p className="mb-0">You don&apos;t have any starred emails.</p>
-            <p className="mb-0">Star Emails to see them here</p>
+            <p className="mb-0">У вас нет важных писем.</p>
+            <p className="mb-0">Пометите письма как важные, чтобы увидеть их здесь</p>
           </div>
           <hr className="mb-0" />
         </>

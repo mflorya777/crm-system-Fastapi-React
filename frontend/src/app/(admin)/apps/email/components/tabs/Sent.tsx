@@ -24,8 +24,8 @@ const Sent = () => {
         <>
           <hr />
           <div className="text-center mt-2">
-            <p className="mb-0">You don&apos;t have any sent emails.</p>
-            <p className="mb-0">Send Emails to someone to see them here</p>
+            <p className="mb-0">У вас нет отправленных писем.</p>
+            <p className="mb-0">Отправьте письма кому-нибудь, чтобы увидеть их здесь</p>
           </div>
           <hr className="mb-0" />
         </>

@@ -35,7 +35,7 @@ const Inbox = () => {
               <span className="me-2 d-flex">
                 <IconifyIcon icon="bxs:inbox" className="fs-18" />
               </span>
-              <span className="d-none d-md-block">Primary</span>
+              <span className="d-none d-md-block">Основные</span>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -47,7 +47,7 @@ const Inbox = () => {
               <span className="me-2 d-flex">
                 <IconifyIcon icon="bxs:group" className="fs-18" />
               </span>
-              <span className="d-none d-md-block">Social</span>
+              <span className="d-none d-md-block">Социальные</span>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -59,7 +59,7 @@ const Inbox = () => {
               <span className="me-2 d-flex">
                 <IconifyIcon icon="bxs:purchase-tag" className="fs-18" />
               </span>
-              <span className="d-none d-md-block">Promotions</span>
+              <span className="d-none d-md-block">Реклама</span>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -71,7 +71,7 @@ const Inbox = () => {
               <span className="me-2 d-flex">
                 <IconifyIcon icon="bxs-info-circle" className="fs-18" />
               </span>
-              <span className="d-none d-md-block">Updates</span>
+              <span className="d-none d-md-block">Обновления</span>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -83,7 +83,7 @@ const Inbox = () => {
               <span className="me-2 d-flex">
                 <IconifyIcon icon="bxs-chat" className="fs-18" />
               </span>
-              <span className="d-none d-md-block">Forums</span>
+              <span className="d-none d-md-block">Форумы</span>
             </NavLink>
           </NavItem>
         </Nav>
