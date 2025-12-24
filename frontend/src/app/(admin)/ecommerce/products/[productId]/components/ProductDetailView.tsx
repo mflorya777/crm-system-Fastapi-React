@@ -29,7 +29,7 @@ const ProductDetailView = ({ product }: { product: EcommerceProductType }) => {
         <span className="text-muted">( {review.count} отзывов клиентов )</span>
       </p>
       {sale && (
-        <h6 className="text-danger text-uppercase">{sale.type === 'percent' ? sale.discount + '% off' : 'Flat ' + currency + sale.discount}</h6>
+        <h6 className="text-danger text-uppercase">{sale.type === 'percent' ? sale.discount + '% скидка' : 'Фиксированная скидка ' + currency + sale.discount}</h6>
       )}
       <h4 className="mb-3">
         Цена :{' '}
@@ -47,9 +47,9 @@ const ProductDetailView = ({ product }: { product: EcommerceProductType }) => {
         </label>
         <div className="me-3">
           <select className="form-select form-select-sm my-1" id="color">
-            <option value={1}>Black </option>
-            <option value={2}>Blue </option>
-            <option value={3}>Midnight </option>
+            <option value={1}>Чёрный</option>
+            <option value={2}>Синий</option>
+            <option value={3}>Полночь</option>
           </select>
         </div>
         <label className="my-1 me-2" htmlFor="sizeinput">
@@ -85,29 +85,29 @@ const ProductDetailView = ({ product }: { product: EcommerceProductType }) => {
           <span>
             <IconifyIcon icon="bx:check-circle" className="text-primary me-2" />
           </span>{' '}
-          Quad LED Backlit IPS Display (227 PPI, 400 nits Brightness, Wide Colour (P3), True Tone Technology)
+          IPS-дисплей с подсветкой Quad LED (227 PPI, яркость 400 нит, широкий цветовой охват (P3), технология True Tone)
         </p>
         <p className="text-muted mb-1 icons-center">
           <IconifyIcon icon="bx:check-circle" className="text-primary me-2" />
-          Built-in Speakers
+          Встроенные динамики
         </p>
         <p className="text-muted mb-1 icons-center">
           <IconifyIcon icon="bx:check-circle" className="text-primary me-2" />
-          Three-mic Array with Directional Beamforming
+          Массив из трёх микрофонов с направленным формированием луча
         </p>
         <p className="text-muted mb-1 icons-center">
           <span>
             <IconifyIcon icon="bx:check-circle" className="text-primary me-2" />
           </span>{' '}
-          Stereo Speakers, Wide Stereo Sound, Support for Dolby Atmos Playback
+          Стереодинамики, широкий стереозвук, поддержка воспроизведения Dolby Atmos
         </p>
         <p className="text-muted mb-1 icons-center">
           <IconifyIcon icon="bx:check-circle" className="text-primary me-2" />
-          49.9 WHr Li-polymer Battery
+          Литий-полимерный аккумулятор 49.9 Вт·ч
         </p>
         <p className="text-muted mb-1 icons-center">
           <IconifyIcon icon="bx:check-circle" className="text-primary me-2" />
-          Backlit Magic Keyboard
+          Подсветка Magic Keyboard
         </p>
       </div>
       <div className="d-flex gap-1">
