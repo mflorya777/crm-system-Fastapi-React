@@ -25,7 +25,7 @@ const generalFormSchema = yup.object({
 })
 
 const GeneralDetailsForm = () => {
-  const [productDescriptionContent, setProductDescriptionContent] = useState(`<h2>Describe Your Product...</h2>`)
+  const [productDescriptionContent, setProductDescriptionContent] = useState(`<h2>Опишите ваш товар...</h2>`)
   const [productCategories, setProductCategories] = useState<SelectFormInputOptionType[]>()
 
   const { control } = useForm({
