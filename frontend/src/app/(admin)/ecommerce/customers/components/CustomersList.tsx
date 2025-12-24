@@ -31,24 +31,24 @@ const CustomersList = ({ customers }: { customers: CustomerType[] }) => {
                 <div>
                   <form className="d-flex flex-wrap align-items-center gap-2">
                     <label htmlFor="inputPassword2" className="visually-hidden">
-                      Search
+                      Поиск
                     </label>
                     <div className="search-bar me-3">
                       <span>
                         <IconifyIcon icon="bx:search-alt" className="mb-1" />
                       </span>
-                      <input type="search" className="form-control" id="search" placeholder="Search ..." />
+                      <input type="search" className="form-control" id="search" placeholder="Поиск ..." />
                     </div>
                     <label htmlFor="status-select" className="me-2">
-                      Sort By
+                      Сортировать по
                     </label>
                     <div className="me-sm-3">
                       <select className="form-select my-1 my-md-0" id="status-select">
-                        <option defaultChecked>All</option>
-                        <option value={1}>Name</option>
-                        <option value={2}>Joining Date</option>
-                        <option value={3}>Phone</option>
-                        <option value={4}>Orders</option>
+                        <option defaultChecked>Все</option>
+                        <option value={1}>Имя</option>
+                        <option value={2}>Дата регистрации</option>
+                        <option value={3}>Телефон</option>
+                        <option value={4}>Заказы</option>
                       </select>
                     </div>
                   </form>
@@ -57,30 +57,30 @@ const CustomersList = ({ customers }: { customers: CustomerType[] }) => {
                   <div className="d-flex flex-wrap gap-2 justify-content-md-end align-items-center">
                     <Nav className="nav-pills g-transparent gap-1 p-0">
                       <NavItem>
-                        <NavLink eventKey={'0'} title="Grid" className="flex-centred py-2">
-                          <IconifyIcon icon="bx:grid-alt" height={18} width={18} />
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink eventKey={'1'} title="List" className="flex-centred py-2">
-                          <IconifyIcon icon="bx:list-ul" height={18} width={18} />
-                        </NavLink>
-                      </NavItem>
+                      <NavLink eventKey={'0'} title="Сетка" className="flex-centred py-2">
+                        <IconifyIcon icon="bx:grid-alt" height={18} width={18} />
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink eventKey={'1'} title="Список" className="flex-centred py-2">
+                        <IconifyIcon icon="bx:list-ul" height={18} width={18} />
+                      </NavLink>
+                    </NavItem>
                     </Nav>
                     <Dropdown>
                       <DropdownToggle as={'a'} role="button" className="btn btn-soft-success arrow-none">
                         <IconifyIcon icon="bx:sort" className="me-1" />
-                        Filter
+                        Фильтр
                       </DropdownToggle>
                       <DropdownMenu className="dropdown-menu-end">
-                        <DropdownItem href="">By Date</DropdownItem>
-                        <DropdownItem href="">By Order ID</DropdownItem>
-                        <DropdownItem href="">By City</DropdownItem>
+                        <DropdownItem href="">По дате</DropdownItem>
+                        <DropdownItem href="">По ID заказа</DropdownItem>
+                        <DropdownItem href="">По городу</DropdownItem>
                       </DropdownMenu>
                     </Dropdown>
                     <Button variant="danger" className="icons-center">
                       <IconifyIcon icon="bi:plus" className="me-1" height={18} width={18} />
-                      Add Customer
+                      Добавить клиента
                     </Button>
                   </div>
                 </div>

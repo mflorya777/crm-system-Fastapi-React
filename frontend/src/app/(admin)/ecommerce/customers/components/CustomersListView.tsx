@@ -11,13 +11,13 @@ const CustomersListView = ({ customers }: { customers: CustomerType[] }) => {
         <table className="table text-nowrap mb-0">
           <thead className="teble-light">
             <tr>
-              <th>Customer Name</th>
-              <th>Date</th>
-              <th>Email ID</th>
-              <th>Phone No.</th>
-              <th>Location</th>
-              <th>Orders</th>
-              <th>Action</th>
+              <th>Имя клиента</th>
+              <th>Дата</th>
+              <th>Email</th>
+              <th>Телефон</th>
+              <th>Местоположение</th>
+              <th>Заказы</th>
+              <th>Действие</th>
             </tr>
           </thead>
           <tbody>
@@ -50,9 +50,9 @@ const CustomersListView = ({ customers }: { customers: CustomerType[] }) => {
       <div className="align-items-center justify-content-between row g-0 text-center text-sm-start p-3 border-top">
         <div className="col-sm">
           <div className="text-muted">
-            Showing&nbsp;
-            <span className="fw-semibold">10</span>&nbsp; of&nbsp;
-            <span className="fw-semibold">2,852</span>&nbsp; Results
+            Показано&nbsp;
+            <span className="fw-semibold">10</span>&nbsp; из&nbsp;
+            <span className="fw-semibold">2,852</span>&nbsp; результатов
           </div>
         </div>
         <Col sm="auto" className="mt-3 mt-sm-0">
