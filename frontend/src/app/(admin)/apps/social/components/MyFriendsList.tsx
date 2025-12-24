@@ -28,19 +28,19 @@ export const FriendListItem = ({ avatar, mutualCount, name, hasRequested }: Soci
             <DropdownMenu className="dropdown-menu-end">
               <DropdownItem as="span" role="button">
                 <IconifyIcon icon="bxs:user-detail" className="me-1" />
-                See Profile
+                Просмотр профиля
               </DropdownItem>
               <DropdownItem as="span" role="button">
                 <IconifyIcon icon="bxl:telegram" className="me-1" />
-                Message to {name}
+                Написать {name}
               </DropdownItem>
               <DropdownItem as="span" role="button">
                 <IconifyIcon icon="bx:user-x" className="me-1" />
-                Unfriend {name}
+                Удалить из друзей {name}
               </DropdownItem>
               <DropdownItem as="span" role="button">
                 <IconifyIcon icon="bx:block" className="me-1" />
-                Block {name}
+                Заблокировать {name}
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
@@ -49,10 +49,10 @@ export const FriendListItem = ({ avatar, mutualCount, name, hasRequested }: Soci
         <p className="mb-0">
           <span role="button" className="text-dark">
             <b>{name}</b>
-            {hasRequested && ' sent you a request'}
+            {hasRequested && ' отправил вам запрос'}
           </span>
         </p>
-        <small>{mutualCount} mutual friends</small>
+        <small>{mutualCount} общих друзей</small>
         <br />
       </div>
     </div>
@@ -64,15 +64,15 @@ const FriendsListView = ({ pendingRequests, friendsList }: FriendsListViewProps)
     <SimplebarReactClient className="card h-100">
       <CardBody>
         <CardTitle as={'h5'} className="mb-3">
-          Friends
+          Друзья
         </CardTitle>
         <form className="chat-search">
           <div className="chat-search-box">
-            <input className="form-control" type="text" name="search" placeholder="Search ..." />
+            <input className="form-control" type="text" name="search" placeholder="Поиск ..." />
             <IconifyIcon icon="bx:search-alt" className="search-icon" />
           </div>
         </form>
-        <h5 className="mb-3">Pending Requests ({pendingRequests ? pendingRequests.length : 0})</h5>
+        <h5 className="mb-3">Ожидающие запросы ({pendingRequests ? pendingRequests.length : 0})</h5>
 
         {pendingRequests ? (
           pendingRequests.map((user, idx) => (
@@ -82,12 +82,12 @@ const FriendsListView = ({ pendingRequests, friendsList }: FriendsListViewProps)
             </Fragment>
           ))
         ) : (
-          <p className="text-center ">No Pending requests</p>
+          <p className="text-center ">Нет ожидающих запросов</p>
         )}
       </CardBody>
       <CardBody className="border-top">
         <CardTitle as={'h5'} className="mb-3">
-          My Friends
+          Мои друзья
         </CardTitle>
 
         {friendsList ? (
@@ -98,7 +98,7 @@ const FriendsListView = ({ pendingRequests, friendsList }: FriendsListViewProps)
             </Fragment>
           ))
         ) : (
-          <p className="text-center">Guess who has no friends</p>
+          <p className="text-center">Угадайте, у кого нет друзей</p>
         )}
       </CardBody>
     </SimplebarReactClient>

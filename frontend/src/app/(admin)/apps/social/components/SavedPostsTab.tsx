@@ -17,7 +17,7 @@ const SavedPostsTab = () => {
 
   return (
     <TabPane eventKey="Saved" className="fade">
-      {savedPosts ? savedPosts.map((post) => <PostCard key={post.id} {...post} />) : <h4 className="text-center ">No Posts saved yet</h4>}
+      {savedPosts ? savedPosts.map((post) => <PostCard key={post.id} {...post} />) : <h4 className="text-center ">Пока нет сохранённых публикаций</h4>}
     </TabPane>
   )
 }

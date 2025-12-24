@@ -24,7 +24,7 @@ const EventsList = () => {
 
   return (
     <div className="border-top">
-      <h6 className="text-uppercase px-3 py-2 mb-0">Events</h6>
+      <h6 className="text-uppercase px-3 py-2 mb-0">События</h6>
       <div className="list-group list-group-flush">
         {eventsList ? (
           eventsList.map(({ title, type, id }) => (
@@ -34,7 +34,7 @@ const EventsList = () => {
             </span>
           ))
         ) : (
-          <h6 className="text-center">No Upcoming Events</h6>
+          <h6 className="text-center">Нет предстоящих событий</h6>
         )}
       </div>
     </div>
@@ -56,42 +56,42 @@ const ProfileNavbar = () => {
         <div className="hstack gap-3 text-center justify-content-evenly">
           <div>
             <h5 className="mb-0">389</h5>
-            <small>Post</small>
+            <small>Публикаций</small>
           </div>
           <div>
             <h5 className="mb-0">5K</h5>
-            <small>Followers</small>
+            <small>Подписчиков</small>
           </div>
           <div>
             <h5 className="mb-0">210</h5>
-            <small>Following</small>
+            <small>Подписок</small>
           </div>
         </div>
         <hr />
         <Nav className="flex-column mt-3" role="tablist" aria-orientation="vertical">
           <NavLink as="span" role="button" eventKey="Feed" className="px-0 fs-14 fw-medium icons-center">
             <IconifyIcon icon="bx:rss" className="align-middle fs-15 me-2" />
-            Feed
+            Лента
           </NavLink>
           <NavLink as="span" role="button" eventKey="Friends" className="px-0 fs-14 fw-medium icons-center">
             <IconifyIcon icon="bx:user-circle" className="align-middle fs-15 me-2" />
-            Friends
+            Друзья
           </NavLink>
           <NavLink as="span" role="button" eventKey="Events" className="px-0 fs-14 fw-medium icons-center">
             <IconifyIcon icon="bx:calendar-heart" className="align-middle fs-15 me-2" />
-            Events
+            События
           </NavLink>
           <NavLink as="span" role="button" eventKey="Groups" className="px-0 fs-14 fw-medium icons-center">
             <IconifyIcon icon="bx:group" className="align-middle fs-15 me-2" />
-            Groups
+            Группы
           </NavLink>
           <NavLink as="span" role="button" eventKey="Saved" className="px-0 fs-14 fw-medium icons-center">
             <IconifyIcon icon="bx:save" className="align-middle fs-15 me-2" />
-            Saved
+            Сохранённые
           </NavLink>
           <NavLink as="span" role="button" eventKey="Memories" className="px-0 fs-14 fw-medium icons-center">
             <IconifyIcon icon="bx:history" className="align-middle fs-15 me-2" />
-            Memories
+            Воспоминания
           </NavLink>
         </Nav>
       </CardBody>

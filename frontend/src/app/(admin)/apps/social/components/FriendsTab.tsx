@@ -38,24 +38,24 @@ const FriendListCard = ({ avatar, mutualCount, name }: SocialUserType) => {
                 <DropdownMenu>
                   <DropdownItem className="icons-center">
                     <IconifyIcon icon="bxs:user-detail" className="me-1" />
-                    See Profile
+                    Просмотр профиля
                   </DropdownItem>
                   <DropdownItem className="icons-center">
                     <IconifyIcon icon="bxl:telegram" className="me-1" />
-                    Message to {name}
+                    Написать {name}
                   </DropdownItem>
                   <DropdownItem className="icons-center">
                     <IconifyIcon icon="bx:user-x" className="me-1" />
-                    Unfriend {name}
+                    Удалить из друзей {name}
                   </DropdownItem>
                   <DropdownItem className="icons-center">
                     <IconifyIcon icon="bx:block" className="me-1" />
-                    Block {name}
+                    Заблокировать {name}
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </h5>
-            <p className="mb-0"> {mutualCount} mutual friends</p>
+            <p className="mb-0"> {mutualCount} общих друзей</p>
           </div>
         </div>
       </CardBody>
@@ -80,7 +80,7 @@ const AllFriendsList = () => {
       {friendsList ? (
         friendsList.map((friend) => <FriendListCard key={friend.id} {...friend} />)
       ) : (
-        <h4 className="text-center ">Guess who has no friends</h4>
+        <h4 className="text-center ">Угадайте, у кого нет друзей</h4>
       )}
     </TabPane>
   )
@@ -103,7 +103,7 @@ const PendingFriendRequests = () => {
       {pendingRequests ? (
         pendingRequests.map((friend) => <FriendListCard key={friend.id} {...friend} />)
       ) : (
-        <h4 className="text-center ">No Pending requests</h4>
+        <h4 className="text-center ">Нет ожидающих запросов</h4>
       )}
     </TabPane>
   )
@@ -116,12 +116,12 @@ const FriendsTab = () => {
         <Nav variant="pills">
           <NavItem>
             <NavLink as="span" role="button" eventKey="friends-list" className="px-4 fw-semibold">
-              <span>All Friends</span>
+              <span>Все друзья</span>
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink as="span" role="button" eventKey="pending-requests" className="px-4 fw-semibold">
-              <span>Pending Requests (2)</span>
+              <span>Ожидающие запросы (2)</span>
             </NavLink>
           </NavItem>
         </Nav>

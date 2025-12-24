@@ -83,11 +83,11 @@ const CommentItem = ({ comment, likesCount, children, socialUser }: CommentType)
             <div className="d-flex gap-2">
               <span role="button" className="text-muted fs-13 icons-center mt-2">
                 <IconifyIcon icon="bxs:heart" className="align-middle me-1" />
-                Like({likesCount})
+                Нравится ({likesCount})
               </span>
               <span role="button" className="text-muted fs-13 icons-center mt-2">
                 <IconifyIcon icon="bx:share" className="align-middle me-1" />
-                Reply
+                Ответить
               </span>
             </div>
 
@@ -144,25 +144,25 @@ const PostCard = ({
               <li>
                 <DropdownItem>
                   <IconifyIcon height={19} width={19} icon="bx:bookmark" className="align-middle pe-1" />
-                  Save post
+                  Сохранить публикацию
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
                   <IconifyIcon height={19} width={19} icon="bx:user-x" className="align-middle pe-1" />
-                  Unfollow
+                  Отписаться
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
                   <IconifyIcon height={19} width={19} icon="bx:x-circle" className="align-middle pe-1" />
-                  Hide post
+                  Скрыть публикацию
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
                   <IconifyIcon height={19} width={19} icon="bx:block" className="align-middle pe-1" />
-                  Block
+                  Заблокировать
                 </DropdownItem>
               </li>
               <li>
@@ -171,7 +171,7 @@ const PostCard = ({
               <li>
                 <DropdownItem>
                   <IconifyIcon height={19} width={19} icon="bx:flag" className="align-middle fa-fw pe-1" />
-                  Report post
+                  Пожаловаться на публикацию
                 </DropdownItem>
               </li>
             </DropdownMenu>
@@ -193,7 +193,7 @@ const PostCard = ({
           <div className="bg-soft-primary p-1 rounded text-center mb-3 mt-3">
             <h5 className="text-primary ms-2">{timeSince(new Date(createdAt))}</h5>
             <span role="button" className="ms-2 text-primary">
-              See all your memories
+              Показать все воспоминания
               <IconifyIcon icon="bi:chevron-right" className="ms-1" />
             </span>
           </div>
@@ -216,25 +216,25 @@ const PostCard = ({
         <div className="d-flex align-items-center flex-wrap my-2">
           <span className="btn btn-link icons-center gap-1 text-muted">
             <IconifyIcon icon={liked ? 'bxs:heart' : embedLink ? 'bx:tv' : 'bx:heart'} className={clsx('align-middle', { 'text-danger': liked })} />
-            {toAlphaNumber(likesCount)} {embedLink && !liked ? 'Views' : 'Likes'}
+            {toAlphaNumber(likesCount)} {embedLink && !liked ? 'Просмотров' : 'Нравится'}
           </span>
           <span className="btn btn-link icons-center gap-1 text-muted">
             <IconifyIcon icon="bx:comment" className="align-middle" />
-            {toAlphaNumber(commentsCount ?? 0)} Comments
+            {toAlphaNumber(commentsCount ?? 0)} Комментариев
           </span>
           <span className="btn btn-link icons-center gap-1 text-muted">
             <IconifyIcon icon="bx:share-alt" className="align-middle" />
-            Share
+            Поделиться
           </span>
           <span className="btn btn-link icons-center gap-1 text-muted ms-auto">
             <IconifyIcon icon={saved ? 'bxs:bookmark' : 'bx:bookmark'} className="align-middle" />
-            Save
+            Сохранить
           </span>
         </div>
         <div className="d-flex align-items-start">
           <img src={avatar1} height={32} width={32} alt="Arya Stark" className="align-self-start rounded me-2" />
           <div className="w-100">
-            <input type="text" className="form-control bg-light border-0 form-control-sm" placeholder="Write a comment" />
+            <input type="text" className="form-control bg-light border-0 form-control-sm" placeholder="Написать комментарий" />
           </div>
         </div>
 

@@ -33,7 +33,7 @@ const JoinedGroupsListItem = ({ membersCount, image, name }: GroupType) => {
         <p className="mb-0 fw-medium">
           <span className="stretched-link">{name}</span>
         </p>
-        <small>{toAlphaNumber(membersCount)} members</small>
+        <small>{toAlphaNumber(membersCount)} участников</small>
         <br />
       </div>
     </div>
@@ -55,13 +55,13 @@ const JoinedGroups = () => {
     <Card>
       <CardBody className="px-0">
         <div className="px-3 mb-3 icons-center w-100">
-          <CardTitle className="me-auto">Groups</CardTitle>
+          <CardTitle className="me-auto">Группы</CardTitle>
           <Dropdown className="float-end" align="end">
             <DropdownToggle as="span" role="button" className="arrow-none text-dark">
               <IconifyIcon icon="bx:cog" className="fs-18" />
             </DropdownToggle>
             <DropdownMenu className="dropdown-menu-end">
-              <DropdownHeader className="fs-14 fw-medium">Notification Setting</DropdownHeader>
+              <DropdownHeader className="fs-14 fw-medium">Настройки уведомлений</DropdownHeader>
               <DropdownItem className="d-flex align-items-center">
                 <div className="flex-shrink-0">
                   <IconifyIcon icon="bx:notification" className="me-2" />
@@ -70,18 +70,18 @@ const JoinedGroups = () => {
                   <div className="form-check form-switch mb-0 float-end">
                     <input className="form-check-input" type="checkbox" defaultChecked />
                   </div>
-                  <p className="mb-0">Show Notification Dots</p>
+                  <p className="mb-0">Показывать точки уведомлений</p>
                 </div>
               </DropdownItem>
               <DropdownDivider />
-              <DropdownHeader className="fs-14 fw-medium">Manage Groups</DropdownHeader>
+              <DropdownHeader className="fs-14 fw-medium">Управление группами</DropdownHeader>
               <DropdownItem className="d-flex align-items-center">
                 <div className="flex-shrink-0">
                   <IconifyIcon icon="bx:pin" className="me-2 fs-18" />
                 </div>
                 <div className="flex-grow-1">
-                  <p className="mb-0">Pins</p>
-                  <small className="text-muted">Pins your favorite groups for quick access.</small>
+                  <p className="mb-0">Закреплённые</p>
+                  <small className="text-muted">Закрепите ваши любимые группы для быстрого доступа.</small>
                 </div>
               </DropdownItem>
               <DropdownItem className="d-flex align-items-center">
@@ -89,8 +89,8 @@ const JoinedGroups = () => {
                   <IconifyIcon icon="bx:user-plus" className="me-2 fs-18" />
                 </div>
                 <div className="flex-grow-1">
-                  <p className="mb-0">Following</p>
-                  <small className="text-muted">Follow or unfollow groups to control what you see in Newsfeed</small>
+                  <p className="mb-0">Подписки</p>
+                  <small className="text-muted">Подписывайтесь или отписывайтесь от групп, чтобы контролировать, что вы видите в ленте</small>
                 </div>
               </DropdownItem>
             </DropdownMenu>
@@ -99,14 +99,14 @@ const JoinedGroups = () => {
 
         <div className="chat-search px-3">
           <div className="chat-search-box">
-            <input className="form-control" type="text" name="search" placeholder="Search ..." />
+            <input className="form-control" type="text" name="search" placeholder="Поиск ..." />
             <IconifyIcon icon="bx:search-alt" className="search-icon" />
           </div>
         </div>
 
         {joinedGroups ? (
           <>
-            <h5 className="px-3 mb-3">Groups you have joined</h5>
+            <h5 className="px-3 mb-3">Группы, в которые вы вступили</h5>
             <SimplebarReactClient className="px-3 mb-2" style={{ maxHeight: 215 }}>
               {joinedGroups.map((group) => (
                 <JoinedGroupsListItem key={group.id} {...group} />
@@ -114,13 +114,13 @@ const JoinedGroups = () => {
             </SimplebarReactClient>
           </>
         ) : (
-          <h4 className="text-center ">You have not joined any groups yet</h4>
+          <h4 className="text-center ">Вы ещё не вступили ни в одну группу</h4>
         )}
 
         <div className="d-grid">
           <Button variant="soft-primary" className="mx-3">
             <IconifyIcon icon="bx:plus" className="me-1" />
-            Create New Group
+            Создать новую группу
           </Button>
         </div>
       </CardBody>
@@ -142,7 +142,7 @@ const FriendsGroups = () => {
   return (
     <>
       <CardTitle as={'h5'} className="mb-3">
-        Friends Group
+        Группы друзей
       </CardTitle>
       <Row>
         {friendsGroups ? (
@@ -152,7 +152,7 @@ const FriendsGroups = () => {
             </Col>
           ))
         ) : (
-          <h4 className="text-center ">Loading friends groups...</h4>
+          <h4 className="text-center ">Загрузка групп друзей...</h4>
         )}
       </Row>
     </>
@@ -173,7 +173,7 @@ const SuggestedGroups = () => {
   return (
     <>
       <CardTitle as={'h5'} className="mb-3">
-        Suggested For You
+        Рекомендуемые для вас
       </CardTitle>
       <Row>
         {suggestedGroups ? (
@@ -183,7 +183,7 @@ const SuggestedGroups = () => {
             </Col>
           ))
         ) : (
-          <h4 className="text-center ">Loading Suggested groups...</h4>
+          <h4 className="text-center ">Загрузка рекомендуемых групп...</h4>
         )}
       </Row>
     </>
