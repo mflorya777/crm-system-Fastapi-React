@@ -8,8 +8,8 @@ import InventoryProducts from './components/InventoryProducts'
 const Inventory = () => {
   return (
     <>
-      <PageBreadcrumb subName="Ecommerce" title="Inventory" />
-      <PageMetaData title="Inventory" />
+      <PageBreadcrumb subName="Электронная коммерция" title="Склад" />
+      <PageMetaData title="Склад" />
 
       <Row>
         <Col xl={3}>
