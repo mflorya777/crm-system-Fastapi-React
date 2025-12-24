@@ -30,7 +30,7 @@ const Chat = ({ onUserSelect, users, selectedUser }: ChatUsersProps) => {
               </h5>
               <p className="mt-1 mb-0 fs-13 text-muted d-flex align-items-end justify-content-between">
                 {selectedUser.activityStatus === 'typing' && selectedUser.id === user.id ? (
-                  <span className="w-75 text-primary">typing...</span>
+                  <span className="w-75 text-primary">печатает...</span>
                 ) : (
                   <>
                     <span className="w-75">{user.message}</span>

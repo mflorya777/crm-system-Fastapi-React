@@ -41,3 +41,12 @@ export const formatFileSize = (bytes: number, decimals: number = 2) => {
   const i = Math.floor(Math.log(bytes) / Math.log(k))
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
 }
+
+export const getActivityStatus = (status: 'typing' | 'online' | 'offline' | string) => {
+  const statusMap: Record<string, string> = {
+    typing: 'печатает',
+    online: 'в сети',
+    offline: 'не в сети',
+  }
+  return statusMap[status] || status
+}

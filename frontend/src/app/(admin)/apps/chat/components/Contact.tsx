@@ -26,7 +26,7 @@ const Contact = () => {
           <IconifyIcon icon="bx:group" />
         </span>
         <div className="flex-grow-1">
-          <h5 className="my-0 fs-14">New Group</h5>
+          <h5 className="my-0 fs-14">Новая группа</h5>
         </div>
       </div>
       <div className="chat-item d-flex align-items-center position-relative py-2">
@@ -36,7 +36,7 @@ const Contact = () => {
           <IconifyIcon icon="bx:user-plus" />
         </span>
         <div className="flex-grow-1">
-          <h5 className="my-0 fs-14">New Contact</h5>
+          <h5 className="my-0 fs-14">Новый контакт</h5>
         </div>
       </div>
       {allContacts?.map((contact, idx) => (
@@ -47,7 +47,7 @@ const Contact = () => {
           <div className="flex-grow-1">
             <h5 className="my-0 fs-14">{contact.name}</h5>
             <p className="mt-1 mb-0 text-muted">
-              <span className="w-75">{contact.status ? contact.status : 'Hey there! I am using Chat.'}</span>
+              <span className="w-75">{contact.status ? contact.status : 'Привет! Я использую Чат.'}</span>
             </p>
           </div>
         </div>

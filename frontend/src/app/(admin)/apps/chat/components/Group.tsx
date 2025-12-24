@@ -24,7 +24,7 @@ const Group = () => {
           <IconifyIcon icon="bxs:user" />
         </Link>
         <div className="flex-grow-1">
-          <h5 className="my-0 fs-14">New Group</h5>
+          <h5 className="my-0 fs-14">Новая группа</h5>
         </div>
       </div>
       {groups?.map((group, idx) => (
