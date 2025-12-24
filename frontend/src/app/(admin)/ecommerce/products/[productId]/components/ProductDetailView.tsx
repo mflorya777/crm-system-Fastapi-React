@@ -26,13 +26,13 @@ const ProductDetailView = ({ product }: { product: EcommerceProductType }) => {
       </p>
       <p className="mb-3">
         {' '}
-        <span className="text-muted">( {review.count} Customer Reviews )</span>
+        <span className="text-muted">( {review.count} отзывов клиентов )</span>
       </p>
       {sale && (
         <h6 className="text-danger text-uppercase">{sale.type === 'percent' ? sale.discount + '% off' : 'Flat ' + currency + sale.discount}</h6>
       )}
       <h4 className="mb-3">
-        Price :{' '}
+        Цена :{' '}
         <span className="text-muted me-2">
           <del>{currency + price}</del>
         </span>{' '}
@@ -43,7 +43,7 @@ const ProductDetailView = ({ product }: { product: EcommerceProductType }) => {
       </h4>
       <form className="d-flex flex-wrap align-items-center mb-3">
         <label className="my-1 me-2" htmlFor="color">
-          Color:
+          Цвет:
         </label>
         <div className="me-3">
           <select className="form-select form-select-sm my-1" id="color">
@@ -53,7 +53,7 @@ const ProductDetailView = ({ product }: { product: EcommerceProductType }) => {
           </select>
         </div>
         <label className="my-1 me-2" htmlFor="sizeinput">
-          Size:
+          Размер:
         </label>
         <div className="me-sm-3">
           <select className="form-select form-select-sm my-1" id="sizeinput">
@@ -64,23 +64,23 @@ const ProductDetailView = ({ product }: { product: EcommerceProductType }) => {
       </form>
       <div className="mb-3 pb-3 border-bottom">
         <h5>
-          Processor Brand : <span className="text-muted me-2" /> <b>Apple</b>
+          Бренд процессора : <span className="text-muted me-2" /> <b>Apple</b>
         </h5>
         <h5>
-          Processor Name : <span className="text-muted me-2" /> <b>M1</b>
+          Название процессора : <span className="text-muted me-2" /> <b>M1</b>
         </h5>
         <h5>
-          SSD : <span className="text-muted me-2" /> <b>Yes</b>
+          SSD : <span className="text-muted me-2" /> <b>Да</b>
         </h5>
         <h5>
-          SSD Capacity : <span className="text-muted me-2" /> <b>256 GB</b>
+          Ёмкость SSD : <span className="text-muted me-2" /> <b>256 GB</b>
         </h5>
         <h5>
-          RAM : <span className="text-muted me-2" /> <b>8 GB</b>
+          ОЗУ : <span className="text-muted me-2" /> <b>8 GB</b>
         </h5>
       </div>
       <div className="mb-3 flex-column d-flex">
-        <h5>About this item:</h5>
+        <h5>О товаре:</h5>
         <p className="text-muted mb-1 icons-center">
           <span>
             <IconifyIcon icon="bx:check-circle" className="text-primary me-2" />
@@ -116,7 +116,7 @@ const ProductDetailView = ({ product }: { product: EcommerceProductType }) => {
         </Button>
         <Button variant="primary" type="button">
           <IconifyIcon icon="bx:cart" className="fs-18 me-2" />
-          Add to cart
+          Добавить в корзину
         </Button>
       </div>
     </div>

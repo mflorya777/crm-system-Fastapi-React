@@ -7,8 +7,8 @@ import PageMetaData from '@/components/PageTitle'
 const CreateProduct = () => {
   return (
     <>
-      <PageBreadcrumb title="Create Product" subName="Ecommerce" />
-      <PageMetaData title="Create Product" />
+      <PageBreadcrumb title="Создать товар" subName="Электронная коммерция" />
+      <PageMetaData title="Создать товар" />
 
       <Row>
         <Col>

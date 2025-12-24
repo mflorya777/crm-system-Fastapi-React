@@ -2,13 +2,13 @@ import type { BootstrapVariantType } from '@/types/component-props'
 
 type StockStatusType = {
   variant: BootstrapVariantType
-  text: 'Limited' | 'Out of Stock' | 'In Stock'
+  text: 'Ограничено' | 'Нет в наличии' | 'В наличии'
 }
 
 export const getStockStatus = (quantity: number) => {
-  let stockStatus: StockStatusType = { variant: 'success', text: 'In Stock' }
-  if (quantity < 1) stockStatus = { variant: 'danger', text: 'Out of Stock' }
-  else if (quantity < 11) stockStatus = { variant: 'primary', text: 'Limited' }
+  let stockStatus: StockStatusType = { variant: 'success', text: 'В наличии' }
+  if (quantity < 1) stockStatus = { variant: 'danger', text: 'Нет в наличии' }
+  else if (quantity < 11) stockStatus = { variant: 'primary', text: 'Ограничено' }
   return stockStatus
 }
 

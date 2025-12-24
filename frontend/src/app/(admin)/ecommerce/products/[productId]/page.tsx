@@ -27,8 +27,8 @@ const ProductDetail = () => {
 
   return (
     <>
-      <PageBreadcrumb title="Product Details" subName="Ecommerce" />
-      <PageMetaData title={product?.name ?? 'Product Details'} />
+      <PageBreadcrumb title="Детали товара" subName="Электронная коммерция" />
+      <PageMetaData title={product?.name ?? 'Детали товара'} />
       <Row>
         <Col>
           <Card>

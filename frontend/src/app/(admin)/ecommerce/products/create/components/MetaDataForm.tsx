@@ -19,22 +19,22 @@ const MetaDataForm = () => {
 
   return (
     <form>
-      <h5 className="mb-3 mt-0">Fill all information below</h5>
+      <h5 className="mb-3 mt-0">Заполните всю информацию ниже</h5>
       <Row>
         <Col md={6}>
-          <TextFormInput control={control} name="title" containerClassName="mb-3" label="Meta Title" placeholder="Enter Meta Title" />
+          <TextFormInput control={control} name="title" containerClassName="mb-3" label="Мета заголовок" placeholder="Введите мета заголовок" />
         </Col>
         <Col md={6}>
-          <TextFormInput control={control} name="title" containerClassName="mb-3" label="Meta Keywords" placeholder="Enter Meta Keywords" />
+          <TextFormInput control={control} name="title" containerClassName="mb-3" label="Мета ключевые слова" placeholder="Введите мета ключевые слова" />
         </Col>
       </Row>
 
       <TextAreaFormInput
         control={control}
         name="description"
-        label="Meta Description"
+        label="Мета описание"
         containerClassName="mb-3"
-        placeholder="Enter Meta Description"
+        placeholder="Введите мета описание"
       />
     </form>
   )

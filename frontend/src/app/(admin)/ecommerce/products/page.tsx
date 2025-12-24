@@ -22,8 +22,8 @@ const Products = () => {
 
   return (
     <>
-      <PageMetaData title="Products List" />
-      <PageBreadcrumb title="Products List" subName="Ecommerce" />
+      <PageMetaData title="Список товаров" />
+      <PageBreadcrumb title="Список товаров" subName="Электронная коммерция" />
       <Row>
         <Col>
           <Card>
@@ -33,12 +33,12 @@ const Products = () => {
                   <span>
                     <IconifyIcon icon="bx:search-alt" className="mb-1" />
                   </span>
-                  <input type="search" className="form-control" id="search" placeholder="Search ..." />
+                  <input type="search" className="form-control" id="search" placeholder="Поиск ..." />
                 </div>
                 <div>
                   <Link to="/ecommerce/products/create" className="btn btn-primary d-flex align-items-center">
                     <IconifyIcon icon="bx:plus" className="me-1" />
-                    Add Product
+                    Добавить товар
                   </Link>
                 </div>
               </div>
