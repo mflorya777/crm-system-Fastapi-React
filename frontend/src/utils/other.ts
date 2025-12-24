@@ -50,3 +50,21 @@ export const getActivityStatus = (status: 'typing' | 'online' | 'offline' | stri
   }
   return statusMap[status] || status
 }
+
+export const getTaskStatus = (status: string) => {
+  const statusMap: Record<string, string> = {
+    Pending: 'В ожидании',
+    'In-Progress': 'В процессе',
+    Completed: 'Завершено',
+  }
+  return statusMap[status] || status
+}
+
+export const getTaskPriority = (priority: string) => {
+  const priorityMap: Record<string, string> = {
+    High: 'Высокий',
+    Medium: 'Средний',
+    Low: 'Низкий',
+  }
+  return priorityMap[priority] || priority
+}

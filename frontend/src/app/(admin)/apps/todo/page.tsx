@@ -7,6 +7,7 @@ import PageMetaData from '@/components/PageTitle'
 import IconifyIcon from '@/components/wrappers/IconifyIcon'
 import { getAllTasks } from '@/helpers/data'
 import type { TodoType } from '@/types/data'
+import { getTaskStatus, getTaskPriority } from '@/utils/other'
 
 const TODO = () => {
   const [allTasks, setAllTasks] = useState<TodoType[]>()
@@ -20,8 +21,8 @@ const TODO = () => {
 
   return (
     <>
-      <PageBreadcrumb subName="Apps" title="Todo" />
-      <PageMetaData title="Todo" />
+      <PageBreadcrumb subName="Приложения" title="Задачи" />
+      <PageMetaData title="Задачи" />
       <Row>
         <Col>
           <Card>
@@ -31,12 +32,12 @@ const TODO = () => {
                   <span>
                     <IconifyIcon icon="bx:search-alt" />
                   </span>
-                  <input type="search" className="form-control" id="search" placeholder="Search task..." />
+                  <input type="search" className="form-control" id="search" placeholder="Поиск задачи..." />
                 </div>
                 <div>
                   <Button variant="primary" className="d-inline-flex align-items-center">
                     <IconifyIcon icon="bx:plus" className="me-1" />
-                    Create Task
+                    Создать задачу
                   </Button>
                 </div>
               </div>
@@ -46,13 +47,13 @@ const TODO = () => {
                 <table className="table text-nowrap mb-0">
                   <thead className="bg-light bg-opacity-50">
                     <tr>
-                      <th className="border-0 py-2">Task Name</th>
-                      <th className="border-0 py-2">Created Date</th>
-                      <th className="border-0 py-2">Due Date</th>
-                      <th className="border-0 py-2">Assigned</th>
-                      <th className="border-0 py-2">Status</th>
-                      <th className="border-0 py-2">Priority</th>
-                      <th className="border-0 py-2">Action</th>
+                      <th className="border-0 py-2">Название задачи</th>
+                      <th className="border-0 py-2">Дата создания</th>
+                      <th className="border-0 py-2">Срок выполнения</th>
+                      <th className="border-0 py-2">Назначено</th>
+                      <th className="border-0 py-2">Статус</th>
+                      <th className="border-0 py-2">Приоритет</th>
+                      <th className="border-0 py-2">Действие</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -90,12 +91,12 @@ const TODO = () => {
                           <td>
                             <span
                               className={`badge badge-soft-${task.status === 'Pending' ? 'primary' : task.status === 'In-Progress' ? 'warning' : 'success'}`}>
-                              {task.status}
+                              {getTaskStatus(task.status)}
                             </span>
                           </td>
                           <td className={`text-${task.priority === 'High' ? 'danger' : task.priority === 'Medium' ? 'warning' : 'success'}`}>
                             <IconifyIcon icon="bxs:circle" className="me-1" />
-                            {task.priority}
+                            {getTaskPriority(task.priority)}
                           </td>
                           <td>
                             <Button variant="soft-secondary" size="sm" className="me-2">
@@ -114,9 +115,9 @@ const TODO = () => {
               <div className="align-items-center justify-content-between row g-0 text-center text-sm-start p-3 border-top">
                 <div className="col-sm">
                   <div className="text-muted">
-                    Showing&nbsp;
-                    <span className="fw-semibold">10</span>&nbsp; of&nbsp;
-                    <span className="fw-semibold">52</span>&nbsp; tasks
+                    Показано&nbsp;
+                    <span className="fw-semibold">10</span>&nbsp; из&nbsp;
+                    <span className="fw-semibold">52</span>&nbsp; задач
                   </div>
                 </div>
                 <Col sm="auto" className="mt-3 mt-sm-0">
