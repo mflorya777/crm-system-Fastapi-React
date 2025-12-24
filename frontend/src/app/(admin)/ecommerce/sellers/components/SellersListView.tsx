@@ -13,14 +13,14 @@ const SellersListView = ({ sellers }: { sellers: SellerType[] }) => {
         <table className="table mb-0">
           <thead>
             <tr>
-              <th>Seller</th>
-              <th>Store Name</th>
-              <th>Rating</th>
-              <th>Products</th>
-              <th>Wallet Balance</th>
-              <th>Create Date</th>
-              <th>Revenue</th>
-              <th>Action</th>
+              <th>Продавец</th>
+              <th>Название магазина</th>
+              <th>Рейтинг</th>
+              <th>Товары</th>
+              <th>Баланс кошелька</th>
+              <th>Дата создания</th>
+              <th>Доход</th>
+              <th>Действие</th>
             </tr>
           </thead>
           <tbody>
@@ -65,9 +65,9 @@ const SellersListView = ({ sellers }: { sellers: SellerType[] }) => {
       <div className="align-items-center justify-content-between row g-0 text-center text-sm-start p-3 border-top">
         <div className="col-sm">
           <div className="text-muted">
-            Showing&nbsp;
-            <span className="fw-semibold">10</span>&nbsp; of&nbsp;
-            <span className="fw-semibold">269</span>&nbsp; Results
+            Показано&nbsp;
+            <span className="fw-semibold">10</span>&nbsp; из&nbsp;
+            <span className="fw-semibold">269</span>&nbsp; результатов
           </div>
         </div>
         <Col sm="auto" className="mt-3 mt-sm-0">
