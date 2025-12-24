@@ -14,32 +14,32 @@ export type HelpType = {
 export const helpData = [
   {
     image: help1,
-    title: 'Getting Started',
-    description: 'Learn the basics, connect your calendar and discover features that will make scheduling easier.',
+    title: 'Начало работы',
+    description: 'Изучите основы, подключите свой календарь и откройте для себя функции, которые упростят планирование.',
   },
   {
     image: help2,
-    title: 'Availability',
-    description: 'Determine when you would like to be scheduled and explore our advanced availability options.',
+    title: 'Доступность',
+    description: 'Определите, когда вы хотели бы быть доступны, и изучите наши расширенные варианты доступности.',
   },
   {
     image: help3,
-    title: 'Customize Event Types',
-    description: 'Tailor your invitee experience and ensure you’re collecting the information you need when they book.',
+    title: 'Настройка типов событий',
+    description: 'Настройте опыт для приглашенных и убедитесь, что вы собираете необходимую информацию при их бронировании.',
   },
   {
     image: help4,
-    title: 'Embed Option',
-    description: 'Discover options for adding Calendly to your website, ensuring your visitors schedule at the height of their interest.',
+    title: 'Вариант встраивания',
+    description: 'Узнайте о вариантах добавления календаря на ваш веб-сайт, чтобы посетители могли запланировать встречу в момент наибольшего интереса.',
   },
   {
     image: help5,
-    title: 'Team Scheduling',
-    description: 'Find out how to configure multi-user scheduling.',
+    title: 'Командное планирование',
+    description: 'Узнайте, как настроить планирование для нескольких пользователей.',
   },
   {
     image: help6,
-    title: 'Integration',
-    description: 'Connect the tools in your workflow directly to Calendly, or learn about what we’ve built to streamline your scheduling.',
+    title: 'Интеграция',
+    description: 'Подключите инструменты из вашего рабочего процесса напрямую к календарю или узнайте о том, что мы создали для упрощения планирования.',
   },
 ]
