@@ -4,9 +4,9 @@ const SubmissionButton = () => {
   return (
     <div className="text-end d-print-none">
       <Button variant="primary" onClick={() => window.print()} className="me-1">
-        Print
+        Печать
       </Button>
-      <Button variant="outline-primary">Submit</Button>
+      <Button variant="outline-primary">Отправить</Button>
     </div>
   )
 }
