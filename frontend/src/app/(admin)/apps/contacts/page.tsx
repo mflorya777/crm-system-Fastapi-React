@@ -31,7 +31,7 @@ const ContactCard = ({ contact }: { contact: CustomerType }) => {
           </span>
           <br />
           <Link to="/pages/profile" className="btn btn-sm btn-outline-primary mt-3">
-            View Profile
+            Просмотр профиля
           </Link>
         </div>
       </CardBody>
@@ -51,8 +51,8 @@ const Contacts = () => {
 
   return (
     <>
-      <PageBreadcrumb subName="Apps" title="Contacts" />
-      <PageMetaData title="Contacts" />
+      <PageBreadcrumb subName="Приложения" title="Контакты" />
+      <PageMetaData title="Контакты" />
 
       <Row className="row-cols-1 row-cols-md-2 row-cols-xl-4 gx-3">
         {contactData?.map((contact, idx) => (
