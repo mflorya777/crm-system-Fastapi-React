@@ -22,11 +22,11 @@ const RecentOrders = () => {
     <Card>
       <CardBody>
         <div className="d-flex align-items-center justify-content-between">
-          <CardTitle>Recent Orders</CardTitle>
+          <CardTitle>Последние заказы</CardTitle>
           <Button variant="primary" size="sm">
             <span className="icons-center">
               <IconifyIcon icon="bx:plus" className="me-1" />
-              Create Order
+              Создать заказ
             </span>
           </Button>
         </div>
@@ -35,15 +35,15 @@ const RecentOrders = () => {
         <table className="table mb-0">
           <thead className="bg-light bg-opacity-50">
             <tr>
-              <th className="border-0 py-2">Order ID.</th>
-              <th className="border-0 py-2">Date</th>
-              <th className="border-0 py-2">Product</th>
-              <th className="border-0 py-2">Customer Name</th>
-              <th className="border-0 py-2">Email ID</th>
-              <th className="border-0 py-2">Phone No.</th>
-              <th className="border-0 py-2">Address</th>
-              <th className="border-0 py-2">Payment Type</th>
-              <th className="border-0 py-2">Status</th>
+              <th className="border-0 py-2">ID заказа</th>
+              <th className="border-0 py-2">Дата</th>
+              <th className="border-0 py-2">Товар</th>
+              <th className="border-0 py-2">Имя клиента</th>
+              <th className="border-0 py-2">Email</th>
+              <th className="border-0 py-2">Телефон</th>
+              <th className="border-0 py-2">Адрес</th>
+              <th className="border-0 py-2">Тип оплаты</th>
+              <th className="border-0 py-2">Статус</th>
             </tr>
           </thead>
           <tbody>
@@ -85,9 +85,9 @@ const RecentOrders = () => {
       <div className="align-items-center justify-content-between row g-0 text-center text-sm-start p-3 border-top">
         <div className="col-sm">
           <div className="text-muted">
-            Showing &nbsp;
-            <span className="fw-semibold">5</span>&nbsp; of &nbsp;
-            <span className="fw-semibold">90,521</span>&nbsp; orders
+            Показано &nbsp;
+            <span className="fw-semibold">5</span>&nbsp; из &nbsp;
+            <span className="fw-semibold">90,521</span>&nbsp; заказов
           </div>
         </div>
         <Col sm="auto" className="mt-3 mt-sm-0">
