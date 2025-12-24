@@ -50,29 +50,29 @@ export const timelineData: TimelineType = {
 export const pricingData: PricingType[] = [
   {
     id: '1',
-    name: 'Free Pack',
+    name: 'Бесплатный пакет',
     price: 0,
-    features: ['5 GB Storage', '100 GB Bandwidth', '1 Domain', 'No Support', '24x7 Support', '1 User'],
+    features: ['5 ГБ хранилища', '100 ГБ трафика', '1 домен', 'Без поддержки', 'Поддержка 24/7', '1 пользователь'],
   },
   {
     id: '2',
-    name: 'Professional Pack',
+    name: 'Профессиональный пакет',
     price: 19,
-    features: ['50 GB Storage', '900 GB Bandwidth', '1 Domain', 'Email Support', '24x7 Support', '5 User'],
+    features: ['50 ГБ хранилища', '900 ГБ трафика', '1 домен', 'Поддержка по email', 'Поддержка 24/7', '5 пользователей'],
     isPopular: true,
     subscribed: true,
   },
   {
     id: '3',
-    name: 'Business Pack',
+    name: 'Бизнес пакет',
     price: 29,
-    features: ['500 GB Storage', '2.5 TB Bandwidth', '5 Domain', 'Email Support', '24x7 Support', '10 User'],
+    features: ['500 ГБ хранилища', '2.5 ТБ трафика', '5 доменов', 'Поддержка по email', 'Поддержка 24/7', '10 пользователей'],
   },
   {
     id: '4',
-    name: 'EnterPrice Pack',
+    name: 'Корпоративный пакет',
     price: 29,
-    features: ['2 TB Storage', 'Unlimited Bandwidth', '50 Domain', 'Email Support', '24x7 Support', 'Unlimited User'],
+    features: ['2 ТБ хранилища', 'Неограниченный трафик', '50 доменов', 'Поддержка по email', 'Поддержка 24/7', 'Неограниченное количество пользователей'],
   },
 ]
 
