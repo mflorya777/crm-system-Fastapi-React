@@ -68,3 +68,11 @@ export const getTaskPriority = (priority: string) => {
   }
   return priorityMap[priority] || priority
 }
+
+export const getThemeName = (theme: 'light' | 'dark' | string) => {
+  const themeMap: Record<string, string> = {
+    light: 'Светлая',
+    dark: 'Тёмная',
+  }
+  return themeMap[theme] || theme
+}
