@@ -9,24 +9,24 @@ const BillingInformation = ({ order }: { order: OrderType }) => {
         <div className="float-end">
           <span role="button" className="text-primary">
             <IconifyIcon icon="bx:edit" className="me-1" />
-            Change
+            Изменить
           </span>
         </div>
         <CardTitle as={'h5'} className="mb-3">
-          Billing Information
+          Платёжная информация
         </CardTitle>
         <p className="mb-1">
-          Payment Type :
+          Тип оплаты :
           <span className="text-muted me-2" />
           <b>{order.paymentMethod}</b>
         </p>
         <p className="mb-1">
-          Provider :
+          Провайдер :
           <span className="text-muted me-2" />
-          <b>Visa ending in 4589</b>
+          <b>Visa заканчивается на 4589</b>
         </p>
         <p className="mb-1">
-          Valid Date :
+          Срок действия :
           <span className="text-muted me-2" />
           <b>21/05</b>
         </p>

@@ -7,16 +7,16 @@ const OrderProducts = ({ order }: { order: OrderType }) => {
     <Card>
       <CardBody>
         <CardTitle as={'h5'} className="mb-3">
-          Products From Order #{order.id}
+          Товары из заказа #{order.id}
         </CardTitle>
         <div className="table-responsive">
           <Table className="table table-centered table-dashed mb-0">
             <thead className="table-">
               <tr>
-                <th>Product Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
+                <th>Название товара</th>
+                <th>Количество</th>
+                <th>Цена</th>
+                <th>Итого</th>
               </tr>
             </thead>
             <tbody>
