@@ -6,12 +6,12 @@ const RevenueChart = () => {
   const chartOptions: ApexOptions = {
     series: [
       {
-        name: 'Revenue',
+        name: 'Доход',
         type: 'area',
         data: [34, 65, 46, 68, 49, 61, 42, 44, 78, 52, 63, 67],
       },
       {
-        name: 'Expenses',
+        name: 'Расходы',
         type: 'line',
         data: [8, 12, 7, 17, 21, 11, 5, 9, 7, 29, 12, 35],
       },
@@ -48,7 +48,7 @@ const RevenueChart = () => {
       },
     },
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      categories: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
       axisTicks: {
         show: false,
       },
@@ -118,19 +118,19 @@ const RevenueChart = () => {
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between align-items-center">
-        <CardTitle>Revenue</CardTitle>
+        <CardTitle>Доход</CardTitle>
         <div className="flex-centered gap-1">
           <Button variant="outline-light" size="sm" type="button">
-            ALL
+            ВСЕ
           </Button>
           <Button variant="outline-light" size="sm" type="button">
-            1M
+            1М
           </Button>
           <Button variant="outline-light" size="sm" type="button">
-            6M
+            6М
           </Button>
           <Button variant="outline-light" size="sm" type="button" active>
-            1Y
+            1Г
           </Button>
         </div>
       </CardHeader>

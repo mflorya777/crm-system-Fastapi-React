@@ -78,25 +78,25 @@ const ExpensesChart = () => {
       axisTicks: {
         show: false,
       },
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      categories: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
     },
   }
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between align-items-center">
-        <CardTitle>Expenses</CardTitle>
+        <CardTitle>Расходы</CardTitle>
         <div className="flex-centered gap-1">
           <Button variant="outline-light" size="sm" type="button">
-            ALL
+            ВСЕ
           </Button>
           <Button variant="outline-light" size="sm" type="button">
-            1M
+            1М
           </Button>
           <Button variant="outline-light" size="sm" type="button">
-            6M
+            6М
           </Button>
           <Button variant="outline-light" size="sm" type="button" active>
-            1Y
+            1Г
           </Button>
         </div>
       </CardHeader>

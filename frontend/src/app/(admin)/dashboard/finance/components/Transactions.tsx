@@ -21,15 +21,15 @@ const Transactions = () => {
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between align-items-center">
-        <CardTitle>Transactions</CardTitle>
+        <CardTitle>Транзакции</CardTitle>
         <div className="flex-shrink-0">
           <div className="d-flex gap-2">
             <select className="form-select form-select-sm">
-              <option defaultChecked>All</option>
-              <option value={0}>Paid</option>
-              <option value={1}>Cancelled</option>
-              <option value={2}>Failed</option>
-              <option value={2}>Onhold</option>
+              <option defaultChecked>Все</option>
+              <option value={0}>Оплачено</option>
+              <option value={1}>Отменено</option>
+              <option value={2}>Ошибка</option>
+              <option value={2}>В ожидании</option>
             </select>
           </div>
         </div>
@@ -39,11 +39,11 @@ const Transactions = () => {
           <Table borderless hover className="table-nowrap align-middle mb-0">
             <thead className="bg-light bg-opacity-50 thead-sm">
               <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Timestamp</th>
-                <th scope="col">Status</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Описание</th>
+                <th scope="col">Сумма</th>
+                <th scope="col">Время</th>
+                <th scope="col">Статус</th>
               </tr>
             </thead>
             <tbody>
@@ -78,10 +78,10 @@ const Transactions = () => {
         <div className="align-items-center justify-content-between row text-center text-sm-start">
           <div className="col-sm">
             <div className="text-muted">
-              Showing&nbsp;
-              <span className="fw-semibold text-body">5</span>&nbsp; of&nbsp;
+              Показано&nbsp;
+              <span className="fw-semibold text-body">5</span>&nbsp; из&nbsp;
               <span className="fw-semibold">15&nbsp;</span>
-              Transactions
+              транзакций
             </div>
           </div>
           <Col sm="auto" className="mt-3 mt-sm-0">

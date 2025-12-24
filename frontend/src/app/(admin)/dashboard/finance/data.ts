@@ -8,7 +8,7 @@ import avatar5 from '@/assets/images/users/avatar-4.jpg'
 
 export const statData: StatType[] = [
   {
-    name: 'Wallet Balance',
+    name: 'Баланс кошелька',
     amount: '55.6',
     icon: 'iconamoon:credit-card-duotone',
     iconColor: 'info',
@@ -16,7 +16,7 @@ export const statData: StatType[] = [
     changeColor: 'success',
   },
   {
-    name: 'Total Income',
+    name: 'Общий доход',
     amount: '75.09',
     icon: 'iconamoon:store-duotone',
     iconColor: 'primary',
@@ -24,7 +24,7 @@ export const statData: StatType[] = [
     changeColor: 'success',
   },
   {
-    name: 'Total Expenses',
+    name: 'Общие расходы',
     amount: '62.8',
     icon: 'iconamoon:3d-duotone',
     iconColor: 'success',
@@ -32,7 +32,7 @@ export const statData: StatType[] = [
     changeColor: 'danger',
   },
   {
-    name: 'Investments',
+    name: 'Инвестиции',
     amount: '6.4',
     icon: 'iconamoon:3d-duotone',
     iconColor: 'warning',
@@ -45,7 +45,7 @@ export const transactionData: TransactionType[] = [
   {
     image: avatar1,
     name: 'Adam M',
-    description: 'Licensing Revenue',
+    description: 'Доход от лицензирования',
     amount: 'USD $750.00',
     date: '20 Apr,24',
     time: '10:31:23 am',
@@ -54,7 +54,7 @@ export const transactionData: TransactionType[] = [
   {
     image: avatar2,
     name: 'Alexa Newsome',
-    description: 'Invoice #1001',
+    description: 'Счёт #1001',
     amount: '-AUD $90.99',
     date: '18 Apr,24',
     time: '06:22:09 pm',
@@ -63,7 +63,7 @@ export const transactionData: TransactionType[] = [
   {
     image: avatar3,
     name: 'Shelly Dorey',
-    description: 'Custom Software Development',
+    description: 'Разработка индивидуального ПО',
     amount: 'USD $500.00',
     date: '16 Apr,24',
     time: '05:09:58 pm',
@@ -72,7 +72,7 @@ export const transactionData: TransactionType[] = [
   {
     image: avatar4,
     name: 'Fredrick Arnett',
-    description: 'Envato Payout - Collaboration',
+    description: 'Выплата Envato - Сотрудничество',
     amount: 'USD $1250.95',
     date: '16 Apr,24',
     time: '10:21:25 am',
@@ -81,7 +81,7 @@ export const transactionData: TransactionType[] = [
   {
     image: avatar5,
     name: 'Barbara Frink',
-    description: 'Personal Payment',
+    description: 'Личный платёж',
     amount: '-AUD $90.99',
     date: '12 Apr,24',
     time: '06:22:09 pm',
