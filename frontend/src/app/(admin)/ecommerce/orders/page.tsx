@@ -7,6 +7,7 @@ import PageMetaData from '@/components/PageTitle'
 import IconifyIcon from '@/components/wrappers/IconifyIcon'
 import { getAllOrders } from '@/helpers/data'
 import type { OrderType } from '@/types/data'
+import { getOrderStatus } from '@/utils/other'
 import { useEffect, useState } from 'react'
 
 const Orders = () => {
@@ -101,7 +102,7 @@ const Orders = () => {
                                   order.status === 'Cancelled' ? 'text-danger' : order.status == 'Processing' ? 'text-primary' : 'text-success',
                                 )}
                               />
-                              {order.status}
+                              {getOrderStatus(order.status)}
                             </div>
                           </td>
                         </tr>

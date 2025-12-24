@@ -7,7 +7,7 @@ const OrderSummery = ({ order }: { order: OrderType }) => {
     <Card>
       <CardBody>
         <CardTitle as={'h5'} className="mb-3">
-          Товары из заказа #{order.id}
+          Сводка заказа #{order.id}
         </CardTitle>
         <div className="table-responsive text-nowrap table-centered">
           <Table className="mb-0">

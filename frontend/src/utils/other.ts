@@ -19,6 +19,19 @@ export const getRatingVariant = (rating: number) => {
   return ratingVariant
 }
 
+export const getOrderStatus = (status: string) => {
+  const statusMap: Record<string, string> = {
+    Cancelled: 'Отменён',
+    Processing: 'В обработке',
+    Delivered: 'Доставлен',
+    Pending: 'В ожидании',
+    Success: 'Успешно',
+    Failed: 'Ошибка',
+    OnHold: 'Приостановлен',
+  }
+  return statusMap[status] || status
+}
+
 export const formatFileSize = (bytes: number, decimals: number = 2) => {
   if (bytes === 0) return '0 Bytes'
   const k = 1024
