@@ -6,10 +6,9 @@ const Services = () => {
   return (
     <Card>
       <CardBody className="p-4">
-        <CardTitle className="fw-bold text-uppercase mb-2">Our Services</CardTitle>
+        <CardTitle className="fw-bold text-uppercase mb-2">Наши услуги</CardTitle>
         <p className="mb-4">
-          Our work stands as a testament to dedication, innovation, and excellence. With meticulous attention to detail and a passion for surpassing
-          expectations, we strive to deliver solutions that inspire and empower.
+          Наша работа является свидетельством преданности, инноваций и совершенства. С тщательным вниманием к деталям и страстью к превосходству ожиданий, мы стремимся предоставлять решения, которые вдохновляют и расширяют возможности.
         </p>
         <Row>
           <Col md={4}>
@@ -26,8 +25,7 @@ const Services = () => {
                   </Link>
                 </h5>
                 <span className="flex-grow-1 text-muted">
-                  Introducing our Creative React Bootstrap Admin, a dynamic solution merging versatility with sleek design. Unlock seamless management
-                  and intuitive user experiences with our innovative toolkit.
+                  Представляем наш Creative React Bootstrap Admin - динамичное решение, объединяющее универсальность с элегантным дизайном. Откройте для себя бесшовное управление и интуитивный пользовательский опыт с нашим инновационным набором инструментов.
                 </span>
               </div>
             </div>
@@ -41,11 +39,10 @@ const Services = () => {
               </div>
               <div className="flex-grow-1 d-flex flex-grow-1 flex-column">
                 <h5 className="fs-16 fw-semibold lh-base">
-                  <Link to="">Bootstrap Saas Admin</Link>
+                  <Link to="">Bootstrap SaaS Admin</Link>
                 </h5>
                 <span className="flex-grow-1 text-muted">
-                  Introducing our Bootstrap SaaS Admin, a cutting-edge platform tailored for streamlined management. Harness the power of
-                  Bootstrap&apos;s robust framework infused with SaaS capabilities for scalable solutions.
+                  Представляем наш Bootstrap SaaS Admin - передовую платформу, созданную для оптимизированного управления. Используйте мощь надежного фреймворка Bootstrap, обогащенного возможностями SaaS для масштабируемых решений.
                 </span>
               </div>
             </div>
@@ -62,8 +59,7 @@ const Services = () => {
                   <Link to="">VueJS Client Project</Link>
                 </h5>
                 <span className="flex-grow-1 text-muted">
-                  Introducing our VueJS Client Project, a dynamic and responsive web application powered by Vue.js. Seamlessly blending functionality
-                  with elegance, this project delivers an immersive user experience.
+                  Представляем наш VueJS Client Project - динамичное и отзывчивое веб-приложение на базе Vue.js. Бесшовно сочетая функциональность с элегантностью, этот проект обеспечивает захватывающий пользовательский опыт.
                 </span>
               </div>
             </div>
@@ -79,11 +75,10 @@ const Services = () => {
               </div>
               <div className="flex-grow-1 d-flex flex-grow-1 flex-column">
                 <h5 className="fs-16 fw-semibold lh-base">
-                  <Link to="">Pure Html Css Landing</Link>
+                  <Link to="">Pure HTML CSS Landing</Link>
                 </h5>
                 <span className="flex-grow-1 text-muted">
-                  Introducing our Pure HTML CSS Landing, a minimalist yet impactful landing page solution. Crafted with precision using HTML and CSS,
-                  it embodies simplicity and elegance.
+                  Представляем наш Pure HTML CSS Landing - минималистичное, но эффективное решение для лендинга. Созданное с точностью с использованием HTML и CSS, оно воплощает простоту и элегантность.
                 </span>
               </div>
             </div>
@@ -97,11 +92,10 @@ const Services = () => {
               </div>
               <div className="flex-grow-1 d-flex flex-grow-1 flex-column">
                 <h5 className="fs-16 fw-semibold lh-base">
-                  <Link to="">Nodejs Backend Project</Link>
+                  <Link to="">Node.js Backend Project</Link>
                 </h5>
                 <span className="flex-grow-1 text-muted">
-                  Introducing our Node.js Backend Project, a robust and scalable solution for powering your applications. Leveraging the power of
-                  Node.js, we deliver efficient and high-performance backend systems.
+                  Представляем наш Node.js Backend Project - надежное и масштабируемое решение для питания ваших приложений. Используя мощь Node.js, мы предоставляем эффективные и высокопроизводительные backend-системы.
                 </span>
               </div>
             </div>
@@ -110,7 +104,7 @@ const Services = () => {
         <div className="mt-3 text-center">
           <span role="button" className="text-primary">
             <IconifyIcon icon="bx:loader-circle" className="spin-icon fs-22 align-middle me-1" />
-            Loading
+            Загрузка
           </span>
         </div>
       </CardBody>
