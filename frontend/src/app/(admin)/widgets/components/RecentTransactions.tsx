@@ -18,12 +18,12 @@ const RecentTransactions = () => {
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between align-items-center">
-        <CardTitle>Recent Transactions</CardTitle>
+        <CardTitle>Недавние транзакции</CardTitle>
         <div>
           <Button variant="primary" size="sm">
             <span className="icons-center">
               <IconifyIcon icon="bx:plus" className="me-1" />
-              Add
+              Добавить
             </span>
           </Button>
         </div>

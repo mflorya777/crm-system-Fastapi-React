@@ -32,10 +32,10 @@ const StatCard = ({ stat }: { stat: StatisticType }) => {
               )}
               {change}%
             </span>
-            <span className="text-muted ms-1 fs-12">Last Month</span>
+            <span className="text-muted ms-1 fs-12">В прошлом месяце</span>
           </div>
           <Link to="" className="text-reset fw-semibold fs-12">
-            View More
+            Подробнее
           </Link>
         </div>
       </CardFooter>

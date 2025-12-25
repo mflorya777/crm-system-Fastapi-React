@@ -15,20 +15,20 @@ const Schedules = () => {
           <DropdownMenu className="dropdown-menu-end">
             <DropdownItem>
               <IconifyIcon icon="bx:list-ul" className="me-2" />
-              To Do
+              К выполнению
             </DropdownItem>
             <DropdownItem>
               <IconifyIcon icon="bx:line-chart" className="me-2" />
-              In Progress
+              В процессе
             </DropdownItem>
             <DropdownItem>
               <IconifyIcon icon="bx:check-square" className="me-2" />
-              Completed
+              Завершено
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
         <CardTitle as={'h5'} className="mb-3">
-          Today&apos;s Schedules
+          Расписание на сегодня
         </CardTitle>
         {scheduleData.map((schedule, idx) => (
           <Row className="align-items-center" key={idx}>
