@@ -9,40 +9,40 @@ import avatar6 from '@/assets/images/users/avatar-6.jpg'
 import avatar7 from '@/assets/images/users/avatar-7.jpg'
 
 export const timelineData: TimelineType = {
-  Today: [
+  Сегодня: [
     {
-      title: 'Completed UX design project for our client',
-      description: 'Dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?',
+      title: 'Завершен проект UX дизайна для нашего клиента',
+      description: 'Провидение боли, вещи автоматически здесь почти место права времена похвалы ипса к долгам не?',
       important: true,
     },
     {
-      title: 'Yes! We are celebrating our first admin release.',
-      description: 'Consectetur adipisicing elit. Iusto, optio, dolorumJohn deonprovident.',
+      title: 'Да! Мы празднуем наш первый релиз админки.',
+      description: 'Совместная работа над элитой. Справедливо, опция, боль Джон деонпровиденс.',
     },
     {
-      title: 'We released new version of our theme Reback.',
-      description: '3 new photo Uploaded on facebook fan page',
-    },
-  ],
-  Yesterday: [
-    {
-      title: 'We have archieved 25k sales in our themes',
-      description: 'Dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?',
-    },
-    {
-      title: 'Yes! We are celebrating our first admin release.',
-      description: 'Outdoor visit at California State Route 85 with John Boltana & Harry Piterson.',
+      title: 'Мы выпустили новую версию нашей темы Reback.',
+      description: '3 новые фотографии загружены на фан-страницу facebook',
     },
   ],
-  '5 days ago': [
+  Вчера: [
     {
-      title: 'Join new team member Alex Smith',
+      title: 'Мы достигли 25k продаж в наших темах',
+      description: 'Провидение боли, вещи автоматически здесь почти место права времена похвалы ипса к долгам не?',
+    },
+    {
+      title: 'Да! Мы празднуем наш первый релиз админки.',
+      description: 'Выезд на открытом воздухе на шоссе Калифорнии 85 с Джоном Болтаной и Гарри Питерсоном.',
+    },
+  ],
+  '5 дней назад': [
+    {
+      title: 'Присоединился новый член команды Алекс Смит',
       description:
-        'Alex Smith is a Senior Software (Full Stack) engineer with a deep passion for building usable, functional & pretty web applications.',
+        'Алекс Смит - старший инженер-программист (Full Stack) с глубокой страстью к созданию удобных, функциональных и красивых веб-приложений.',
     },
     {
-      title: 'First release of Reback admin dashboard template',
-      description: 'Outdoor visit at California State Route 85 with John Boltana & Harry Piterson regarding to setup a new show room.',
+      title: 'Первый релиз шаблона админ-панели Reback',
+      description: 'Выезд на открытом воздухе на шоссе Калифорнии 85 с Джоном Болтаной и Гарри Питерсоном по поводу настройки нового выставочного зала.',
     },
   ],
 }
