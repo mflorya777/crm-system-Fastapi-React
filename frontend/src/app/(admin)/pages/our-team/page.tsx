@@ -79,21 +79,21 @@ const TeamMemberCard = ({ teamMember }: { teamMember: TeamMemberType }) => {
             <h4 className="text-dark fw-medium">{projects}</h4>
             <h5 className="mb-0 d-flex align-items-center justify-content-center gap-1 text-muted fs-14">
               <IconifyIcon icon="bx:briefcase-alt-2" className="text-muted" />
-              Projects
+              Проекты
             </h5>
           </Col>
           <Col lg={4} xs={4} className="border-end">
             <h4 className="text-dark fw-medium">{duration}</h4>
             <h5 className="mb-0 d-flex align-items-center justify-content-center gap-1 text-muted fs-14">
               <IconifyIcon icon="bx:calendar-event" className="text-muted" />
-              Duration
+              Длительность
             </h5>
           </Col>
           <Col lg={4} xs={4}>
             <h4 className="text-dark fw-medium">{tasks}</h4>
             <h5 className="mb-0 d-flex align-items-center justify-content-center gap-1 text-muted fs-14">
               <IconifyIcon icon="bx:task" className="text-muted" />
-              Tasks
+              Задачи
             </h5>
           </Col>
         </Row>
@@ -114,8 +114,8 @@ const OurTeam = () => {
 
   return (
     <>
-      <PageBreadcrumb subName="Pages" title="Our Team" />
-      <PageMetaData title="Our Team" />
+      <PageBreadcrumb subName="Страницы" title="Наша команда" />
+      <PageMetaData title="Наша команда" />
 
       <Row>
         <Col lg={12}>
@@ -127,14 +127,14 @@ const OurTeam = () => {
                     <span>
                       <IconifyIcon icon="bx:search-alt" className="mb-1" />
                     </span>
-                    <input type="search" className="form-control" id="search" placeholder="Search ..." />
+                    <input type="search" className="form-control" id="search" placeholder="Поиск ..." />
                   </div>
                 </Col>
                 <Col sm="auto" className="ms-auto">
                   <div className="d-flex gap-1">
                     <Button variant="danger">
                       <IconifyIcon icon="bx:plus" className="me-1 align-middle" />
-                      Add Members
+                      Добавить участников
                     </Button>
                     <Button variant="soft-primary" type="button" className="fs-14">
                       <IconifyIcon icon="bxs:grid" />
@@ -148,16 +148,16 @@ const OurTeam = () => {
                       </DropdownToggle>
                       <DropdownMenu className="dropdown-menu-end" aria-labelledby="dropdownMenuLink1">
                         <li>
-                          <DropdownItem href="#">All</DropdownItem>
+                          <DropdownItem href="#">Все</DropdownItem>
                         </li>
                         <li>
-                          <DropdownItem href="#">Last Week</DropdownItem>
+                          <DropdownItem href="#">На прошлой неделе</DropdownItem>
                         </li>
                         <li>
-                          <DropdownItem href="#">Last Month</DropdownItem>
+                          <DropdownItem href="#">В прошлом месяце</DropdownItem>
                         </li>
                         <li>
-                          <DropdownItem href="#">Last Year</DropdownItem>
+                          <DropdownItem href="#">В прошлом году</DropdownItem>
                         </li>
                       </DropdownMenu>
                     </Dropdown>
