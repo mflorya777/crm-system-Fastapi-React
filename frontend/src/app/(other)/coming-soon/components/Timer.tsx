@@ -10,25 +10,25 @@ const Timer = () => {
         <h3 id="days" className="fw-bold fs-60">
           {days}
         </h3>
-        <p className="text-uppercase fw-semibold">Days</p>
+        <p className="text-uppercase fw-semibold">Дней</p>
       </Col>
       <Col>
         <h3 id="hours" className="fw-bold fs-60">
           {hours}
         </h3>
-        <p className="text-uppercase fw-semibold">Hours</p>
+        <p className="text-uppercase fw-semibold">Часов</p>
       </Col>
       <Col>
         <h3 id="minutes" className="fw-bold fs-60">
           {minutes}
         </h3>
-        <p className="text-uppercase fw-semibold">Minutes</p>
+        <p className="text-uppercase fw-semibold">Минут</p>
       </Col>
       <Col>
         <h3 id="seconds" className="fw-bold fs-60">
           {seconds}
         </h3>
-        <p className="text-uppercase fw-semibold">Seconds</p>
+        <p className="text-uppercase fw-semibold">Секунд</p>
       </Col>
     </Row>
   )
