@@ -18,9 +18,9 @@ const Followers = () => {
   return (
     <Card>
       <CardHeader className="d-flex">
-        <CardTitle as={'h5'}>Followers</CardTitle>
+        <CardTitle as={'h5'}>Подписчики</CardTitle>
         <div className="ms-auto">
-          <span className="text-primary">View All</span>
+          <span className="text-primary">Показать все</span>
         </div>
       </CardHeader>
       <CardBody>
@@ -40,7 +40,7 @@ const Followers = () => {
                   </div>
                   <div className="ms-auto">
                     <Button variant="soft-secondary" size="sm">
-                      Follow
+                      Подписаться
                     </Button>
                   </div>
                 </div>

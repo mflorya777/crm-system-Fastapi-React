@@ -6,7 +6,7 @@ const Skill = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle as={'h5'}>Skill</CardTitle>
+        <CardTitle as={'h5'}>Навыки</CardTitle>
       </CardHeader>
       <CardBody>
         <Row>
