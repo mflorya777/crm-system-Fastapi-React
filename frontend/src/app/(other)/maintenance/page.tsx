@@ -9,7 +9,7 @@ import signInImg from '@/assets/images/sign-in.svg'
 const Maintenance = () => {
   return (
     <>
-      <PageMetaData title="Maintenance" />
+      <PageMetaData title="Обслуживание" />
 
       <Card className="auth-card">
         <CardBody className="p-0">
@@ -24,11 +24,11 @@ const Maintenance = () => {
                 <div className="mx-auto mb-4 text-center auth-logo">
                   <LogoBox textLogo={{ height: 24, width: 73 }} squareLogo={{ className: 'me-1' }} />
                 </div>
-                <h2 className="fw-bold text-center lh-base">We are currently performing maintenance</h2>
-                <p className="text-muted text-center mt-1 mb-4">We&apos;re making the system more awesome. We&apos;ll be back shortly.</p>
+                <h2 className="fw-bold text-center lh-base">В настоящее время мы проводим техническое обслуживание</h2>
+                <p className="text-muted text-center mt-1 mb-4">Мы делаем систему еще лучше. Мы скоро вернемся.</p>
                 <div className="text-center">
                   <Link to="/pages/contact-us" className="btn btn-success">
-                    Contact Us
+                    Связаться с нами
                   </Link>
                 </div>
               </div>
