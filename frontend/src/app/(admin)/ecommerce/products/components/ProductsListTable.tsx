@@ -11,7 +11,7 @@ import { getStockStatus } from '@/utils/other'
 
 const columns: ColumnDef<EcommerceProductType>[] = [
   {
-    header: 'Product Name',
+    header: 'Название товара',
     cell: ({
       row: {
         original: { id, images, name, description },
@@ -35,15 +35,15 @@ const columns: ColumnDef<EcommerceProductType>[] = [
     ),
   },
   {
-    header: 'Category',
+    header: 'Категория',
     accessorKey: 'category.name',
   },
   {
-    header: 'Price',
+    header: 'Цена',
     cell: ({ row: { original } }) => currency + getCalculatedPrice(original),
   },
   {
-    header: 'Inventory',
+    header: 'Склад',
     cell: ({
       row: {
         original: { quantity },
@@ -59,7 +59,7 @@ const columns: ColumnDef<EcommerceProductType>[] = [
     },
   },
   {
-    header: 'Action',
+    header: 'Действие',
     cell: () => (
       <>
         <button type="button" className="btn btn-sm btn-soft-secondary me-1">

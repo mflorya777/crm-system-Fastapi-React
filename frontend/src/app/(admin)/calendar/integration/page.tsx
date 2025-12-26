@@ -27,8 +27,8 @@ const IntegrationCard = ({ integration }: { integration: IntegrationType }) => {
 const Integration = () => {
   return (
     <>
-      <PageBreadcrumb subName="Calendar" title="Integration" />
-      <PageMetaData title="Integrations" />
+      <PageBreadcrumb subName="Календарь" title="Интеграции" />
+      <PageMetaData title="Интеграции" />
 
       <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 gx-3">
         {IntegrationData.map((integration, idx) => (

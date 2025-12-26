@@ -19,9 +19,9 @@ const Transactions = () => {
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between align-items-center">
-        <CardTitle>Recent Transactions</CardTitle>
+        <CardTitle>Последние транзакции</CardTitle>
         <Button variant="light" size="sm">
-          View All
+          Показать все
         </Button>
       </CardHeader>
       <CardBody>
@@ -30,10 +30,10 @@ const Transactions = () => {
             <thead>
               <tr>
                 <th className="py-1">ID</th>
-                <th className="py-1">Date</th>
-                <th className="py-1">Amount</th>
-                <th className="py-1">Status</th>
-                <th className="py-1">Description</th>
+                <th className="py-1">Дата</th>
+                <th className="py-1">Сумма</th>
+                <th className="py-1">Статус</th>
+                <th className="py-1">Описание</th>
               </tr>
             </thead>
             <tbody>

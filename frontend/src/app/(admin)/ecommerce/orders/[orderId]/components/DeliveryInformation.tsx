@@ -8,24 +8,24 @@ const DeliveryInformation = ({ order }: { order: OrderType }) => {
       <CardBody>
         <div className="float-end">
           <span role="button" className="text-primary">
-            View All Detail
+            Показать все детали
           </span>
         </div>
         <CardTitle as={'h5'} className="mb-3">
-          Delivery Information
+          Информация о доставке
         </CardTitle>
         <div className="text-center">
           <IconifyIcon icon="bx:cart" className="h2" />
-          <h5>UPS Delivery</h5>
+          <h5>Доставка UPS</h5>
           <p className="mb-1">
-            Order ID :
+            ID заказа :
             <span className="text-muted me-2" />
             <b>#{order.id}</b>
           </p>
           <p className="mb-0">
-            Payment Mode :
+            Способ оплаты :
             <span className="text-muted me-2" />
-            <b>COD</b>
+            <b>Наложенный платёж</b>
           </p>
         </div>
       </CardBody>

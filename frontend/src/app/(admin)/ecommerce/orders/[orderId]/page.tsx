@@ -27,14 +27,14 @@ const OrderDetail = () => {
 
   return (
     <>
-      <PageBreadcrumb subName="Ecommerce" title="Order Details" />
+      <PageBreadcrumb subName="Электронная коммерция" title="Детали заказа" />
       <Row className="justify-content-center">
         <Col lg={8} xl={7}>
           <ul className="progressbar ps-0 my-5 pb-5">
-            <li className="active">Order Placed</li>
-            <li>Packed</li>
-            <li>Shipped</li>
-            <li>Delivered</li>
+            <li className="active">Заказ размещён</li>
+            <li>Упакован</li>
+            <li>Отправлен</li>
+            <li>Доставлен</li>
           </ul>
         </Col>
       </Row>

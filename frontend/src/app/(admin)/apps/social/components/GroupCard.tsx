@@ -19,7 +19,7 @@ const GroupCard = ({ description, image, name }: GroupType) => {
         </CardTitle>
         <p className="card-text text-muted text-justify">{description}</p>
         <Button variant="primary" className="w-100">
-          Join Group
+          Присоединиться к группе
         </Button>
       </CardBody>
     </Card>

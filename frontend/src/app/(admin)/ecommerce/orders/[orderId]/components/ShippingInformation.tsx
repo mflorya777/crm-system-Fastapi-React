@@ -9,18 +9,18 @@ const ShippingInformation = ({ order }: { order: OrderType }) => {
         <div className="float-end">
           <span role="button" className="text-primary">
             <IconifyIcon icon="bx:edit" className="me-1" />
-            Change
+            Изменить
           </span>
         </div>
         <CardTitle as={'h5'} className="mb-3">
-          Shipping Information
+          Информация о доставке
         </CardTitle>
         <h5>{order.customer?.name}</h5>
         <address className="mb-0">
           4251 Private Lane, <br />
           Valdosta, GA 31601 <br />
-          <abbr title="phone">Phone :</abbr>&nbsp; 229-269-1411 <br />
-          <abbr title="mobile">Mobile :</abbr>&nbsp; 740-302-6656
+          <abbr title="phone">Телефон :</abbr>&nbsp; 229-269-1411 <br />
+          <abbr title="mobile">Мобильный :</abbr>&nbsp; 740-302-6656
         </address>
       </CardBody>
     </Card>

@@ -40,87 +40,87 @@ const EmailTopbar = () => {
         <IconifyIcon icon="bx:menu" className="fs-18" />
       </Button>
       <ButtonGroup>
-        <OverlayTrigger placement="top" overlay={<Tooltip>Archive</Tooltip>}>
+        <OverlayTrigger placement="top" overlay={<Tooltip>Архивировать</Tooltip>}>
           <Button type="button" variant="light">
             <IconifyIcon icon="bx:archive" className="fs-18" />
           </Button>
         </OverlayTrigger>
-        <OverlayTrigger placement="top" overlay={<Tooltip>Mark as spam</Tooltip>}>
+        <OverlayTrigger placement="top" overlay={<Tooltip>Пометить как спам</Tooltip>}>
           <Button variant="light" type="button">
             <IconifyIcon icon="bx:info-square" className="fs-18" />
           </Button>
         </OverlayTrigger>
-        <OverlayTrigger placement="top" overlay={<Tooltip>Delete</Tooltip>}>
+        <OverlayTrigger placement="top" overlay={<Tooltip>Удалить</Tooltip>}>
           <Button variant="light" type="button">
             <IconifyIcon icon="bx:trash" className="fs-18" />
           </Button>
         </OverlayTrigger>
       </ButtonGroup>
-      <OverlayTrigger placement="top" overlay={<Tooltip>Folder</Tooltip>}>
+      <OverlayTrigger placement="top" overlay={<Tooltip>Папка</Tooltip>}>
         <Dropdown as={ButtonGroup}>
           <DropdownToggle variant="light" type="button" className="arrow-none icons-center">
             <IconifyIcon icon="bx:folder" className="fs-18 me-1" />
             <IconifyIcon icon="bx:chevron-down" height={16} width={16} />
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownHeader>Move to</DropdownHeader>
+            <DropdownHeader>Переместить в</DropdownHeader>
             <span className="dropdown-item" role="button">
-              Social
+              Социальные
             </span>
             <span className="dropdown-item" role="button">
-              Promotions
+              Реклама
             </span>
             <span className="dropdown-item" role="button">
-              Updates
+              Обновления
             </span>
             <span className="dropdown-item" role="button">
-              Forums
+              Форумы
             </span>
           </DropdownMenu>
         </Dropdown>
       </OverlayTrigger>
-      <OverlayTrigger placement="top" overlay={<Tooltip>Labels</Tooltip>}>
+      <OverlayTrigger placement="top" overlay={<Tooltip>Метки</Tooltip>}>
         <Dropdown as={ButtonGroup}>
           <DropdownToggle variant="light" className="arrow-none icons-center">
             <IconifyIcon icon="bx:bookmarks" className="fs-18 me-1" />
             <IconifyIcon icon="bx:chevron-down" height={16} width={16} />
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownHeader>Label as :</DropdownHeader>
+            <DropdownHeader>Пометить как:</DropdownHeader>
             <span className="dropdown-item" role="button">
-              Updates
+              Обновления
             </span>
             <span className="dropdown-item" role="button">
-              Social
+              Социальные
             </span>
             <span className="dropdown-item" role="button">
-              Promotions
+              Реклама
             </span>
             <span className="dropdown-item" role="button">
-              Forums
+              Форумы
             </span>
           </DropdownMenu>
         </Dropdown>
       </OverlayTrigger>
-      <OverlayTrigger placement="top" overlay={<Tooltip>More Actions</Tooltip>}>
+      <OverlayTrigger placement="top" overlay={<Tooltip>Дополнительные действия</Tooltip>}>
         <Dropdown as={ButtonGroup}>
           <DropdownToggle variant="light" className="arrow-none icons-center">
-            More
+            Ещё
             <IconifyIcon icon="bx:chevron-down" height={16} width={16} className="ms-1" />
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownHeader>More Option :</DropdownHeader>
+            <DropdownHeader>Дополнительные опции:</DropdownHeader>
             <span className="dropdown-item" role="button">
-              Mark as Unread
+              Отметить как непрочитанное
             </span>
             <span className="dropdown-item" role="button">
-              Add to Tasks
+              Добавить в задачи
             </span>
             <span className="dropdown-item" role="button">
-              Add Star
+              Добавить звезду
             </span>
             <span className="dropdown-item" role="button">
-              Mute
+              Отключить уведомления
             </span>
           </DropdownMenu>
         </Dropdown>

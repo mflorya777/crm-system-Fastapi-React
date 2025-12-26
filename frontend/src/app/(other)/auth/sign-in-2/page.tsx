@@ -9,7 +9,7 @@ import LoginForm from './components/LoginForm'
 const SignIn2 = () => {
   return (
     <>
-      <PageMetaData title="Sign In 2" />
+      <PageMetaData title="Вход 2" />
 
       <Col xl={5} className="mx-auto">
         <Card className="auth-card">
@@ -22,8 +22,8 @@ const SignIn2 = () => {
               squareLogo={{ className: 'me-2' }}
               containerClassName="mx-auto mb-4 text-center auth-logo"
             />
-            <h2 className="fw-bold text-center fs-18">Sign In</h2>
-            <p className="text-muted text-center mt-1 mb-4">Enter your email address and password to access admin panel.</p>
+            <h2 className="fw-bold text-center fs-18">Вход</h2>
+            <p className="text-muted text-center mt-1 mb-4">Введите адрес электронной почты и пароль для доступа к панели администратора.</p>
             <div className="px-4">
               <LoginForm />
               <ThirdPartyAuth />
@@ -31,9 +31,9 @@ const SignIn2 = () => {
           </CardBody>
         </Card>
         <p className="text-white mb-0 text-center">
-          New here?
+          Впервые здесь?
           <Link to="/auth/sign-up-2" className="text-white fw-bold ms-1">
-            Sign Up
+            Зарегистрироваться
           </Link>
         </p>
       </Col>

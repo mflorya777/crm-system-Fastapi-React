@@ -11,8 +11,8 @@ import type { SubmitEventType } from '../useCalendar'
 
 const AddEditEvent = ({ eventData, isEditable, onAddEvent, onRemoveEvent, onUpdateEvent, open, toggle }: CalendarFormType) => {
   const eventFormSchema = yup.object({
-    title: yup.string().required('Please enter event title'),
-    category: yup.string().required('Please select event category'),
+    title: yup.string().required('Пожалуйста, введите название события'),
+    category: yup.string().required('Пожалуйста, выберите категорию события'),
   })
 
   type FormValues = yup.InferType<typeof eventFormSchema>
@@ -46,28 +46,28 @@ const AddEditEvent = ({ eventData, isEditable, onAddEvent, onRemoveEvent, onUpda
         <form onSubmit={handleSubmit(onSubmitEvent)} className="needs-validation" name="event-form">
           <ModalHeader className="modal-header p-3 border-bottom-0" closeButton>
             <ModalTitle className="modal-title" as="h5">
-              Event
+              Событие
             </ModalTitle>
           </ModalHeader>
           <ModalBody className="px-3 pb-3 pt-0">
             <Row>
               <Col xs={12}>
-                <TextFormInput control={control} name="title" containerClassName="mb-3" label="Event Name" placeholder="Insert Event Name" />
+                <TextFormInput control={control} name="title" containerClassName="mb-3" label="Название события" placeholder="Введите название события" />
               </Col>
               <Col xs={12}>
                 <SelectFormInput
                   control={control}
                   name="category"
-                  label="Category"
+                  label="Категория"
                   containerClassName="mb-3"
                   options={[
-                    { value: 'bg-primary', label: 'Blue' },
-                    { value: 'bg-secondary', label: 'Gray Dark' },
-                    { value: 'bg-success', label: 'Green' },
-                    { value: 'bg-info', label: 'Cyan' },
-                    { value: 'bg-warning', label: 'Yellow' },
-                    { value: 'bg-danger', label: 'Red' },
-                    { value: 'bg-dark', label: 'Dark' },
+                    { value: 'bg-primary', label: 'Синий' },
+                    { value: 'bg-secondary', label: 'Тёмно-серый' },
+                    { value: 'bg-success', label: 'Зелёный' },
+                    { value: 'bg-info', label: 'Голубой' },
+                    { value: 'bg-warning', label: 'Жёлтый' },
+                    { value: 'bg-danger', label: 'Красный' },
+                    { value: 'bg-dark', label: 'Тёмный' },
                   ]}
                 />
               </Col>
@@ -76,16 +76,16 @@ const AddEditEvent = ({ eventData, isEditable, onAddEvent, onRemoveEvent, onUpda
               <Col xs={6}>
                 {isEditable && (
                   <button onClick={onRemoveEvent} type="button" className="btn btn-danger">
-                    Delete
+                    Удалить
                   </button>
                 )}
               </Col>
               <Col xs={6} className="text-end">
                 <Button variant="light" type="button" className="me-1" onClick={toggle}>
-                  Cancel
+                  Отмена
                 </Button>
                 <Button variant="primary" type="submit">
-                  Save
+                  Сохранить
                 </Button>
               </Col>
             </Row>

@@ -28,7 +28,7 @@ const CenteredTimeline = ({ timeline }: { timeline: TimelineType }) => {
                           <CardBody>
                             <h5 className="mt-0 fs-16">
                               {item.title}
-                              {item.important && <span className="badge bg-secondary ms-1 align-items-center">important</span>}
+                              {item.important && <span className="badge bg-secondary ms-1 align-items-center">важно</span>}
                             </h5>
                             <p className="text-muted mb-0">{item.description}</p>
                           </CardBody>
@@ -46,7 +46,7 @@ const CenteredTimeline = ({ timeline }: { timeline: TimelineType }) => {
                         <Card className="d-inline-block">
                           <CardBody>
                             <h5 className="mt-0 fs-16">
-                              {item.important && <span className="badge bg-secondary me-1 align-items-center">important</span>}
+                              {item.important && <span className="badge bg-secondary me-1 align-items-center">важно</span>}
                               {item.title}
                             </h5>
                             <p className="text-muted mb-0">{item.description}</p>
@@ -110,8 +110,8 @@ const Timeline = () => {
 
   return (
     <>
-      <PageBreadcrumb subName="Pages" title="Timeline" />
-      <PageMetaData title="Timeline" />
+      <PageBreadcrumb subName="Страницы" title="Временная шкала" />
+      <PageMetaData title="Временная шкала" />
 
       <Row>
         <Col lg={12}>{timelineData && <CenteredTimeline timeline={timelineData} />}</Col>
@@ -119,7 +119,7 @@ const Timeline = () => {
       <Row>
         <Col xs={12}>
           <CardTitle as={'h5'} className="mb-3">
-            Left Timeline
+            Левая временная шкала
           </CardTitle>
           {timelineData && <LeftTimeline timeline={timelineData} />}
         </Col>

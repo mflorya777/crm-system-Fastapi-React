@@ -10,7 +10,7 @@ import signInImg from '@/assets/images/sign-in.svg'
 const LockScreen = () => {
   return (
     <>
-      <PageMetaData title="Lock Screen" />
+      <PageMetaData title="Блокировка экрана" />
 
       <Card className="auth-card">
         <CardBody className="p-0">
@@ -30,8 +30,8 @@ const LockScreen = () => {
                   squareLogo={{ className: 'me-1' }}
                   containerClassName="mx-auto mb-4 text-center auth-logo"
                 />
-                <h2 className="fw-bold text-center fs-18">Hi ! Gaston</h2>
-                <p className="text-muted text-center mt-1 mb-4">Enter your password to access the admin.</p>
+                <h2 className="fw-bold text-center fs-18">Привет! Gaston</h2>
+                <p className="text-muted text-center mt-1 mb-4">Введите ваш пароль для доступа к админ-панели.</p>
                 <Row className="justify-content-center">
                   <Col xs={12} md={8}>
                     <LockScreenForm />
@@ -43,9 +43,9 @@ const LockScreen = () => {
         </CardBody>
       </Card>
       <p className="text-white mb-0 text-center">
-        Not you? return{' '}
+        Не вы? вернуться{' '}
         <Link to="/auth/sign-in" className="text-white fw-bold ms-1">
-          Sign In
+          Войти
         </Link>
       </p>
     </>

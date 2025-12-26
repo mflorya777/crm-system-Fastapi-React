@@ -28,8 +28,8 @@ const InvoiceDetail = () => {
 
   return (
     <>
-      <PageBreadcrumb subName="Invoice" title={invoice?.id ?? 'Invoice Details'} />
-      <PageMetaData title={invoice?.id ?? 'Invoice Details'} />
+      <PageBreadcrumb subName="Счета" title={invoice?.id ?? 'Детали счёта'} />
+      <PageMetaData title={invoice?.id ?? 'Детали счёта'} />
 
       <Row>
         <Col xs={12}>
@@ -50,13 +50,13 @@ const InvoiceDetail = () => {
                   </div>
                   <div className="float-sm-start">
                     <CardTitle as={'h5'} className="mb-2">
-                      Invoice: #{invoice.id}
+                      Счёт: #{invoice.id}
                     </CardTitle>
                   </div>
                 </div>
                 <Row className="mt-3">
                   <Col md={6}>
-                    <h6 className="fw-normal text-muted">Customer</h6>
+                    <h6 className="fw-normal text-muted">Клиент</h6>
                     <h6 className="fs-16">{invoice.customer?.name}</h6>
                     <address>
                       135 White Cemetery Rd,
@@ -73,10 +73,10 @@ const InvoiceDetail = () => {
                       <table className="table mb-0">
                         <thead className="bg-light bg-opacity-50">
                           <tr>
-                            <th className="border-0 py-2">Product Name</th>
-                            <th className="border-0 py-2">Quantity</th>
-                            <th className="border-0 py-2">Price</th>
-                            <th className="text-end border-0 py-2">Total</th>
+                            <th className="border-0 py-2">Название товара</th>
+                            <th className="border-0 py-2">Количество</th>
+                            <th className="border-0 py-2">Цена</th>
+                            <th className="text-end border-0 py-2">Итого</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -112,22 +112,20 @@ const InvoiceDetail = () => {
                 <Row className="mt-3">
                   <Col sm={7}>
                     <div className="clearfix pt-xl-3 pt-0">
-                      <h6 className="text-muted">Notes:</h6>
+                      <h6 className="text-muted">Примечания:</h6>
                       <small className="text-muted">
-                        All accounts are to be paid within 7 days from receipt of invoice. To be paid by cheque or credit card or direct payment
-                        online. If account is not paid within 7 days the credits details supplied as confirmation of work undertaken will be charged
-                        the agreed quoted fee noted above.
+                        Все счета должны быть оплачены в течение 7 дней с момента получения счёта. Оплата может быть произведена чеком, кредитной картой или прямым платежом онлайн. Если счёт не оплачен в течение 7 дней, кредитные данные, предоставленные в качестве подтверждения выполненной работы, будут списаны по согласованной указанной выше цене.
                       </small>
                     </div>
                   </Col>
                   <Col sm={5}>
                     <div className="float-end">
                       <p>
-                        <span className="fw-medium">Sub-total :</span>
+                        <span className="fw-medium">Промежуточный итог :</span>
                         <span className="float-end">{currency}2266.59</span>
                       </p>
                       <p>
-                        <span className="fw-medium">Discount (10%) :</span>
+                        <span className="fw-medium">Скидка (10%) :</span>
                         <span className="float-end">
                           &nbsp;&nbsp;&nbsp;
                           {currency}226.659

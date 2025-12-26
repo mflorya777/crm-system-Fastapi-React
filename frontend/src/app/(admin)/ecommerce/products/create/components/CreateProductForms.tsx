@@ -12,25 +12,25 @@ import ProductSubmittedForm from './ProductSubmittedForm'
 const formSteps: TabMenuItem[] = [
   {
     index: 1,
-    name: 'General Detail',
+    name: 'Общие детали',
     icon: 'bxs:contact',
     tab: <GeneralDetailsForm />,
   },
   {
     index: 2,
-    name: 'Product Images',
+    name: 'Изображения товара',
     icon: 'bx:images',
     tab: <ProductGalleryForm />,
   },
   {
     index: 3,
-    name: 'Meta Data',
+    name: 'Метаданные',
     icon: 'bxs:book',
     tab: <MetaDataForm />,
   },
   {
     index: 4,
-    name: 'Finish',
+    name: 'Завершить',
     icon: 'bxs:check-circle',
     tab: <ProductSubmittedForm />,
   },
@@ -63,14 +63,14 @@ const CreateProductForms = () => {
         <div className="previous me-2">
           <button onClick={() => setActiveStep(() => activeStep - 1)} className={clsx('btn btn-primary', { disabled: activeStep === 1 })}>
             <IconifyIcon icon="bx:left-arrow-alt" className="me-2" />
-            Back To Previous
+            Назад
           </button>
         </div>
         <div className="next">
           <button
             onClick={() => setActiveStep(() => activeStep + 1)}
             className={clsx('btn btn-primary', { disabled: formSteps.length === activeStep })}>
-            Next Step
+            Следующий шаг
             <IconifyIcon icon="bx:right-arrow-alt" className="ms-2" />
           </button>
         </div>

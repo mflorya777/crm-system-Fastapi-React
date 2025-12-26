@@ -32,7 +32,7 @@ const ActivityItem = ({ title, icon, time, content, files, status, type, variant
           </h5>
           {files && type && (
             <p className="d-flex align-items-center">
-              Added {files.length} files to{' '}
+              Добавлено {files.length} файлов в{' '}
               <span className=" d-flex align-items-center text-primary ms-1">
                 <IconifyIcon icon="iconamoon:file-light" /> {toSentenceCase(type)}{' '}
               </span>
@@ -57,7 +57,7 @@ const ActivityItem = ({ title, icon, time, content, files, status, type, variant
                               {file.name}
                             </span>
                             <div className="ms-auto">
-                              <OverlayTrigger placement="bottom" overlay={<Tooltip className="fw-medium">Download</Tooltip>}>
+                              <OverlayTrigger placement="bottom" overlay={<Tooltip className="fw-medium">Скачать</Tooltip>}>
                                 <span>
                                   <IconifyIcon height={18} width={18} icon="iconamoon:cloud-download-duotone" className="text-primary" />
                                 </span>
@@ -92,10 +92,10 @@ const Activity = () => {
   return (
     <Card>
       <CardHeader className="d-flex align-items-center">
-        <CardTitle as={'h5'}>Activities</CardTitle>
+        <CardTitle as={'h5'}>Активность</CardTitle>
         <div className="ms-auto">
           <span className="text-primary icons-center" role="button">
-            Export
+            Экспорт
             <IconifyIcon icon="bx:export" className="ms-1" />
           </span>
         </div>

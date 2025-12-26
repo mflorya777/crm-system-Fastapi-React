@@ -7,6 +7,7 @@ import PageMetaData from '@/components/PageTitle'
 import IconifyIcon from '@/components/wrappers/IconifyIcon'
 import { getAllOrders } from '@/helpers/data'
 import type { OrderType } from '@/types/data'
+import { getOrderStatus } from '@/utils/other'
 import { useEffect, useState } from 'react'
 
 const Orders = () => {
@@ -21,8 +22,8 @@ const Orders = () => {
 
   return (
     <>
-      <PageBreadcrumb subName="Ecommerce" title="Orders List" />
-      <PageMetaData title="Orders List" />
+      <PageBreadcrumb subName="Электронная коммерция" title="Список заказов" />
+      <PageMetaData title="Список заказов" />
 
       <Row>
         <Col>
@@ -33,25 +34,25 @@ const Orders = () => {
                   <span>
                     <IconifyIcon icon="bx:search-alt" />
                   </span>
-                  <input type="search" className="form-control" id="search" placeholder="Search ..." />
+                  <input type="search" className="form-control" id="search" placeholder="Поиск ..." />
                 </div>
                 <div className="d-flex flex-wrap gap-2 justify-content-end">
                   <Dropdown>
                     <DropdownToggle as={'a'} role="button" className="arrow-none btn btn-light dropdown-toggle">
                       <div className="flex-centered mb-0">
                         <IconifyIcon icon="bx:sort" className="me-1" />
-                        Filter <IconifyIcon icon="bx:chevron-down" height={16} width={16} className="ms-2" />
+                        Фильтр <IconifyIcon icon="bx:chevron-down" height={16} width={16} className="ms-2" />
                       </div>
                     </DropdownToggle>
                     <DropdownMenu className="dropdown-menu-end">
-                      <DropdownItem href="">By Date</DropdownItem>
-                      <DropdownItem href="">By Order ID</DropdownItem>
-                      <DropdownItem href="">By Status</DropdownItem>
+                      <DropdownItem href="">По дате</DropdownItem>
+                      <DropdownItem href="">По ID заказа</DropdownItem>
+                      <DropdownItem href="">По статусу</DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                   <Button variant="primary">
                     <IconifyIcon icon="bx:plus" className="me-1" />
-                    Create Contact
+                    Создать контакт
                   </Button>
                 </div>
               </div>
@@ -60,15 +61,15 @@ const Orders = () => {
               <table className="table text-nowrap mb-0">
                 <thead className="bg-light bg-opacity-50">
                   <tr>
-                    <th>Order ID.</th>
-                    <th>Date</th>
-                    <th>Product</th>
-                    <th>Customer Name</th>
-                    <th>Email ID</th>
-                    <th>Phone No.</th>
-                    <th>Address</th>
-                    <th>Payment Type</th>
-                    <th>Status</th>
+                    <th>ID заказа</th>
+                    <th>Дата</th>
+                    <th>Товар</th>
+                    <th>Имя клиента</th>
+                    <th>Email</th>
+                    <th>Телефон</th>
+                    <th>Адрес</th>
+                    <th>Тип оплаты</th>
+                    <th>Статус</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -101,7 +102,7 @@ const Orders = () => {
                                   order.status === 'Cancelled' ? 'text-danger' : order.status == 'Processing' ? 'text-primary' : 'text-success',
                                 )}
                               />
-                              {order.status}
+                              {getOrderStatus(order.status)}
                             </div>
                           </td>
                         </tr>
@@ -113,9 +114,9 @@ const Orders = () => {
             <div className="align-items-center justify-content-between row g-0 text-center text-sm-start p-3 border-top">
               <div className="col-sm">
                 <div className="text-muted">
-                  Showing&nbsp;
-                  <span className="fw-semibold">10</span>&nbsp; of &nbsp;
-                  <span className="fw-semibold">90,521</span>&nbsp; orders
+                  Показано&nbsp;
+                  <span className="fw-semibold">10</span>&nbsp; из &nbsp;
+                  <span className="fw-semibold">90,521</span>&nbsp; заказов
                 </div>
               </div>
               <Col sm="auto" className="mt-3 mt-sm-0">

@@ -8,7 +8,7 @@ import { faqData } from './data'
 const GeneralFaq = () => {
   return (
     <>
-      <h4 className="mb-3 fw-semibold fs-16">General</h4>
+      <h4 className="mb-3 fw-semibold fs-16">Общие</h4>
       <Accordion alwaysOpen defaultActiveKey={'0'}>
         {faqData.General.map((faq, idx) => (
           <AccordionItem eventKey={`${idx}`} key={idx}>
@@ -26,7 +26,7 @@ const GeneralFaq = () => {
 const RefundFaqs = () => {
   return (
     <>
-      <h4 className="mb-3 mt-4 fw-semibold fs-16">Refunds</h4>
+      <h4 className="mb-3 mt-4 fw-semibold fs-16">Возвраты</h4>
       <Accordion alwaysOpen defaultActiveKey={'0'}>
         {faqData.Refunds.map((faq, idx) => (
           <AccordionItem eventKey={`${idx}`} key={idx}>
@@ -44,7 +44,7 @@ const RefundFaqs = () => {
 const PaymentsFaqs = () => {
   return (
     <>
-      <h4 className="mb-3 fw-semibold fs-16">Payments</h4>
+      <h4 className="mb-3 fw-semibold fs-16">Платежи</h4>
       <Accordion alwaysOpen defaultActiveKey={'0'}>
         {faqData.Payments.map((faq, idx) => (
           <AccordionItem eventKey={`${idx}`} key={idx}>
@@ -62,7 +62,7 @@ const PaymentsFaqs = () => {
 const SupportFaqs = () => {
   return (
     <>
-      <h4 className="mb-3 mt-4 fw-semibold fs-16">Support</h4>
+      <h4 className="mb-3 mt-4 fw-semibold fs-16">Поддержка</h4>
       <Accordion alwaysOpen defaultActiveKey={'0'}>
         {faqData.Support.map((faq, idx) => (
           <AccordionItem eventKey={`${idx}`} key={idx}>
@@ -80,8 +80,8 @@ const SupportFaqs = () => {
 const FAQs = () => {
   return (
     <>
-      <PageBreadcrumb subName="Pages" title="FAQs" />
-      <PageMetaData title="FAQs" />
+      <PageBreadcrumb subName="Страницы" title="Часто задаваемые вопросы" />
+      <PageMetaData title="Часто задаваемые вопросы" />
 
       <Row>
         <Col>
@@ -99,15 +99,15 @@ const FAQs = () => {
               </Row>
               <Row className="my-5">
                 <Col xs={12} className="text-center">
-                  <h4>Can&apos;t find a questions?</h4>
+                  <h4>Не нашли ответ на вопрос?</h4>
                   <div className="icons-center gap-1">
                     <Button variant="success" type="button" className="mt-2">
                       <IconifyIcon icon="bx:envelope" className="me-2" />
-                      Email us your question
+                      Напишите нам на email
                     </Button>
                     <Button variant="info" type="button" className="mt-2 ms-1">
                       <IconifyIcon icon="bxl:twitter" className="me-2" />
-                      Send us a tweet
+                      Напишите нам в Twitter
                     </Button>
                   </div>
                 </Col>

@@ -4,7 +4,7 @@ import IconifyIcon from './wrappers/IconifyIcon'
 const ThirdPartyAuth = () => {
   return (
     <>
-      <p className="mt-3 fw-semibold no-span">OR sign with</p>
+      <p className="mt-3 fw-semibold no-span">Или войдите через</p>
       <div className="text-center d-flex gap-1 justify-content-center">
         <Button variant="light" className="shadow-none">
           <IconifyIcon icon="bxl:google" height={20} width={20} />

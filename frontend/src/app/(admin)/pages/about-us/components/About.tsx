@@ -9,15 +9,15 @@ const About = () => {
         <div className="position-relative rounded-2 overflow-hidden" style={{ backgroundImage: `url(${small7})` }}>
           <div className="bg-overlay bg-black" />
           <div className="position-relative p-3 p-lg-4">
-            <h4 className="fs-18 fw-bold text-white text-uppercase mb-2">About Us</h4>
+            <h4 className="fs-18 fw-bold text-white text-uppercase mb-2">О нас</h4>
             <p className="text-white text-opacity-75 mb-3">
-              Over the past decade, we&apos;ve distributed more than 45,000 copies of our administrative themes, all of which have been effectively{' '}
+              За последнее десятилетие мы распространили более 45 000 копий наших административных тем, все из которых были эффективно{' '}
               <br />
-              utilized by businesses ranging from small-scale enterprises to multinational corporations.
+              использованы предприятиями от малого бизнеса до транснациональных корпораций.
             </p>
             <div className="mb-3">
               <Button variant="success" className="bg-gradient">
-                Join US
+                Присоединиться к нам
               </Button>
             </div>
             <Row>
@@ -33,7 +33,7 @@ const About = () => {
                             </span>
                           </div>
                           <h4 className="fw-semibold fs-20 mb-1">1,994+</h4>
-                          <h5 className="fs-14 mb-0">Projects</h5>
+                          <h5 className="fs-14 mb-0">Проектов</h5>
                         </div>
                       </div>
                     </Col>
@@ -46,7 +46,7 @@ const About = () => {
                             </span>
                           </div>
                           <h4 className="fw-semibold fs-20 mb-1">1,962</h4>
-                          <h5 className="fs-14 mb-0">Complated</h5>
+                          <h5 className="fs-14 mb-0">Завершено</h5>
                         </div>
                       </div>
                     </Col>
@@ -59,7 +59,7 @@ const About = () => {
                             </span>
                           </div>
                           <h4 className="fw-semibold fs-20 mb-1">98M+</h4>
-                          <h5 className="fs-14 mb-0">Payment</h5>
+                          <h5 className="fs-14 mb-0">Платежей</h5>
                         </div>
                       </div>
                     </Col>

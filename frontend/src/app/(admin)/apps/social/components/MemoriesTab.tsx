@@ -21,7 +21,7 @@ const MemoriesTab = () => {
       {memoriesPosts ? (
         memoriesPosts.map((post) => <PostCard key={post.id} {...post} memories />)
       ) : (
-        <h4 className="text-center ">Loading old posts...</h4>
+        <h4 className="text-center ">Загрузка старых публикаций...</h4>
       )}
     </TabPane>
   )

@@ -25,7 +25,7 @@ const generalFormSchema = yup.object({
 })
 
 const GeneralDetailsForm = () => {
-  const [productDescriptionContent, setProductDescriptionContent] = useState(`<h2>Describe Your Product...</h2>`)
+  const [productDescriptionContent, setProductDescriptionContent] = useState(`<h2>Опишите ваш товар...</h2>`)
   const [productCategories, setProductCategories] = useState<SelectFormInputOptionType[]>()
 
   const { control } = useForm({
@@ -51,21 +51,21 @@ const GeneralDetailsForm = () => {
         <Col lg={6}>
           <TextFormInput
             control={control}
-            label="Product Name"
-            placeholder="Enter product name"
+            label="Название товара"
+            placeholder="Введите название товара"
             containerClassName="mb-3"
             id="product-name"
             name="name"
           />
         </Col>
         <Col lg={6}>
-          <TextFormInput control={control} name="reference" placeholder="Enter reference name" label="Reference" containerClassName="mb-3" />
+          <TextFormInput control={control} name="reference" placeholder="Введите название ссылки" label="Ссылка" containerClassName="mb-3" />
         </Col>
       </Row>
       <Row>
         <Col lg={12}>
           <div className="mb-5">
-            <label className="form-label">Product Description</label>
+            <label className="form-label">Описание товара</label>
             <ReactQuill
               theme="snow"
               style={{ height: 195 }}
@@ -92,7 +92,7 @@ const GeneralDetailsForm = () => {
           <TextAreaFormInput
             control={control}
             containerClassName="mb-3"
-            label="Product Summary"
+            label="Краткое описание товара"
             rows={5}
             id="product-summary-area"
             name="description"
@@ -102,39 +102,39 @@ const GeneralDetailsForm = () => {
           {productCategories && (
             <div className="mb-3">
               <label htmlFor="productSummary" className="form-label">
-                Categories
+                Категории
               </label>
               <SelectFormInput className="select2" control={control} name="categories" options={productCategories} />
             </div>
           )}
 
-          <TextFormInput control={control} name="price" label="Price" containerClassName="mb-3" placeholder="Enter Amount" />
+          <TextFormInput control={control} name="price" label="Цена" containerClassName="mb-3" placeholder="Введите сумму" />
         </Col>
       </Row>
       <div className="mb-3">
-        <label className="form-label">Status</label>
+        <label className="form-label">Статус</label>
         <br />
         <div className="form-check form-check-inline">
           <input className="form-check-input" name="radio" type="radio" id="onlineStatus" defaultValue="Online" defaultChecked />
           <label className="form-check-label" htmlFor="onlineStatus">
-            Online
+            Онлайн
           </label>
         </div>
         <div className="form-check form-check-inline">
           <input className="form-check-input" name="radio" type="radio" id="offlineStatus" defaultValue="Offline" />
           <label className="form-check-label" htmlFor="offlineStatus">
-            Offline
+            Офлайн
           </label>
         </div>
         <div className="form-check form-check-inline">
           <input className="form-check-input" name="radio" type="radio" id="draftStatus" defaultValue="Draft" />
           <label className="form-check-label" htmlFor="draftStatus">
-            Draft
+            Черновик
           </label>
         </div>
       </div>
 
-      <TextAreaFormInput control={control} label="Comment" name="comment" containerClassName="mb-3" />
+      <TextAreaFormInput control={control} label="Комментарий" name="comment" containerClassName="mb-3" />
     </form>
   )
 }

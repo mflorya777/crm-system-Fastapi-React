@@ -88,7 +88,7 @@ const EmailViewOffcanvas = () => {
               <div className="flex-grow-1">
                 {mail?.createdAt && <span className="float-end">{new Date(mail?.createdAt).toDateString()}</span>}
                 <h6 className="m-0">{mail?.from?.name}</h6>
-                <small className="text-muted">From: {mail?.from?.email}</small>
+                <small className="text-muted">От: {mail?.from?.email}</small>
               </div>
             </div>
             <p>
@@ -116,7 +116,7 @@ const EmailViewOffcanvas = () => {
               <>
                 <h6 className="icons-center">
                   {' '}
-                  <IconifyIcon icon="fa:paperclip" className="me-1" /> Attachments&nbsp;<span>({mail.attachments.length})</span>
+                  <IconifyIcon icon="fa:paperclip" className="me-1" /> Вложения&nbsp;<span>({mail.attachments.length})</span>
                 </h6>
                 <Row className="row-gap-3">
                   {mail.attachments.map((file, idx) => (
@@ -141,7 +141,7 @@ const EmailViewOffcanvas = () => {
         </div>
         <div className="text-end">
           <Button variant="primary" onClick={toggle} type="button" className="btn btn-primary width-sm" aria-label="Close">
-            Send
+            Отправить
           </Button>
         </div>
       </div>

@@ -37,18 +37,18 @@ const Notifications = () => {
         <IconifyIcon icon="iconamoon:notification-duotone" className="fs-24 align-middle" />
         <span className="position-absolute topbar-badge fs-10 translate-middle badge bg-danger rounded-pill">
           {notificationList.length}
-          <span className="visually-hidden">unread messages</span>
+          <span className="visually-hidden">непрочитанные сообщения</span>
         </span>
       </DropdownToggle>
       <DropdownMenu className="py-0 dropdown-lg">
         <div className="p-3 border-top-0 border-start-0 border-end-0 border-dashed border">
           <Row className="align-items-center">
             <Col>
-              <h6 className="m-0 fs-16 fw-semibold"> Notifications</h6>
+              <h6 className="m-0 fs-16 fw-semibold"> Уведомления</h6>
             </Col>
             <Col xs="auto">
               <Link to="" className="text-dark text-decoration-underline">
-                <small>Clear All</small>
+                <small>Очистить все</small>
               </Link>
             </Col>
           </Row>
@@ -60,7 +60,7 @@ const Notifications = () => {
         </SimplebarReactClient>
         <div className="text-center py-3">
           <Button size="sm" variant="primary" className="icons-center">
-            View All Notification
+            Показать все уведомления
             <IconifyIcon icon="bx:right-arrow-alt" className="ms-2" />
           </Button>
         </div>

@@ -44,6 +44,7 @@ const SelectFormInput = <
             value={Array.isArray(options) && options?.find((op) => 'value' in op && op.value == field.value)}
             classNamePrefix="react-select"
             id={id ?? name}
+            placeholder={other.placeholder || 'Выберите...'}
           />
           {!noValidate && fieldState.error?.message && <Feedback type="invalid">{fieldState.error?.message}</Feedback>}
         </div>

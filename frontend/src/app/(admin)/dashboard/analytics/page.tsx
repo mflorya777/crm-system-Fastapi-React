@@ -11,8 +11,8 @@ import TopPages from './components/TopPages'
 export default function Home() {
   return (
     <>
-      <PageBreadcrumb title="Analytics" subName="Dashboards" />
-      <PageMetaData title="Analytics" />
+      <PageBreadcrumb title="Аналитика" subName="Панели управления" />
+      <PageMetaData title="Аналитика" />
 
       <Row>
         <Col xxl={3}>

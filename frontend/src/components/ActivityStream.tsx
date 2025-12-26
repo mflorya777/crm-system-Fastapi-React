@@ -5,8 +5,8 @@ import { Col, Offcanvas, OffcanvasBody, OffcanvasHeader, OverlayTrigger, Row, To
 import { activityStreamData } from '@/assets/data/topbar'
 import type { OffcanvasControlType } from '@/types/context'
 import type { ActivityType } from '@/types/data'
-import { toSentenceCase } from '@/utils/change-casing'
 import { getActivityIcon, getFileExtensionIcon } from '@/utils/get-icons'
+import { getActivityStreamStatus, getActivityStreamType } from '@/utils/other'
 import IconifyIcon from './wrappers/IconifyIcon'
 import SimplebarReactClient from './wrappers/SimplebarReactClient'
 
@@ -29,13 +29,13 @@ const ActivityItem = ({ title, icon, time, content, files, status, type, variant
         </span>
         <div className="ms-2">
           <h5 className="mb-1 text-dark fw-semibold fs-15 lh-base">
-            {title} {status && <span className={`badge px-2 py-1 ms-1 bg-${variant}-subtle text-${variant}`}> {toSentenceCase(status)}</span>}{' '}
+            {title} {status && <span className={`badge px-2 py-1 ms-1 bg-${variant}-subtle text-${variant}`}> {getActivityStreamStatus(status)}</span>}{' '}
           </h5>
           {files && type && (
             <p className="d-flex align-items-center">
-              Added {files.length} files to{' '}
+              Добавлено {files.length} файлов в{' '}
               <span className=" d-flex align-items-center text-primary ms-1">
-                <IconifyIcon icon="iconamoon:file-light" /> {toSentenceCase(type)}{' '}
+                <IconifyIcon icon="iconamoon:file-light" /> {getActivityStreamType(type)}{' '}
               </span>
             </p>
           )}
@@ -58,7 +58,7 @@ const ActivityItem = ({ title, icon, time, content, files, status, type, variant
                               {file.name}
                             </span>
                             <div className="ms-auto">
-                              <OverlayTrigger placement="bottom" overlay={<Tooltip className="fw-medium">Download</Tooltip>}>
+                              <OverlayTrigger placement="bottom" overlay={<Tooltip className="fw-medium">Скачать</Tooltip>}>
                                 <span>
                                   <IconifyIcon height={18} width={18} icon="iconamoon:cloud-download-duotone" className="text-primary" />
                                 </span>
@@ -94,7 +94,7 @@ const ActivityStream = ({ open, toggle }: OffcanvasControlType) => {
         id="theme-activity-offcanvas"
         style={{ maxWidth: 450, width: '100%' }}>
         <OffcanvasHeader closeVariant="white" closeButton className="d-flex align-items-center bg-primary p-3">
-          <h5 className="text-white m-0 fw-semibold">Activity Stream</h5>
+          <h5 className="text-white m-0 fw-semibold">Поток активности</h5>
         </OffcanvasHeader>
         <OffcanvasBody className="p-0">
           <SimplebarReactClient className="h-100 p-4">
@@ -104,10 +104,10 @@ const ActivityStream = ({ open, toggle }: OffcanvasControlType) => {
               {activityList ? (
                 activityList.map((activity, idx) => <ActivityItem {...activity} key={idx} />)
               ) : (
-                <h4 className="text-center mb-3">No Recent Activity</h4>
+                <h4 className="text-center mb-3">Нет недавней активности</h4>
               )}
             </div>
-            <button className="btn btn-outline-dark w-100">View All</button>
+            <button className="btn btn-outline-dark w-100">Показать все</button>
           </SimplebarReactClient>
         </OffcanvasBody>
       </Offcanvas>

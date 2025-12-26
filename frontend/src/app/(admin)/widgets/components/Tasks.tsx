@@ -19,12 +19,12 @@ const Tasks = () => {
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between align-items-center">
-        <CardTitle>My Tasks</CardTitle>
+        <CardTitle>Мои задачи</CardTitle>
         <div>
           <Button variant="primary" size="sm">
             <span className="icons-center">
               <IconifyIcon icon="bx:plus" className="me-1" />
-              Create Task
+              Создать задачу
             </span>
           </Button>
         </div>

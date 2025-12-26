@@ -7,31 +7,31 @@ import * as yup from 'yup'
 
 const SignUpForm = () => {
   const signUpSchema = yup.object({
-    name: yup.string().required('please enter your name'),
-    email: yup.string().email('Please enter a valid email').required('please enter your email'),
-    password: yup.string().required('Please enter your password'),
+    name: yup.string().required('пожалуйста, введите ваше имя'),
+    email: yup.string().email('Пожалуйста, введите действительный email').required('пожалуйста, введите ваш email'),
+    password: yup.string().required('Пожалуйста, введите ваш пароль'),
   })
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(signUpSchema),
   })
   return (
     <form className="authentication-form" onSubmit={handleSubmit(() => {})}>
-      <TextFormInput control={control} name="name" containerClassName="mb-3" label="Name" id="name" placeholder="Enter your name" />
-      <TextFormInput control={control} name="email" containerClassName="mb-3" label="Email" id="email-id" placeholder="Enter your email" />
+      <TextFormInput control={control} name="name" containerClassName="mb-3" label="Имя" id="name" placeholder="Введите ваше имя" />
+      <TextFormInput control={control} name="email" containerClassName="mb-3" label="Email" id="email-id" placeholder="Введите ваш email" />
       <PasswordFormInput
         control={control}
         name="password"
         containerClassName="mb-3"
-        placeholder="Enter your password"
+        placeholder="Введите ваш пароль"
         id="password-id"
-        label="password"
+        label="Пароль"
       />
       <div className="mb-3">
-        <FormCheck label="I accept Terms and Condition" id="termAndCondition" />
+        <FormCheck label="Я принимаю Условия использования" id="termAndCondition" />
       </div>
       <div className="mb-1 text-center d-grid">
         <Button variant="primary" type="submit">
-          Sign Up
+          Зарегистрироваться
         </Button>
       </div>
     </form>

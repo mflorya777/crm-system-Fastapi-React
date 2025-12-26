@@ -18,16 +18,16 @@ const ComposeEmailModal = () => {
     <Modal show={open} onHide={toggle} size="lg" className="fade compose-mail" tabIndex={-1} aria-labelledby="compose-modalLabel" aria-hidden="true">
       <ModalHeader closeButton closeVariant="white" className="overflow-hidden bg-primary p-2">
         <ModalTitle as="h5" className="text-white">
-          New Message
+          Новое сообщение
         </ModalTitle>
       </ModalHeader>
       <ModalBody className="p-4">
         <div className="overflow-hidden">
           <div className="mb-2">
-            <input type="email" className="form-control" placeholder="To: " />
+            <input type="email" className="form-control" placeholder="Кому: " />
           </div>
           <div className="mb-2">
-            <input type="text" className="form-control" placeholder="Subject " />
+            <input type="text" className="form-control" placeholder="Тема " />
           </div>
           <div className="mt-2 mb-5">
             <ReactQuill value={quillEditorContent} onChange={setQuillEditorContent} style={{ height: 200 }} />
@@ -39,18 +39,18 @@ const ComposeEmailModal = () => {
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-up">
                 <span role="button" className="dropdown-item">
-                  Default to full screen
+                  По умолчанию на весь экран
                 </span>
                 <DropdownDivider />
                 <span role="button" className="dropdown-item">
-                  Label
+                  Метка
                 </span>
                 <span role="button" className="dropdown-item">
-                  Palin text mode
+                  Режим обычного текста
                 </span>
                 <DropdownDivider />
                 <span role="button" className="dropdown-item">
-                  Smart Compose Feedback
+                  Умная обратная связь при составлении
                 </span>
               </DropdownMenu>
             </Dropdown>
@@ -60,7 +60,7 @@ const ComposeEmailModal = () => {
           </div>
           <div>
             <Button onClick={toggle} variant="primary">
-              Send
+              Отправить
             </Button>
           </div>
         </div>

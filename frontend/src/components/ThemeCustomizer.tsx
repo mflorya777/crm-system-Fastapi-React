@@ -3,14 +3,14 @@ import { Button, Col, Offcanvas, OffcanvasBody, OffcanvasHeader, Row } from 'rea
 import SimplebarReactClient from './wrappers/SimplebarReactClient'
 import type { MenuType, OffcanvasControlType, ThemeType } from '@/types/context'
 import { useLayoutContext } from '@/context/useLayoutContext'
-import { toSentenceCase } from '@/utils/change-casing'
+import { getThemeName } from '@/utils/other'
 
 const ColorScheme = () => {
   const { theme, changeTheme } = useLayoutContext()
   const modes: ThemeType[] = ['light', 'dark']
   return (
     <div>
-      <h5 className="mb-3 font-16 fw-semibold">Color Scheme</h5>
+      <h5 className="mb-3 font-16 fw-semibold">Цветовая схема</h5>
       {modes.map((mode, idx) => (
         <div key={mode + idx} className="form-check mb-2">
           <input
@@ -22,7 +22,7 @@ const ColorScheme = () => {
             checked={theme === mode}
           />
           <label className="form-check-label" htmlFor={`layout-color-${mode}`}>
-            {toSentenceCase(mode)}
+            {getThemeName(mode)}
           </label>
         </div>
       ))}
@@ -35,7 +35,7 @@ const TopbarTheme = () => {
   const modes: ThemeType[] = ['light', 'dark']
   return (
     <div>
-      <h5 className="my-3 font-16 fw-semibold">Topbar Color</h5>
+      <h5 className="my-3 font-16 fw-semibold">Цвет верхней панели</h5>
       {modes.map((mode, idx) => (
         <div key={idx + mode} className="form-check mb-2">
           <input
@@ -47,7 +47,7 @@ const TopbarTheme = () => {
             checked={topbarTheme === mode}
           />
           <label className="form-check-label" htmlFor={`topbar-color-${mode}`}>
-            {toSentenceCase(mode)}
+            {getThemeName(mode)}
           </label>
         </div>
       ))}
@@ -63,7 +63,7 @@ const MenuTheme = () => {
   const modes: ThemeType[] = ['light', 'dark']
   return (
     <div>
-      <h5 className="my-3 font-16 fw-semibold">Menu Color</h5>
+      <h5 className="my-3 font-16 fw-semibold">Цвет меню</h5>
       {modes.map((mode, idx) => (
         <div key={idx + mode + idx} className="form-check mb-2">
           <input
@@ -75,7 +75,7 @@ const MenuTheme = () => {
             checked={theme === mode}
           />
           <label className="form-check-label" htmlFor={`leftbar-color-${mode}`}>
-            {toSentenceCase(mode)}
+            {getThemeName(mode)}
           </label>
         </div>
       ))}
@@ -90,30 +90,30 @@ const SidebarSize = () => {
   } = useLayoutContext()
   const sizes: { size: MenuType['size']; name: string }[] = [
     {
-      name: 'Default',
+      name: 'По умолчанию',
       size: 'default',
     },
     {
-      name: 'Condensed',
+      name: 'Сжатый',
       size: 'condensed',
     },
     {
-      name: 'Hidden',
+      name: 'Скрытый',
       size: 'hidden',
     },
     {
-      name: 'Small Hover Active',
+      name: 'Маленький при наведении активный',
       size: 'sm-hover-active',
     },
     {
-      name: 'Small Hover',
+      name: 'Маленький при наведении',
       size: 'sm-hover',
     },
   ]
 
   return (
     <div>
-      <h5 className="my-3 font-16 fw-semibold">Sidebar Size</h5>
+      <h5 className="my-3 font-16 fw-semibold">Размер боковой панели</h5>
       {sizes.map((size, idx) => (
         <div key={size.size + idx} className="form-check mb-2">
           <input
@@ -140,7 +140,7 @@ const ThemeCustomizer = ({ open, toggle }: OffcanvasControlType) => {
     <div>
       <Offcanvas placement="end" show={open} onHide={toggle} className="border-0" tabIndex={-1}>
         <OffcanvasHeader closeVariant="white" closeButton className="d-flex align-items-center bg-primary p-3">
-          <h5 className="text-white m-0">Theme Settings</h5>
+          <h5 className="text-white m-0">Настройки темы</h5>
         </OffcanvasHeader>
         <OffcanvasBody className="p-0">
           <SimplebarReactClient className="h-100">
@@ -159,7 +159,7 @@ const ThemeCustomizer = ({ open, toggle }: OffcanvasControlType) => {
           <Row>
             <Col>
               <Button variant="danger" onClick={resetSettings} className="w-100">
-                Reset
+                Сбросить
               </Button>
             </Col>
           </Row>

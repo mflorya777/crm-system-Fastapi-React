@@ -8,6 +8,7 @@ import IconifyIcon from '@/components/wrappers/IconifyIcon'
 import { currency } from '@/context/constants'
 import { getAllInvoices } from '@/helpers/data'
 import type { InvoiceType } from '@/types/data'
+import { getOrderStatus } from '@/utils/other'
 
 const Invoices = () => {
   const [allInvoices, setAllInvoices] = useState<InvoiceType[]>()
@@ -21,8 +22,8 @@ const Invoices = () => {
 
   return (
     <>
-      <PageBreadcrumb subName="Invoice" title="Invoices List" />
-      <PageMetaData title="Invoices" />
+      <PageBreadcrumb subName="Счета" title="Список счетов" />
+      <PageMetaData title="Счета" />
 
       <Row>
         <Col>
@@ -33,12 +34,12 @@ const Invoices = () => {
                   <span>
                     <IconifyIcon icon="bx:search-alt" className="mb-1" />
                   </span>
-                  <input type="search" className="form-control" id="search" placeholder="Search invoice..." />
+                  <input type="search" className="form-control" id="search" placeholder="Поиск счета..." />
                 </div>
                 <div>
                   <Button variant="success">
                     <IconifyIcon icon="bx:plus" className="me-1" />
-                    Create Invoice
+                    Создать счёт
                   </Button>
                 </div>
               </div>
@@ -48,14 +49,14 @@ const Invoices = () => {
                 <table className="table text-nowrap mb-0">
                   <thead className="bg-light bg-opacity-50">
                     <tr>
-                      <th className="border-0 py-2">Invoice ID</th>
-                      <th className="border-0 py-2">Customer</th>
-                      <th className="border-0 py-2">Created Date</th>
-                      <th className="border-0 py-2">Due Date</th>
-                      <th className="border-0 py-2">Amount</th>
-                      <th className="border-0 py-2">Payment Status</th>
-                      <th className="border-0 py-2">Via</th>
-                      <th className="border-0 py-2">Action</th>
+                      <th className="border-0 py-2">ID счёта</th>
+                      <th className="border-0 py-2">Клиент</th>
+                      <th className="border-0 py-2">Дата создания</th>
+                      <th className="border-0 py-2">Срок оплаты</th>
+                      <th className="border-0 py-2">Сумма</th>
+                      <th className="border-0 py-2">Статус оплаты</th>
+                      <th className="border-0 py-2">Способ оплаты</th>
+                      <th className="border-0 py-2">Действие</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -85,7 +86,7 @@ const Invoices = () => {
                         <td>
                           <span
                             className={`badge badge-soft-${invoice.order?.status === 'Cancelled' ? 'danger' : invoice.order?.status == 'Processing' ? 'warning' : 'success'}`}>
-                            {invoice.order?.status}
+                            {invoice.order?.status ? getOrderStatus(invoice.order.status) : ''}
                           </span>
                         </td>
                         <td>{invoice.order?.paymentMethod}</td>
@@ -105,9 +106,9 @@ const Invoices = () => {
               <div className="align-items-center justify-content-between row g-0 text-center text-sm-start p-3 border-top">
                 <div className="col-sm">
                   <div className="text-muted">
-                    Showing&nbsp;
-                    <span className="fw-semibold">10</span>&nbsp; of&nbsp;
-                    <span className="fw-semibold">52</span>&nbsp; invoices
+                    Показано&nbsp;
+                    <span className="fw-semibold">10</span>&nbsp; из&nbsp;
+                    <span className="fw-semibold">52</span>&nbsp; счетов
                   </div>
                 </div>
                 <Col sm="auto" className="mt-3 mt-sm-0">

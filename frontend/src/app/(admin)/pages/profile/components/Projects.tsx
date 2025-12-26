@@ -33,7 +33,7 @@ const ProjectCard = ({ project }: { project: ProjectType }) => {
             {title}
           </span>
           <div className="ms-auto">
-            <OverlayTrigger overlay={<Tooltip>Download</Tooltip>} placement="bottom">
+            <OverlayTrigger overlay={<Tooltip>Скачать</Tooltip>} placement="bottom">
               <span role="button" className="fw-medium text-muted fs-18">
                 <IconifyIcon icon="iconamoon:cloud-download-duotone" />
               </span>
@@ -43,11 +43,11 @@ const ProjectCard = ({ project }: { project: ProjectType }) => {
         <div className="d-flex gap-2">
           <CardTitle as={'h5'} className="badge text-secondary d-flex gap-1 align-items-center py-1 px-2 fs-13 mb-3 border rounded-1">
             <IconifyIcon icon="iconamoon:clock-duotone" />
-            {days} day left
+            Осталось {days} дней
           </CardTitle>
           <CardTitle as={'h5'} className="badge text-secondary d-flex gap-1 align-items-center py-1 px-2 fs-13 mb-3 border rounded-1">
             <IconifyIcon icon="iconamoon:file-duotone" />
-            {file} Files
+            {file} файлов
           </CardTitle>
         </div>
         <div>
@@ -63,7 +63,7 @@ const ProjectCard = ({ project }: { project: ProjectType }) => {
               </div>
             ))}
           </div>
-          <h5 className="mb-0">{team}+ Team Work</h5>
+          <h5 className="mb-0">{team}+ Работа в команде</h5>
         </div>
       </CardBody>
     </Card>
@@ -74,7 +74,7 @@ const Projects = () => {
   return (
     <Card>
       <CardHeader className="d-flex align-items-center">
-        <CardTitle as={'h5'}>Projects</CardTitle>
+        <CardTitle as={'h5'}>Проекты</CardTitle>
         <div className="ms-auto">
           <Dropdown>
             <DropdownToggle as={'a'} role="button" className="arrow-none">
@@ -83,15 +83,15 @@ const Projects = () => {
             <DropdownMenu className="dropdown-menu-end">
               <DropdownItem>
                 <IconifyIcon icon="bx:edit-alt" className="me-2" />
-                Edit Profile
+                Редактировать профиль
               </DropdownItem>
               <DropdownItem>
                 <IconifyIcon icon="bx:export" className="me-2" />
-                Export Profile
+                Экспортировать профиль
               </DropdownItem>
               <DropdownItem>
                 <IconifyIcon icon="bxs:hand-up" className="me-2" />
-                Action
+                Действие
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>

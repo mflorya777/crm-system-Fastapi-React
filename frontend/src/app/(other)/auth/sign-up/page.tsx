@@ -11,7 +11,7 @@ import signUpImg from '@/assets/images/sign-in.svg'
 const SignUp = () => {
   return (
     <>
-      <PageMetaData title="Sign Up" />
+      <PageMetaData title="Регистрация" />
 
       <Card className="auth-card">
         <CardBody className="p-0">
@@ -31,8 +31,8 @@ const SignUp = () => {
                   squareLogo={{ className: 'me-1' }}
                   containerClassName="mx-auto mb-4 text-center auth-logo"
                 />
-                <h2 className="fw-bold text-center fs-18">Sign Up</h2>
-                <p className="text-muted text-center mt-1 mb-4">New to our platform? Sign up now! It only takes a minute.</p>
+                <h2 className="fw-bold text-center fs-18">Регистрация</h2>
+                <p className="text-muted text-center mt-1 mb-4">Впервые на нашей платформе? Зарегистрируйтесь сейчас! Это займет всего минуту.</p>
                 <Row className="justify-content-center">
                   <Col xs={12} md={8}>
                     <SignUpForm />
@@ -45,9 +45,9 @@ const SignUp = () => {
         </CardBody>
       </Card>
       <p className="text-white mb-0 text-center">
-        I already have an account
+        У меня уже есть аккаунт
         <Link to="/auth/sign-in" className="text-white fw-bold ms-1">
-          Sign In
+          Войти
         </Link>
       </p>
     </>

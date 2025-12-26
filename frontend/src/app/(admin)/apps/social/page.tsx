@@ -7,8 +7,8 @@ import SocialView from './components/SocialView'
 const Social = () => {
   return (
     <>
-      <PageBreadcrumb title="Social" subName="Apps" />
-      <PageMetaData title="Social" />
+      <PageBreadcrumb title="Социальная сеть" subName="Приложения" />
+      <PageMetaData title="Социальная сеть" />
 
       <Row className="justify-content-center">
         <SocialView />

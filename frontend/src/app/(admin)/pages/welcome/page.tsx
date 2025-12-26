@@ -4,8 +4,8 @@ import PageMetaData from '@/components/PageTitle'
 const Welcome = () => {
   return (
     <>
-      <PageBreadcrumb subName="Pages" title="Welcome" />
-      <PageMetaData title="Welcome" />
+      <PageBreadcrumb subName="Страницы" title="Добро пожаловать" />
+      <PageMetaData title="Добро пожаловать" />
     </>
   )
 }

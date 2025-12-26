@@ -9,8 +9,8 @@ const CalendarPage = lazy(() => import('./components/CalendarPage'))
 const Schedule = () => {
   return (
     <>
-      <PageBreadcrumb title="Schedule" subName="Calendar" />
-      <PageMetaData title="Schedule" />
+      <PageBreadcrumb title="Расписание" subName="Календарь" />
+      <PageMetaData title="Расписание" />
 
       <Row>
         <Col xs={12}>

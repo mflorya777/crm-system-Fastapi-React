@@ -1,70 +1,70 @@
 export const faqData = {
   General: [
     {
-      question: 'Can I use Dummy FAQs for my website or project?',
+      question: 'Могу ли я использовать тестовые FAQ для своего веб-сайта или проекта?',
       answer:
-        'Yes, you can use Dummy FAQs to populate your website or project during development or testing phases. They help simulate the appearance and functionality of a real FAQ section without requiring actual content.',
+        'Да, вы можете использовать тестовые FAQ для заполнения вашего веб-сайта или проекта на этапах разработки или тестирования. Они помогают имитировать внешний вид и функциональность реального раздела FAQ без необходимости в фактическом контенте.',
     },
     {
-      question: 'Are Dummy FAQs suitable for customer support purposes?',
+      question: 'Подходят ли тестовые FAQ для целей поддержки клиентов?',
       answer:
-        'While Dummy FAQs can be used internally for training customer support teams, they are not suitable for public-facing customer support. Real FAQs should be based on genuine customer inquiries to provide accurate and helpful information.',
+        'Хотя тестовые FAQ можно использовать внутри компании для обучения команд поддержки клиентов, они не подходят для публичной поддержки клиентов. Реальные FAQ должны основываться на подлинных запросах клиентов, чтобы предоставлять точную и полезную информацию.',
     },
     {
-      question: 'Do Dummy FAQs require attribution?',
+      question: 'Требуется ли указание авторства для тестовых FAQ?',
       answer:
-        'No, Dummy FAQs do not require attribution since they are not based on real questions or contributed by individuals. You can use them freely for internal testing or demonstration purposes.',
+        'Нет, тестовые FAQ не требуют указания авторства, поскольку они не основаны на реальных вопросах или не были предоставлены отдельными лицами. Вы можете свободно использовать их для внутреннего тестирования или демонстрационных целей.',
     },
   ],
   Payments: [
     {
-      question: 'Can I test my website/app with Dummy Payments?',
+      question: 'Могу ли я протестировать свой веб-сайт/приложение с помощью тестовых платежей?',
       answer:
-        'Yes, Dummy Payments are commonly used by developers and businesses to test the functionality of e-commerce platforms, mobile apps, and payment gateways. They help identify and resolve issues without risking real transactions.',
+        'Да, тестовые платежи обычно используются разработчиками и компаниями для тестирования функциональности платформ электронной коммерции, мобильных приложений и платежных шлюзов. Они помогают выявлять и решать проблемы без риска реальных транзакций.',
     },
     {
-      question: 'Are Dummy Payments secure?',
+      question: 'Безопасны ли тестовые платежи?',
       answer:
-        "Dummy Payments used in controlled environments for training or demonstration purposes are generally secure. However, it's crucial not to confuse them with real transactions and avoid entering genuine financial information.",
+        'Тестовые платежи, используемые в контролируемых средах для обучения или демонстрационных целей, как правило, безопасны. Однако крайне важно не путать их с реальными транзакциями и избегать ввода подлинной финансовой информации.',
     },
     {
-      question: 'How can I differentiate between a Dummy Payment and a real one?',
+      question: 'Как я могу отличить тестовый платеж от реального?',
       answer:
-        'Real payments involve the transfer of actual funds, resulting in a change in financial balances. Dummy Payments, on the other hand, do not involve any monetary exchange and are typically labeled or indicated as test transactions. Always verify the authenticity of transactions before proceeding with any action.',
+        'Реальные платежи предполагают перевод фактических средств, что приводит к изменению финансовых балансов. Тестовые платежи, с другой стороны, не предполагают никакого денежного обмена и обычно помечены или указаны как тестовые транзакции. Всегда проверяйте подлинность транзакций перед выполнением каких-либо действий.',
     },
   ],
   Refunds: [
     {
-      question: 'How do I request a refund?',
+      question: 'Как запросить возврат средств?',
       answer:
-        'To request a refund, simply contact our customer support team through email or phone and provide details about your purchase and reason for the refund. Our representatives will guide you through the process.',
+        'Чтобы запросить возврат средств, просто свяжитесь с нашей службой поддержки клиентов по электронной почте или телефону и предоставьте подробную информацию о вашей покупке и причине возврата. Наши представители проведут вас через процесс.',
     },
     {
-      question: 'What is the refund policy?',
+      question: 'Какая политика возврата средств?',
       answer:
-        "Our refund policy allows customers to request a refund within 30 days of purchase for eligible products or services. Certain restrictions may apply, so it's essential to review the terms and conditions specific to your purchase.",
+        'Наша политика возврата средств позволяет клиентам запрашивать возврат в течение 30 дней с момента покупки для подходящих продуктов или услуг. Могут применяться определенные ограничения, поэтому важно ознакомиться с условиями, специфичными для вашей покупки.',
     },
     {
-      question: 'How long does it take to process a refund?',
+      question: 'Сколько времени занимает обработка возврата средств?',
       answer:
-        'Refunds are typically processed within 3-5 business days after the request is approved. However, it may take longer depending on the payment method and financial institution involved.',
+        'Возвраты средств обычно обрабатываются в течение 3-5 рабочих дней после одобрения запроса. Однако это может занять больше времени в зависимости от способа оплаты и участвующего финансового учреждения.',
     },
   ],
   Support: [
     {
-      question: 'How do I contact customer support?',
+      question: 'Как связаться со службой поддержки клиентов?',
       answer:
-        'You can contact our customer support team via email, phone, or live chat. Our representatives are available to assist you during business hours, Monday through Friday.',
+        'Вы можете связаться с нашей службой поддержки клиентов по электронной почте, телефону или в чате. Наши представители доступны для помощи в рабочие часы с понедельника по пятницу.',
     },
     {
-      question: 'Is customer support available 24/7?',
+      question: 'Доступна ли поддержка клиентов 24/7?',
       answer:
-        "Our customer support is available during regular business hours, Monday through Friday. However, you can leave us a message outside of these hours, and we'll respond to you as soon as possible.",
+        'Наша поддержка клиентов доступна в обычные рабочие часы с понедельника по пятницу. Однако вы можете оставить нам сообщение вне этих часов, и мы ответим вам как можно скорее.',
     },
     {
-      question: 'How long does it take to receive a response from customer support?',
+      question: 'Сколько времени занимает получение ответа от службы поддержки клиентов?',
       answer:
-        'We strive to respond to all customer inquiries within 24 hours during regular business hours. Response times may vary depending on the volume of inquiries received.',
+        'Мы стремимся отвечать на все запросы клиентов в течение 24 часов в обычные рабочие часы. Время ответа может варьироваться в зависимости от объема полученных запросов.',
     },
   ],
 }

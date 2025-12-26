@@ -18,7 +18,7 @@ const EventCard = ({ image, startsAt, title, venue }: SocialEventType) => {
         <div className="d-flex gap-1">
           <Button variant="primary" className="flex-centered w-100">
             <IconifyIcon icon="bxs:star" />
-            Interested
+            Интересно
           </Button>
           <Button variant="primary" className="flex-centered">
             <IconifyIcon icon="bxl:telegram" />
@@ -51,7 +51,7 @@ const EventsTab = () => {
             </Col>
           ))
         ) : (
-          <h4 className="text-center">No Events coming soon</h4>
+          <h4 className="text-center">Нет предстоящих событий</h4>
         )}
       </Row>
     </TabPane>

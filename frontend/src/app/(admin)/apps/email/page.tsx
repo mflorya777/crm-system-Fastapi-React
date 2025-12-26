@@ -7,8 +7,8 @@ import EmailView from './components/EmailView'
 const Email = () => {
   return (
     <>
-      <PageBreadcrumb subName="Email" title="Inbox" />
-      <PageMetaData title="Inbox" />
+      <PageBreadcrumb subName="Email" title="Входящие" />
+      <PageMetaData title="Входящие" />
       <Row className="g-1 mb-3">
         <EmailProvider>
           <EmailView />

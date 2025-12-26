@@ -16,14 +16,14 @@ const SellerCard = ({ seller }: { seller: SellerType }) => {
           <DropdownMenu className="dropdown-menu-end">
             <DropdownItem href="">
               <IconifyIcon icon="bx:phone-call" className="me-2" />
-              Direct Call
+              Прямой звонок
             </DropdownItem>
             <DropdownItem href="">
-              <IconifyIcon icon="bx:envelope-open" className="me-2" />E mail
+              <IconifyIcon icon="bx:envelope-open" className="me-2" />Email
             </DropdownItem>
             <DropdownItem href="">
               <IconifyIcon icon="bxl:linkedin" className="me-2" />
-              Linkedin
+              LinkedIn
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
@@ -37,14 +37,14 @@ const SellerCard = ({ seller }: { seller: SellerType }) => {
         </div>
         <div className="mt-1 border-bottom">
           <p className="float-end mb-1">{storeName}</p>
-          <p className="mb-1">Store Name</p>
+          <p className="mb-1">Название магазина</p>
         </div>
         <div className="mt-1 mb-2 border-bottom">
           <p className="float-end mb-1">{productsCount}</p>
-          <p className="mb-1">Products</p>
+          <p className="mb-1">Товары</p>
         </div>
         <Button variant="soft-primary" className="w-100">
-          View All Detail
+          Показать все детали
         </Button>
       </CardBody>
     </Card>

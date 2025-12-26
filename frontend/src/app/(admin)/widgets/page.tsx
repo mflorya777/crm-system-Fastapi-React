@@ -15,8 +15,8 @@ import PageMetaData from '@/components/PageTitle'
 const Widgets = () => {
   return (
     <>
-      <PageBreadcrumb subName="Reback" title="Widgets" />
-      <PageMetaData title="Widgets" />
+      <PageBreadcrumb subName="Reback" title="Виджеты" />
+      <PageMetaData title="Виджеты" />
 
       <Stats />
       <Row>

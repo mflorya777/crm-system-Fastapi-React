@@ -6,12 +6,12 @@ const OverviewChart = () => {
   const chartOptions: ApexOptions = {
     series: [
       {
-        name: 'Revenue',
+        name: 'Доход',
         type: 'area',
         data: [34, 65, 46, 68, 49, 61, 42, 44, 78, 52, 63, 67],
       },
       {
-        name: 'Orders',
+        name: 'Заказы',
         type: 'line',
         data: [8, 12, 7, 17, 21, 11, 5, 9, 7, 29, 12, 35],
       },
@@ -47,7 +47,7 @@ const OverviewChart = () => {
       },
     },
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      categories: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
       axisTicks: {
         show: false,
       },
@@ -133,19 +133,19 @@ const OverviewChart = () => {
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between align-items-center">
-        <CardTitle>Overview</CardTitle>
+        <CardTitle>Обзор</CardTitle>
         <div className="icons-center gap-1">
           <Button variant="soft-secondary" size="sm" type="button">
-            ALL
+            ВСЕ
           </Button>
           <Button variant="soft-secondary" size="sm" type="button">
-            1M
+            1М
           </Button>
           <Button variant="soft-secondary" size="sm" type="button">
-            6M
+            6М
           </Button>
           <Button variant="soft-secondary" size="sm" type="button" active>
-            1Y
+            1Г
           </Button>
         </div>
       </CardHeader>

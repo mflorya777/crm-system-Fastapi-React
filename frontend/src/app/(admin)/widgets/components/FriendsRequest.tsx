@@ -20,7 +20,7 @@ const FriendsRequest = () => {
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between align-items-center">
-        <CardTitle>Friends Request (10)</CardTitle>
+        <CardTitle>Запросы в друзья (10)</CardTitle>
       </CardHeader>
       <CardBody className="p-0 pb-3">
         <SimplebarReactClient className="p-3" style={{ maxHeight: 400 }}>
@@ -34,7 +34,7 @@ const FriendsRequest = () => {
                   <h5 className="mb-1 fs-14">
                     <Link to="">{friend.name}</Link>
                   </h5>
-                  <p className="mb-0">{friend.mutualCount} mutual friends</p>
+                  <p className="mb-0">{friend.mutualCount} общих друзей</p>
                 </div>
                 <Dropdown>
                   <DropdownToggle as={'a'} role="button" className="arrow-none text-dark">
@@ -43,19 +43,19 @@ const FriendsRequest = () => {
                   <DropdownMenu className="dropdown-menu-end">
                     <DropdownItem>
                       <IconifyIcon icon="bxs:user-detail" className="me-1" />
-                      See Profile
+                      Просмотреть профиль
                     </DropdownItem>
                     <DropdownItem>
                       <IconifyIcon icon="bxl:telegram" className="me-1" />
-                      Message to {friend.name}
+                      Написать {friend.name}
                     </DropdownItem>
                     <DropdownItem>
                       <IconifyIcon icon="bx:user-x" className="me-1" />
-                      Unfriend {friend.name}
+                      Удалить из друзей {friend.name}
                     </DropdownItem>
                     <DropdownItem>
                       <IconifyIcon icon="bx:block" className="me-1" />
-                      Block {friend.name}
+                      Заблокировать {friend.name}
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>

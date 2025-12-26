@@ -31,10 +31,10 @@ const Pagination = <RowType,>({ table, rowsPerPageList, currentPage, totalPages 
       <div className="col-sm">
         <div className="d-flex align-items-center gap-2">
           <div className="text-muted text-nowrap">
-            Showing <span className="fw-semibold">{currentPage}</span> of <span className="fw-semibold">{totalPages}</span> Pages
+            Показано <span className="fw-semibold">{currentPage}</span> из <span className="fw-semibold">{totalPages}</span> страниц
           </div>
           <div className="d-flex align-items-center gap-2">
-            <label htmlFor="page-size-select">Show: </label>
+            <label htmlFor="page-size-select">Показать: </label>
             <select
               name="page-size-select"
               id="page-size-select"

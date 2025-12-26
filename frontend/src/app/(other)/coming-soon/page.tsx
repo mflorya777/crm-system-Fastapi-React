@@ -11,7 +11,7 @@ import logoSm from '@/assets/images/logo-sm.png'
 const ComingSoon = () => {
   return (
     <>
-      <PageMetaData title="Coming Soon" />
+      <PageMetaData title="Скоро" />
 
       <Col lg={10} className="mx-auto">
         <Card className="auth-card text-center">
@@ -26,14 +26,13 @@ const ComingSoon = () => {
                 <img src={logoLight} height={24} alt="logo light" />
               </Link>
             </div>
-            <h2 className="fw-semibold">We Are Launching Soon...</h2>
+            <h2 className="fw-semibold">Мы скоро запускаемся...</h2>
             <p className="lead mt-3 w-75 mx-auto pb-4 fst-italic">
-              Exciting news is on the horizon! We&apos;re thrilled to announce that something incredible is coming your way very soon. Our team has
-              been hard at work behind the scenes, crafting something special just for you.
+              Впереди захватывающие новости! Мы рады объявить, что что-то невероятное скоро появится. Наша команда усердно работала за кулисами, создавая что-то особенное специально для вас.
             </p>
             <Timer />
             <Link to="/pages/contact-us" className="btn btn-success mb-5">
-              Contact Us
+              Связаться с нами
             </Link>
           </CardBody>
         </Card>

@@ -13,8 +13,8 @@ import Skill from './components/Skill'
 const Profile = () => {
   return (
     <>
-      <PageBreadcrumb subName="Pages" title="Profile" />
-      <PageMetaData title="Profile" />
+      <PageBreadcrumb subName="Страницы" title="Профиль" />
+      <PageMetaData title="Профиль" />
 
       <Row>
         <Col xxl={4}>

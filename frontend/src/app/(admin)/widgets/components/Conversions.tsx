@@ -49,7 +49,7 @@ const Conversions = () => {
     },
     colors: ['#7f56da', '#22c55e'],
     series: [65.2],
-    labels: ['Returning Customer'],
+    labels: ['Постоянный клиент'],
     responsive: [
       {
         breakpoint: 380,
@@ -73,12 +73,12 @@ const Conversions = () => {
   const chartOptions2: ApexOptions = {
     series: [
       {
-        name: 'Page Views',
+        name: 'Просмотры страниц',
         type: 'bar',
         data: [34, 65, 46, 68, 49, 61, 42, 44, 78, 52, 63, 67],
       },
       {
-        name: 'Clicks',
+        name: 'Клики',
         type: 'area',
         data: [8, 12, 7, 17, 21, 11, 5, 9, 7, 29, 12, 35],
       },
@@ -200,21 +200,21 @@ const Conversions = () => {
         <Row className="g-0">
           <Col lg={4}>
             <div className="p-3 d-flex flex-column justify-content-between h-100">
-              <CardTitle as={'h5'}>Conversions</CardTitle>
+              <CardTitle as={'h5'}>Конверсии</CardTitle>
               <ReactApexChart options={chartOptions} series={chartOptions.series} height={292} type="radialBar" className="apex-charts mb-2 mt-n2" />
               <Row className="text-center">
                 <Col xs={6}>
-                  <p className="text-muted mb-2">This Week</p>
+                  <p className="text-muted mb-2">На этой неделе</p>
                   <h3 className="text-dark mb-3">23.5k</h3>
                 </Col>
                 <Col xs={6}>
-                  <p className="text-muted mb-2">Last Week</p>
+                  <p className="text-muted mb-2">На прошлой неделе</p>
                   <h3 className="text-dark mb-3">41.05k</h3>
                 </Col>
               </Row>
               <div className="text-center">
                 <Button variant="light" type="button" className="shadow-none w-100">
-                  View Details
+                  Подробнее
                 </Button>
               </div>
             </div>
@@ -222,7 +222,7 @@ const Conversions = () => {
           <Col lg={8} className="border-start border-5">
             <div className="p-3">
               <div className="d-flex justify-content-between align-items-center">
-                <CardTitle>Performance</CardTitle>
+                <CardTitle>Производительность</CardTitle>
                 <div>
                   <Button variant="outline-light" size="sm" type="button" className="me-1">
                     ALL
@@ -239,7 +239,7 @@ const Conversions = () => {
                 </div>
               </div>
               <div className="alert alert-info mt-3 text text-truncate mb-0" role="alert">
-                We regret to inform you that our server is currently experiencing technical difficulties.
+                К сожалению, наш сервер в настоящее время испытывает технические трудности.
               </div>
               <div dir="ltr">
                 <ReactApexChart options={chartOptions2} series={chartOptions2.series} height={313} type="line" className="apex-charts" />

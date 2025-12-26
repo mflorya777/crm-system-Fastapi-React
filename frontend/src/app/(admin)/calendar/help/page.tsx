@@ -8,20 +8,20 @@ import HelpList from './components/HelpList'
 const Help = () => {
   return (
     <>
-      <PageBreadcrumb subName="Calendar" title="Help" />
-      <PageMetaData title="Help" />
+      <PageBreadcrumb subName="Календарь" title="Помощь" />
+      <PageMetaData title="Помощь" />
 
       <Row>
         <Col>
           <Row className="d-flex justify-content-center text-center mt-4 pb-5">
             <Col md={8} lg={6} xl={4}>
-              <h3 className="fw-semibold">Search for a question</h3>
-              <p className="mb-3 text-muted">Type your question or search keyword</p>
+              <h3 className="fw-semibold">Поиск вопроса</h3>
+              <p className="mb-3 text-muted">Введите ваш вопрос или ключевое слово для поиска</p>
               <div className="search-bar">
                 <span>
                   <IconifyIcon icon="bx:search-alt" className="mb-1" />
                 </span>
-                <input type="email" className="form-control" id="search" placeholder="Start typing..." />
+                <input type="email" className="form-control" id="search" placeholder="Начните вводить..." />
               </div>
             </Col>
           </Row>
@@ -32,12 +32,12 @@ const Help = () => {
 
       <Row className="mb-5">
         <Col xs={12} className="text-center">
-          <h4>Can&apos;t find a questions?</h4>
+          <h4>Не нашли ответ на вопрос?</h4>
           <Button variant="success" type="button" size="sm" className="mt-2 icons-center gap-1">
-            <IconifyIcon icon="bx:envelope" className="me-1" /> Email us your question
+            <IconifyIcon icon="bx:envelope" className="me-1" /> Напишите нам на email
           </Button>
           <Button variant="info" type="button" size="sm" className="mt-2 ms-1 icons-center gap-1">
-            <IconifyIcon icon="bxl:twitter" className="me-1" /> Send us a tweet
+            <IconifyIcon icon="bxl:twitter" className="me-1" /> Напишите нам в Twitter
           </Button>
         </Col>
       </Row>

@@ -7,7 +7,7 @@ import ChatApp from './components/ChatApp'
 const ChatPage = () => {
   return (
     <>
-      <PageMetaData title="Chat" />
+      <PageMetaData title="Чат" />
       <Row className="g-1">
         <ChatProvider>
           <ChatApp />

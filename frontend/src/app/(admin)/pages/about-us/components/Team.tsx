@@ -62,11 +62,9 @@ const Team = () => {
   return (
     <Card>
       <CardBody>
-        <CardTitle className="fw-bold text-uppercase mb-2">Our Creative Team</CardTitle>
+        <CardTitle className="fw-bold text-uppercase mb-2">Наша творческая команда</CardTitle>
         <p className="mb-4">
-          A dedicated group of experts committed to crafting visually stunning and highly functional user interfaces. With a keen eye for design and a
-          passion for innovation, our team transforms concepts into captivating HTML-based interfaces. From sleek layouts to seamless interactions, we
-          deliver UI solutions that elevate user experiences and exceed expectations.
+          Преданная группа экспертов, стремящаяся создавать визуально потрясающие и высокофункциональные пользовательские интерфейсы. С острым взглядом на дизайн и страстью к инновациям, наша команда превращает концепции в захватывающие интерфейсы на основе HTML. От элегантных макетов до бесшовных взаимодействий, мы предоставляем UI-решения, которые повышают пользовательский опыт и превосходят ожидания.
         </p>
         <Row>
           {allTeamMembers &&
@@ -78,7 +76,7 @@ const Team = () => {
         </Row>
         <div className="mt-3 text-center">
           <Link to="/pages/our-team" className="btn btn-link link-primary text-decoration-underline">
-            View All
+            Показать все
             <IconifyIcon icon="bx:right-arrow-alt" className="fs-16 align-middle ms-1" />
           </Link>
         </div>

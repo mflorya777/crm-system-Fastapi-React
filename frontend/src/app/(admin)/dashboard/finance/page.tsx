@@ -11,8 +11,8 @@ import PageMetaData from '@/components/PageTitle'
 const FinancePage = () => {
   return (
     <>
-      <PageBreadcrumb title="Finance" subName="Dashboards" />
-      <PageMetaData title="Finance" />
+      <PageBreadcrumb title="Финансы" subName="Панели управления" />
+      <PageMetaData title="Финансы" />
 
       <Stats />
       <Row>

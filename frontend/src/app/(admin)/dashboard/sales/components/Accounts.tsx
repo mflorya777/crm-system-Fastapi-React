@@ -5,9 +5,9 @@ const Accounts = () => {
   return (
     <Card>
       <CardHeader className="d-flex justify-content-between align-items-center">
-        <CardTitle>New Accounts</CardTitle>
+        <CardTitle>Новые аккаунты</CardTitle>
         <Button variant="light" size="sm">
-          View All
+          Показать все
         </Button>
       </CardHeader>
       <CardBody className="pb-1">
@@ -16,10 +16,10 @@ const Accounts = () => {
             <thead>
               <tr>
                 <th className="py-1">ID</th>
-                <th className="py-1">Date</th>
-                <th className="py-1">User</th>
-                <th className="py-1">Account</th>
-                <th className="py-1">Username</th>
+                <th className="py-1">Дата</th>
+                <th className="py-1">Пользователь</th>
+                <th className="py-1">Аккаунт</th>
+                <th className="py-1">Имя пользователя</th>
               </tr>
             </thead>
             <tbody>
@@ -34,7 +34,7 @@ const Accounts = () => {
                     </td>
                     <td>
                       <span
-                        className={`badge badge-soft-${account.status === 'Blocked' ? 'danger' : account.status === 'Pending' ? 'warning' : 'success'}`}>
+                        className={`badge badge-soft-${account.status === 'Заблокирован' ? 'danger' : account.status === 'В ожидании' ? 'warning' : 'success'}`}>
                         {account.status}
                       </span>
                     </td>

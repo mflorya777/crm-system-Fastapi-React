@@ -6,7 +6,7 @@ import * as yup from 'yup'
 
 const LockScreenForm = () => {
   const lockScreenSchema = yup.object({
-    password: yup.string().required('Please enter your password'),
+    password: yup.string().required('Пожалуйста, введите ваш пароль'),
   })
 
   const { control, handleSubmit } = useForm({
@@ -15,10 +15,10 @@ const LockScreenForm = () => {
 
   return (
     <form className="authentication-form" onSubmit={handleSubmit(() => {})}>
-      <PasswordFormInput control={control} name="password" containerClassName="mb-3" placeholder="Enter your password" id="password-id" />
+      <PasswordFormInput control={control} name="password" containerClassName="mb-3" placeholder="Введите ваш пароль" id="password-id" />
       <div className="mb-1 text-center d-grid">
         <Button variant="primary" type="submit">
-          Sign In
+          Войти
         </Button>
       </div>
     </form>

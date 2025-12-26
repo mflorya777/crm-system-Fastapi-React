@@ -22,12 +22,12 @@ const ProjectSummary = () => {
         <div className="pt-3 px-3">
           <div className="float-end">
             <Link to="" className="text-primary">
-              Export
+              Экспорт
               <IconifyIcon icon="bx:export" className="ms-1" />
             </Link>
           </div>
           <CardTitle as={'h5'} className="mb-3">
-            Recent Project Summary
+            Сводка недавних проектов
           </CardTitle>
         </div>
         <SimplebarReactClient className="mb-3" data-simplebar style={{ maxHeight: 324 }}>
@@ -35,11 +35,11 @@ const ProjectSummary = () => {
             <table className="table table-hover mb-0">
               <thead>
                 <tr>
-                  <th>Project</th>
-                  <th>Client</th>
-                  <th>Team</th>
-                  <th>Deadline</th>
-                  <th>Work Progress</th>
+                  <th>Проект</th>
+                  <th>Клиент</th>
+                  <th>Команда</th>
+                  <th>Срок</th>
+                  <th>Прогресс работы</th>
                 </tr>
               </thead>
               <tbody>

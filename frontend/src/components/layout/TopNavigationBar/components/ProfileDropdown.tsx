@@ -21,31 +21,31 @@ const ProfileDropdown = () => {
         </span>
       </DropdownToggle>
       <DropdownMenu>
-        <DropdownHeader as="h6">Welcome Gaston!</DropdownHeader>
+        <DropdownHeader as="h6">Добро пожаловать, Гастон!</DropdownHeader>
         <DropdownItem as={Link} to="/pages/profile">
           <IconifyIcon icon="bx:user-circle" className="text-muted fs-18 align-middle me-1" />
-          <span className="align-middle">Profile</span>
+          <span className="align-middle">Профиль</span>
         </DropdownItem>
         <DropdownItem as={Link} to="/apps/chat">
           <IconifyIcon icon="bx:message-dots" className="text-muted fs-18 align-middle me-1" />
-          <span className="align-middle">Messages</span>
+          <span className="align-middle">Сообщения</span>
         </DropdownItem>
         <DropdownItem as={Link} to="/pages/pricing">
           <IconifyIcon icon="bx:wallet" className="text-muted fs-18 align-middle me-1" />
-          <span className="align-middle">Pricing</span>
+          <span className="align-middle">Тарифы</span>
         </DropdownItem>
         <DropdownItem as={Link} to="/pages/faqs">
           <IconifyIcon icon="bx:help-circle" className="text-muted fs-18 align-middle me-1" />
-          <span className="align-middle">Help</span>
+          <span className="align-middle">Помощь</span>
         </DropdownItem>
         <DropdownItem as={Link} to="/auth/lock-screen">
           <IconifyIcon icon="bx:lock" className="text-muted fs-18 align-middle me-1" />
-          <span className="align-middle">Lock screen</span>
+          <span className="align-middle">Заблокировать экран</span>
         </DropdownItem>
         <DropdownDivider className="dropdown-divider my-1" />
         <DropdownItem as={Link} className="text-danger" to="/auth/sign-in">
           <IconifyIcon icon="bx:log-out" className="fs-18 align-middle me-1" />
-          <span className="align-middle">Logout</span>
+          <span className="align-middle">Выйти</span>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

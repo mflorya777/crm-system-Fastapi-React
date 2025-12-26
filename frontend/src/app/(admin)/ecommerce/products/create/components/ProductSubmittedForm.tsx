@@ -7,8 +7,8 @@ const ProductSubmittedForm = () => {
       <Col lg={6}>
         <div className="text-center">
           <IconifyIcon icon={'bx:check-double'} className="text-success h2" />
-          <h3 className="mt-0">Congratulations !</h3>
-          <h5 className="w-75 mb-2 mt-3 mx-auto text-muted">Your Product has been successfully added!</h5>
+          <h3 className="mt-0">Поздравляем!</h3>
+          <h5 className="w-75 mb-2 mt-3 mx-auto text-muted">Ваш товар успешно добавлен!</h5>
         </div>
       </Col>
     </Row>

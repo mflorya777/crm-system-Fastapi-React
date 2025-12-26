@@ -24,7 +24,7 @@ const CustomerCard = ({ customer }: { customer: CustomerType }) => {
           </Link>
           <br />
           <Link to="" className="btn btn-sm btn-outline-primary mt-2">
-            View All Details
+            Показать все детали
           </Link>
         </div>
       </CardBody>

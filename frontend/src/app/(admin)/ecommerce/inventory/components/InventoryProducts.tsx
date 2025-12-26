@@ -24,15 +24,15 @@ const InventoryProducts = () => {
             <div className="d-flex flex-wrap align-items-center gap-2">
               <Button variant="secondary">
                 <IconifyIcon icon="bx:export" className="me-1 icons-center" />
-                Export
+                Экспорт
               </Button>
               <Button variant="secondary">
                 <IconifyIcon icon="bx:import" className="me-1 icons-center" />
-                Import
+                Импорт
               </Button>
               <Link to="/ecommerce/products/create" className="btn btn-primary d-inline-flex align-items-center ms-md-auto">
                 <IconifyIcon icon="bx:plus" className="me-1" />
-                Add Product
+                Добавить товар
               </Link>
             </div>
           </Col>
@@ -42,13 +42,13 @@ const InventoryProducts = () => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Product</th>
-                <th>Condition</th>
-                <th>Location</th>
-                <th>Available</th>
-                <th>Reserved</th>
-                <th>On hand</th>
-                <th>Modified</th>
+                <th>Товар</th>
+                <th>Состояние</th>
+                <th>Местоположение</th>
+                <th>Доступно</th>
+                <th>Зарезервировано</th>
+                <th>На руках</th>
+                <th>Изменено</th>
               </tr>
             </thead>
             <tbody>
@@ -68,14 +68,14 @@ const InventoryProducts = () => {
                           )}
                           <div className="flex-grow-1">
                             <h5 className="mt-0 mb-1">{item.product?.name}</h5>
-                            <span className="fs-13">Added: {new Date(item.lastModifiedAt).toDateString()}</span>
+                            <span className="fs-13">Добавлено: {new Date(item.lastModifiedAt).toDateString()}</span>
                           </div>
                         </div>
                       </td>
                       <td>
                         <span
                           className={`badge badge-soft-${item.condition === 'Damaged' ? 'danger' : item.condition === 'Returned' ? 'warning' : 'success'}`}>
-                          New
+                          {item.condition === 'Damaged' ? 'Повреждён' : item.condition === 'Returned' ? 'Возврат' : item.condition === 'New' ? 'Новый' : item.condition}
                         </span>
                       </td>
                       <td>{item.location}</td>

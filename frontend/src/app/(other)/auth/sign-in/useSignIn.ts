@@ -20,8 +20,8 @@ const useSignIn = () => {
   const { showNotification } = useNotificationContext()
 
   const loginFormSchema = yup.object({
-    email: yup.string().email('Please enter a valid email').required('Please enter your email'),
-    password: yup.string().required('Please enter your password'),
+    email: yup.string().email('Пожалуйста, введите корректный email').required('Пожалуйста, введите ваш email'),
+    password: yup.string().required('Пожалуйста, введите ваш пароль'),
   })
 
   const { control, handleSubmit } = useForm({
@@ -49,7 +49,7 @@ const useSignIn = () => {
           token: res.data.token,
         })
         redirectUser()
-        showNotification({ message: 'Successfully logged in. Redirecting....', variant: 'success' })
+        showNotification({ message: 'Успешный вход. Перенаправление....', variant: 'success' })
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {

@@ -4,7 +4,7 @@ const SearchBox = () => {
   return (
     <form className="app-search d-none d-md-block me-auto">
       <div className="position-relative">
-        <input type="search" className="form-control" placeholder="Search..." autoComplete="off" />
+        <input type="search" className="form-control" placeholder="Поиск..." autoComplete="off" />
         <IconifyIcon icon="iconamoon:search-duotone" className="search-widget-icon" />
       </div>
     </form>

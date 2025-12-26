@@ -30,6 +30,7 @@ import { useChatContext } from '@/context/useChatContext'
 import type { ChatMessageType, SocialUserType } from '@/types/data'
 import { addOrSubtractMinutesFromDate, timeSince } from '@/utils/date'
 import { getFileExtensionIcon } from '@/utils/get-icons'
+import { getActivityStatus } from '@/utils/other'
 
 import small1 from '@/assets/images/small/img-1.jpg'
 import small2 from '@/assets/images/small/img-2.jpg'
@@ -45,31 +46,31 @@ const MessageDropdown = ({ message, toUser }: { message: ChatMessageType; toUser
       <DropdownMenu>
         <DropdownItem>
           <IconifyIcon icon="bx:share" className="me-2" />
-          Reply
+          Ответить
         </DropdownItem>
         <DropdownItem>
           <IconifyIcon icon="bx:share-alt" className="me-2" />
-          Forward
+          Переслать
         </DropdownItem>
         <DropdownItem>
           <IconifyIcon icon="bx:copy" className="me-2" />
-          Copy
+          Копировать
         </DropdownItem>
         <DropdownItem>
           <IconifyIcon icon="bx:bookmark" className="me-2" />
-          Bookmark
+          Закладка
         </DropdownItem>
         <DropdownItem>
           <IconifyIcon icon="bx:star" className="me-2" />
-          Starred
+          Избранное
         </DropdownItem>
         <DropdownItem>
           <IconifyIcon icon="bx:info-square" className="me-2" />
-          Mark as Unread
+          Отметить как непрочитанное
         </DropdownItem>
         <DropdownItem>
           <IconifyIcon icon="bx:trash" className="me-2" />
-          Delete
+          Удалить
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
@@ -152,7 +153,7 @@ const VoiceCall = ({ selectedUser }: { selectedUser: SocialUserType }) => {
         </ModalHeader>
         <ModalBody className="pt-0 text-center">
           <h5>{selectedUser.name}</h5>
-          <p className="mb-5">Calling...</p>
+          <p className="mb-5">Звонок...</p>
           <div className="voice-call-action pt-4 pb-2">
             <ul className="list-inline">
               <li className="list-inline-item avatar-sm fw-bold me-2">
@@ -198,7 +199,7 @@ const ProfileDetail = ({ selectedUser }: { selectedUser: SocialUserType }) => {
         tabIndex={-1}>
         <OffcanvasHeader closeButton>
           <h5 className="offcanvas-title text-truncate w-50" id="user-profileLabel">
-            Profile
+            Профиль
           </h5>
         </OffcanvasHeader>
         <SimplebarReactClient className="offcanvas-body p-0 h-100">
@@ -208,11 +209,11 @@ const ProfileDetail = ({ selectedUser }: { selectedUser: SocialUserType }) => {
               <h4>{selectedUser.name}</h4>
               <Button variant="primary" size="sm" className="mt-1">
                 <IconifyIcon icon="bi:envelope" className="me-1" />
-                Send Email
+                Отправить Email
               </Button>
               <p className="text-muted mt-2 fs-14">
-                Last Interacted:
-                <strong className={`text-${selectedUser.activityStatus === 'offline' ? 'danger' : 'success'}`}> {selectedUser.activityStatus}</strong>
+                Последнее взаимодействие:
+                <strong className={`text-${selectedUser.activityStatus === 'offline' ? 'danger' : 'success'}`}> {getActivityStatus(selectedUser.activityStatus)}</strong>
               </p>
             </div>
             <div className="mt-3">
@@ -220,21 +221,21 @@ const ProfileDetail = ({ selectedUser }: { selectedUser: SocialUserType }) => {
               <p className="mt-3 mb-1">
                 <strong className="icons-center">
                   <IconifyIcon icon="bi:phone" className="me-1" />
-                  Phone Number:
+                  Номер телефона:
                 </strong>
               </p>
               <p>+1 {selectedUser.phone}</p>
               <p className="mt-3 mb-1">
                 <strong className="icons-center">
                   <IconifyIcon icon="bi:geo-alt" className="me-1" />
-                  Location:
+                  Местоположение:
                 </strong>
               </p>
               <p>{selectedUser.location}</p>
               <p className="mt-3 mb-1">
                 <strong className="icons-center">
                   <IconifyIcon icon="bi:globe" className="me-1" />
-                  Languages:
+                  Языки:
                 </strong>
               </p>
               <p>
@@ -245,18 +246,18 @@ const ProfileDetail = ({ selectedUser }: { selectedUser: SocialUserType }) => {
               <p className="mt-3 mb-2">
                 <strong className="icons-center">
                   <IconifyIcon icon="bi:people" className="me-1" />
-                  Groups:
+                  Группы:
                 </strong>
               </p>
               <p className="mb-0">
-                <span className="badge badge-soft-success p-1 fs-14 me-1">Work</span>
-                <span className="badge badge-soft-primary p-1 fs-14">Friends</span>
+                <span className="badge badge-soft-success p-1 fs-14 me-1">Работа</span>
+                <span className="badge badge-soft-primary p-1 fs-14">Друзья</span>
               </p>
             </div>
             <h5 className="mt-3">
               <span role="button" className="my-0">
-                <span className="float-end">See All</span>
-                Shared Photoes
+                <span className="float-end">Показать все</span>
+                Общие фото
               </span>
             </h5>
             <Row className="gx-1 pt-2">
@@ -339,7 +340,7 @@ const ChatArea = ({ selectedUser }: { selectedUser: SocialUserType }) => {
   const [userMessages, setUserMessages] = useState<ChatMessageType[]>([])
 
   const messageSchema = yup.object({
-    newMessage: yup.string().required('Please enter message'),
+    newMessage: yup.string().required('Пожалуйста, введите сообщение'),
   })
 
   const { reset, handleSubmit, control } = useForm({
@@ -429,7 +430,7 @@ const ChatArea = ({ selectedUser }: { selectedUser: SocialUserType }) => {
             </h5>
             <p className={`mb-0 text-${selectedUser.activityStatus === 'offline' ? 'danger' : 'success'} fw-semibold fst-italic`}>
               {selectedUser.activityStatus != 'typing' && <IconifyIcon icon="bxs:circle" className="fs-13" />}
-              {selectedUser.activityStatus}
+              {getActivityStatus(selectedUser.activityStatus)}
               {selectedUser.activityStatus === 'typing' && '...'}
             </p>
           </div>
@@ -449,23 +450,23 @@ const ChatArea = ({ selectedUser }: { selectedUser: SocialUserType }) => {
               <DropdownMenu className="dropdown-menu-end">
                 <DropdownItem>
                   <IconifyIcon icon="bx:user-circle" className="me-2" />
-                  View Profile
+                  Просмотр профиля
                 </DropdownItem>
                 <DropdownItem>
                   <IconifyIcon icon="bx:music" className="me-2" />
-                  Media, Links and Docs
+                  Медиа, ссылки и документы
                 </DropdownItem>
                 <DropdownItem>
                   <IconifyIcon icon="bx:search" className="me-2" />
-                  Search
+                  Поиск
                 </DropdownItem>
                 <DropdownItem>
                   <IconifyIcon icon="bx:image" className="me-2" />
-                  Wallpaper
+                  Обои
                 </DropdownItem>
                 <DropdownItem>
                   <IconifyIcon icon="bx:right-arrow-circle" className="me-2" />
-                  More
+                  Ещё
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -500,7 +501,7 @@ const ChatArea = ({ selectedUser }: { selectedUser: SocialUserType }) => {
                     name="newMessage"
                     containerClassName="w-100"
                     className="border-0"
-                    placeholder="Enter your message"
+                    placeholder="Введите ваше сообщение"
                   />
                 </div>
               </Col>

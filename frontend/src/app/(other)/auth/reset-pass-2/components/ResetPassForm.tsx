@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 const ResetPassForm = () => {
   const resetPasswordSchema = yup.object({
-    email: yup.string().email('Please enter a valid email').required('please enter your email'),
+    email: yup.string().email('Пожалуйста, введите действительный email').required('пожалуйста, введите ваш email'),
   })
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(resetPasswordSchema),
@@ -13,10 +13,10 @@ const ResetPassForm = () => {
 
   return (
     <form className="authentication-form" onSubmit={handleSubmit(() => {})}>
-      <TextFormInput control={control} name="email" containerClassName="mb-3" label="Email" id="email-id" placeholder="Enter your email" />
+      <TextFormInput control={control} name="email" containerClassName="mb-3" label="Email" id="email-id" placeholder="Введите ваш email" />
       <div className="mb-1 text-center d-grid">
         <Button variant="primary" type="submit">
-          Reset Password
+          Сбросить пароль
         </Button>
       </div>
     </form>

@@ -42,14 +42,14 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
   return (
     <Card className="position-relative overflow-hidden">
       <CardHeader className="border-0 d-flex justify-content-between align-items-center">
-        <CardTitle>Chat</CardTitle>
+        <CardTitle>Чат</CardTitle>
         <span className="fs-18" role="button" onClick={chatSetting.toggle}>
           <IconifyIcon icon="bx:bx-cog" />
         </span>
       </CardHeader>
       <form className="chat-search px-3">
         <div className="chat-search-box">
-          <input className="form-control" type="text" name="search" placeholder="Search ..." onKeyUp={(e: any) => search(e.target.value)} />
+          <input className="form-control" type="text" name="search" placeholder="Поиск ..." onKeyUp={(e: any) => search(e.target.value)} />
           <button type="button" className="btn btn-sm btn-link search-icon p-0">
             <IconifyIcon icon="bx:bx-search-alt" />
           </button>
@@ -82,13 +82,13 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
         ))}
       </Swiper>
       <Tabs justify mountOnEnter variant="underline" className="nav-tabs border-top mt-2 card-tabs" defaultActiveKey={'chat-tab'}>
-        <Tab title="Chat" eventKey={'chat-tab'}>
+        <Tab title="Чат" eventKey={'chat-tab'}>
           <Chat onUserSelect={onUserSelect} users={user} selectedUser={selectedUser} />
         </Tab>
-        <Tab title="Group" eventKey={'group-tab'}>
+        <Tab title="Группа" eventKey={'group-tab'}>
           <Group />
         </Tab>
-        <Tab title="Contact" eventKey={'contact-tab'}>
+        <Tab title="Контакты" eventKey={'contact-tab'}>
           <Contact />
         </Tab>
       </Tabs>
@@ -104,11 +104,11 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
         aria-labelledby="user-settingLabel">
         <OffcanvasHeader closeButton>
           <h5 className="offcanvas-title text-truncate w-50" id="user-settingLabel">
-            Profile
+            Профиль
           </h5>
         </OffcanvasHeader>
         <div className="offcanvas-body p-0 h-100" data-simplebar>
-          <h4 className="page-title p-3 my-0">Setting</h4>
+          <h4 className="page-title p-3 my-0">Настройки</h4>
           <div className="d-flex align-items-center px-3 pb-3 border-bottom">
             <img src={avatar1} className="me-2 rounded-circle" height={36} alt="avatar-1" />
             <div className="flex-grow-1">
@@ -119,7 +119,7 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
               </div>
               <h5 className="my-0 fs-14">Gaston Lapierre</h5>
               <p className="mt-1 mb-0 text-muted">
-                <span className="w-75">Hey there! I am using Reback Chat.</span>
+                <span className="w-75">Привет! Я использую Reback Chat.</span>
               </p>
             </div>
           </div>
@@ -130,8 +130,8 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                   <span className="d-flex align-items-center">
                     <IconifyIcon icon="bx:key" className="me-3 fs-32" />
                     <span className="flex-grow-1">
-                      <span className="fs-14 h5 mt-0 mb-1 d-block">Account</span>
-                      <span className="mt-1 mb-0 text-muted w-75">Privacy, security, change number</span>
+                      <span className="fs-14 h5 mt-0 mb-1 d-block">Аккаунт</span>
+                      <span className="mt-1 mb-0 text-muted w-75">Конфиденциальность, безопасность, смена номера</span>
                     </span>
                   </span>
                 </AccordionHeader>
@@ -141,37 +141,37 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                     <li className="mb-2">
                       <span role="button">
                         <IconifyIcon icon="bx:lock-alt" className="fs-18 me-2" />
-                        Privacy
+                        Конфиденциальность
                       </span>
                     </li>
                     <li className="mb-2">
                       <span role="button">
                         <IconifyIcon icon="bx:check-Reback" className="fs-18 me-2" />
-                        Security
+                        Безопасность
                       </span>
                     </li>
                     <li className="mb-2">
                       <span role="button">
                         <IconifyIcon icon="bx:badge-check" className="fs-18 me-2" />
-                        Two-step verification
+                        Двухфакторная аутентификация
                       </span>
                     </li>
                     <li className="mb-2">
                       <span role="button">
                         <IconifyIcon icon="bx:arrow-from-left" className="fs-18 me-2" />
-                        Change number
+                        Сменить номер
                       </span>
                     </li>
                     <li className="mb-2">
                       <span role="button">
                         <IconifyIcon icon="bx:info-circle" className="fs-18 me-2" />
-                        Request account info
+                        Запросить информацию об аккаунте
                       </span>
                     </li>
                     <li>
                       <span role="button">
                         <IconifyIcon icon="bx:trash" className="fs-18 me-2" />
-                        Delete my account
+                        Удалить мой аккаунт
                       </span>
                     </li>
                   </ul>
@@ -183,31 +183,31 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                   <span className="d-flex align-items-center">
                     <IconifyIcon icon="bx:message-dots" className="me-3 fs-32" />
                     <span className="flex-grow-1">
-                      <span className="fs-14 h5 mt-0 mb-1 d-block">Chats</span>
-                      <span className="mt-1 mb-0 text-muted w-75">Theme, wallpapers, chat history</span>
+                      <span className="fs-14 h5 mt-0 mb-1 d-block">Чаты</span>
+                      <span className="mt-1 mb-0 text-muted w-75">Тема, обои, история чата</span>
                     </span>
                   </span>
                 </AccordionHeader>
 
                 <AccordionBody className="pb-0">
-                  <h5 className="mb-2">Display</h5>
+                  <h5 className="mb-2">Отображение</h5>
                   <ul className="list-unstyled mb-0">
                     <li className="mb-2 d-flex">
                       <IconifyIcon icon="bx:palette" className="fs-18 me-2" />
                       <div className="flex-grow-1">
-                        <Link to="">Theme</Link>
-                        <p className="mb-0 text-muted fs-12">System default</p>
+                        <Link to="">Тема</Link>
+                        <p className="mb-0 text-muted fs-12">Системная по умолчанию</p>
                       </div>
                     </li>
                     <li className="mb-2">
                       <Link to="">
                         <IconifyIcon icon="bx:image" className="fs-16 me-2" />
-                        Wallpaper
+                        Обои
                       </Link>
                     </li>
                   </ul>
                   <hr />
-                  <h5>Chat Setting</h5>
+                  <h5>Настройки чата</h5>
                   <ul className="list-unstyled">
                     <li className="mb-2 ms-2">
                       <div className="float-end">
@@ -215,8 +215,8 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                           <input className="form-check-input" type="checkbox" id="media" defaultChecked />
                         </div>
                       </div>
-                      <Link to="">Media Visibility</Link>
-                      <p className="mb-0 text-muted fs-12">Show Newly downloaded media in your phone&apos;s gallery</p>
+                      <Link to="">Видимость медиа</Link>
+                      <p className="mb-0 text-muted fs-12">Показывать недавно загруженные медиа в галерее телефона</p>
                     </li>
                     <li className="mb-2 ms-2">
                       <div className="float-end">
@@ -224,12 +224,12 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                           <input className="form-check-input" type="checkbox" id="enter" />
                         </div>
                       </div>
-                      <Link to="">Enter is send</Link>
-                      <p className="mb-0 text-muted fs-12">Enter key will send your message</p>
+                      <Link to="">Enter для отправки</Link>
+                      <p className="mb-0 text-muted fs-12">Клавиша Enter будет отправлять ваше сообщение</p>
                     </li>
                     <li className="mb-2 ms-2">
-                      <Link to="">Font size</Link>
-                      <p className="mb-0 text-muted fs-12">small</p>
+                      <Link to="">Размер шрифта</Link>
+                      <p className="mb-0 text-muted fs-12">маленький</p>
                     </li>
                   </ul>
                   <hr />
@@ -238,21 +238,21 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                       <div className="d-flex">
                         <IconifyIcon icon="bx:text" className="fs-16 me-2" />
                         <div className="flex-grow-1">
-                          <Link to="">App Language</Link>
-                          <p className="mb-0 text-muted fs-12">English</p>
+                          <Link to="">Язык приложения</Link>
+                          <p className="mb-0 text-muted fs-12">Русский</p>
                         </div>
                       </div>
                     </li>
                     <li className="mb-2">
                       <span role="button">
                         <IconifyIcon icon="bx:cloud-upload" className="fs-16 me-2" />
-                        Chat Backup
+                        Резервная копия чата
                       </span>
                     </li>
                     <li>
                       <span role="button">
                         <IconifyIcon icon="bx:history" className="fs-16 me-2" />
-                        Chat History
+                        История чата
                       </span>
                     </li>
                   </ul>
@@ -264,8 +264,8 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                   <span className="d-flex align-items-center">
                     <IconifyIcon icon="bx:bell" className="me-3 fs-32" />
                     <span className="flex-grow-1">
-                      <span className="fs-14 h5 mt-0 mb-1 d-block">Notification</span>
-                      <span className="mt-1 mb-0 text-muted w-75">Message, group, call tones</span>
+                      <span className="fs-14 h5 mt-0 mb-1 d-block">Уведомления</span>
+                      <span className="mt-1 mb-0 text-muted w-75">Сообщения, группа, звуки звонков</span>
                     </span>
                   </span>
                 </AccordionHeader>
@@ -277,52 +277,52 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                           <input className="form-check-input" type="checkbox" id="conversation" defaultChecked />
                         </div>
                       </div>
-                      <Link to="">Conversation Tones</Link>
-                      <p className="mb-0 text-muted fs-12">Play sound for incoming and outgoing message.</p>
+                      <Link to="">Звуки разговора</Link>
+                      <p className="mb-0 text-muted fs-12">Воспроизводить звук для входящих и исходящих сообщений.</p>
                     </li>
                   </ul>
                   <hr />
-                  <h5>Messages</h5>
+                  <h5>Сообщения</h5>
                   <ul className="list-unstyled mb-0">
                     <li className="mb-2">
-                      <Link to="">Notification Tone</Link>
-                      <p className="mb-0 text-muted fs-12">Default ringtone</p>
+                      <Link to="">Звук уведомления</Link>
+                      <p className="mb-0 text-muted fs-12">Мелодия по умолчанию</p>
                     </li>
                     <li className="mb-2">
-                      <Link to="">Vibrate</Link>
-                      <p className="mb-0 text-muted fs-12">Default</p>
+                      <Link to="">Вибрация</Link>
+                      <p className="mb-0 text-muted fs-12">По умолчанию</p>
                     </li>
                     <li className="mb-2">
-                      <Link to="">Light</Link>
-                      <p className="mb-0 text-muted fs-12">White</p>
+                      <Link to="">Свет</Link>
+                      <p className="mb-0 text-muted fs-12">Белый</p>
                     </li>
                   </ul>
                   <hr />
-                  <h5>Groups</h5>
+                  <h5>Группы</h5>
                   <ul className="list-unstyled mb-0">
                     <li className="mb-2">
-                      <Link to="">Notification Tone</Link>
-                      <p className="mb-0 text-muted fs-12">Default ringtone</p>
+                      <Link to="">Звук уведомления</Link>
+                      <p className="mb-0 text-muted fs-12">Мелодия по умолчанию</p>
                     </li>
                     <li className="mb-2">
-                      <Link to="">Vibrate</Link>
-                      <p className="mb-0 text-muted fs-12">Off</p>
+                      <Link to="">Вибрация</Link>
+                      <p className="mb-0 text-muted fs-12">Выкл</p>
                     </li>
                     <li className="mb-2">
-                      <Link to="">Light</Link>
-                      <p className="mb-0 text-muted fs-12">Dark</p>
+                      <Link to="">Свет</Link>
+                      <p className="mb-0 text-muted fs-12">Тёмный</p>
                     </li>
                   </ul>
                   <hr />
-                  <h5>Calls</h5>
+                  <h5>Звонки</h5>
                   <ul className="list-unstyled mb-0">
                     <li className="mb-2">
-                      <Link to="">Ringtone</Link>
-                      <p className="mb-0 text-muted fs-12">Default ringtone</p>
+                      <Link to="">Мелодия звонка</Link>
+                      <p className="mb-0 text-muted fs-12">Мелодия по умолчанию</p>
                     </li>
                     <li>
-                      <Link to="">Vibrate</Link>
-                      <p className="mb-0 text-muted fs-12">Default</p>
+                      <Link to="">Вибрация</Link>
+                      <p className="mb-0 text-muted fs-12">По умолчанию</p>
                     </li>
                   </ul>
                 </AccordionBody>
@@ -333,8 +333,8 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                   <span className="d-flex align-items-center">
                     <IconifyIcon icon="bx:history" className="me-3 fs-32" />
                     <span className="flex-grow-1">
-                      <span className="fs-14 h5 mt-0 mb-1 d-block">Storage and data</span>
-                      <span className="mt-1 mb-0 text-muted w-75">Network usage, auto download</span>
+                      <span className="fs-14 h5 mt-0 mb-1 d-block">Хранилище и данные</span>
+                      <span className="mt-1 mb-0 text-muted w-75">Использование сети, автоматическая загрузка</span>
                     </span>
                   </span>
                 </AccordionHeader>
@@ -344,7 +344,7 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                     <li className="d-flex">
                       <IconifyIcon icon="bx:folder" className="fs-16 me-2" />
                       <div className="flex-grow-1">
-                        <Link to="">Manage storage</Link>
+                        <Link to="">Управление хранилищем</Link>
                         <p className="mb-0 text-muted fs-12">2.4 GB</p>
                       </div>
                     </li>
@@ -354,35 +354,35 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                     <li className="d-flex">
                       <IconifyIcon icon="bx:wifi" className="fs-16 me-2" />
                       <div className="flex-grow-1">
-                        <Link to="">Network usage</Link>
-                        <p className="mb-0 text-muted fs-12">7.2 GB sent - 13.8 GB received</p>
+                        <Link to="">Использование сети</Link>
+                        <p className="mb-0 text-muted fs-12">7.2 GB отправлено - 13.8 GB получено</p>
                       </div>
                     </li>
                   </ul>
                   <hr />
-                  <h5 className="mb-0">Media auto-download</h5>
-                  <p className="mb-0 text-muted fs-12">Voice message are always automatically downloaded</p>
+                  <h5 className="mb-0">Автоматическая загрузка медиа</h5>
+                  <p className="mb-0 text-muted fs-12">Голосовые сообщения всегда загружаются автоматически</p>
                   <ul className="list-unstyled mb-0 mt-2">
                     <li className="mb-2">
-                      <Link to="">When using mobile data</Link>
-                      <p className="mb-0 text-muted fs-12">No media</p>
+                      <Link to="">При использовании мобильных данных</Link>
+                      <p className="mb-0 text-muted fs-12">Без медиа</p>
                     </li>
                     <li className="mb-2 ms-2">
-                      <Link to="">When connected on wi-fi</Link>
-                      <p className="mb-0 text-muted fs-12">No media</p>
+                      <Link to="">При подключении к Wi-Fi</Link>
+                      <p className="mb-0 text-muted fs-12">Без медиа</p>
                     </li>
                     <li className="mb-2 ms-2">
-                      <Link to="">When roaming</Link>
-                      <p className="mb-0 text-muted fs-12">No media</p>
+                      <Link to="">В роуминге</Link>
+                      <p className="mb-0 text-muted fs-12">Без медиа</p>
                     </li>
                   </ul>
                   <hr />
-                  <h5 className="mb-0">Media upload quality</h5>
-                  <p className="mb-0 text-muted fs-12">Choose the quality of media files to be sent</p>
+                  <h5 className="mb-0">Качество загрузки медиа</h5>
+                  <p className="mb-0 text-muted fs-12">Выберите качество медиафайлов для отправки</p>
                   <ul className="list-unstyled mb-0 mt-2">
                     <li className="ms-2">
-                      <Link to="">Photo upload quality</Link>
-                      <p className="mb-0 text-muted fs-12">Auto (recommended)</p>
+                      <Link to="">Качество загрузки фото</Link>
+                      <p className="mb-0 text-muted fs-12">Авто (рекомендуется)</p>
                     </li>
                   </ul>
                 </AccordionBody>
@@ -393,8 +393,8 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                   <span className="d-flex align-items-center">
                     <IconifyIcon icon="bx:info-circle" className="me-3 fs-32" />
                     <span className="flex-grow-1">
-                      <span className="fs-14 h5 mt-0 mb-1 d-block">Help</span>
-                      <span className="mt-1 mb-0 text-muted w-75">Help center, contact us, privacy policy</span>
+                      <span className="fs-14 h5 mt-0 mb-1 d-block">Помощь</span>
+                      <span className="mt-1 mb-0 text-muted w-75">Центр помощи, свяжитесь с нами, политика конфиденциальности</span>
                     </span>
                   </span>
                 </AccordionHeader>
@@ -404,26 +404,26 @@ const ChatLeftSidebar = ({ users, onUserSelect, selectedUser }: ChatUsersProps) 
                     <li className="mb-2">
                       <div role="button">
                         <IconifyIcon icon="bx:info-circle" className="fs-16 me-2" />
-                        Help center
+                        Центр помощи
                       </div>
                     </li>
                     <li className="mb-2 d-flex">
                       <IconifyIcon icon="bxs:contact" className="fs-16 me-2" />
                       <div className="flex-grow-1">
-                        <Link to="">Contact us</Link>
-                        <p className="mb-0 text-muted fs-12">Questions?</p>
+                        <Link to="">Свяжитесь с нами</Link>
+                        <p className="mb-0 text-muted fs-12">Вопросы?</p>
                       </div>
                     </li>
                     <li className="mb-2">
                       <span role="button">
                         <IconifyIcon icon="bx:book-content" className="fs-16 me-2" />
-                        Teams and Privacy Policy
+                        Условия и политика конфиденциальности
                       </span>
                     </li>
                     <li>
                       <span role="button">
                         <IconifyIcon icon="bx:book-circle" className="fs-16 me-2" />
-                        App info
+                        Информация о приложении
                       </span>
                     </li>
                   </ul>

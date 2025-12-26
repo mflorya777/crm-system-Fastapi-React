@@ -9,40 +9,40 @@ import avatar6 from '@/assets/images/users/avatar-6.jpg'
 import avatar7 from '@/assets/images/users/avatar-7.jpg'
 
 export const timelineData: TimelineType = {
-  Today: [
+  Сегодня: [
     {
-      title: 'Completed UX design project for our client',
-      description: 'Dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?',
+      title: 'Завершен проект UX дизайна для нашего клиента',
+      description: 'Провидение боли, вещи автоматически здесь почти место права времена похвалы ипса к долгам не?',
       important: true,
     },
     {
-      title: 'Yes! We are celebrating our first admin release.',
-      description: 'Consectetur adipisicing elit. Iusto, optio, dolorumJohn deonprovident.',
+      title: 'Да! Мы празднуем наш первый релиз админки.',
+      description: 'Совместная работа над элитой. Справедливо, опция, боль Джон деонпровиденс.',
     },
     {
-      title: 'We released new version of our theme Reback.',
-      description: '3 new photo Uploaded on facebook fan page',
-    },
-  ],
-  Yesterday: [
-    {
-      title: 'We have archieved 25k sales in our themes',
-      description: 'Dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?',
-    },
-    {
-      title: 'Yes! We are celebrating our first admin release.',
-      description: 'Outdoor visit at California State Route 85 with John Boltana & Harry Piterson.',
+      title: 'Мы выпустили новую версию нашей темы Reback.',
+      description: '3 новые фотографии загружены на фан-страницу facebook',
     },
   ],
-  '5 days ago': [
+  Вчера: [
     {
-      title: 'Join new team member Alex Smith',
+      title: 'Мы достигли 25k продаж в наших темах',
+      description: 'Провидение боли, вещи автоматически здесь почти место права времена похвалы ипса к долгам не?',
+    },
+    {
+      title: 'Да! Мы празднуем наш первый релиз админки.',
+      description: 'Выезд на открытом воздухе на шоссе Калифорнии 85 с Джоном Болтаной и Гарри Питерсоном.',
+    },
+  ],
+  '5 дней назад': [
+    {
+      title: 'Присоединился новый член команды Алекс Смит',
       description:
-        'Alex Smith is a Senior Software (Full Stack) engineer with a deep passion for building usable, functional & pretty web applications.',
+        'Алекс Смит - старший инженер-программист (Full Stack) с глубокой страстью к созданию удобных, функциональных и красивых веб-приложений.',
     },
     {
-      title: 'First release of Reback admin dashboard template',
-      description: 'Outdoor visit at California State Route 85 with John Boltana & Harry Piterson regarding to setup a new show room.',
+      title: 'Первый релиз шаблона админ-панели Reback',
+      description: 'Выезд на открытом воздухе на шоссе Калифорнии 85 с Джоном Болтаной и Гарри Питерсоном по поводу настройки нового выставочного зала.',
     },
   ],
 }
@@ -50,29 +50,29 @@ export const timelineData: TimelineType = {
 export const pricingData: PricingType[] = [
   {
     id: '1',
-    name: 'Free Pack',
+    name: 'Бесплатный пакет',
     price: 0,
-    features: ['5 GB Storage', '100 GB Bandwidth', '1 Domain', 'No Support', '24x7 Support', '1 User'],
+    features: ['5 ГБ хранилища', '100 ГБ трафика', '1 домен', 'Без поддержки', 'Поддержка 24/7', '1 пользователь'],
   },
   {
     id: '2',
-    name: 'Professional Pack',
+    name: 'Профессиональный пакет',
     price: 19,
-    features: ['50 GB Storage', '900 GB Bandwidth', '1 Domain', 'Email Support', '24x7 Support', '5 User'],
+    features: ['50 ГБ хранилища', '900 ГБ трафика', '1 домен', 'Поддержка по email', 'Поддержка 24/7', '5 пользователей'],
     isPopular: true,
     subscribed: true,
   },
   {
     id: '3',
-    name: 'Business Pack',
+    name: 'Бизнес пакет',
     price: 29,
-    features: ['500 GB Storage', '2.5 TB Bandwidth', '5 Domain', 'Email Support', '24x7 Support', '10 User'],
+    features: ['500 ГБ хранилища', '2.5 ТБ трафика', '5 доменов', 'Поддержка по email', 'Поддержка 24/7', '10 пользователей'],
   },
   {
     id: '4',
-    name: 'EnterPrice Pack',
+    name: 'Корпоративный пакет',
     price: 29,
-    features: ['2 TB Storage', 'Unlimited Bandwidth', '50 Domain', 'Email Support', '24x7 Support', 'Unlimited User'],
+    features: ['2 ТБ хранилища', 'Неограниченный трафик', '50 доменов', 'Поддержка по email', 'Поддержка 24/7', 'Неограниченное количество пользователей'],
   },
 ]
 

@@ -9,8 +9,8 @@ import PageMetaData from '@/components/PageTitle'
 const AboutUs = () => {
   return (
     <>
-      <PageBreadcrumb subName="Pages" title="About Us" />
-      <PageMetaData title="About Us" />
+      <PageBreadcrumb subName="Страницы" title="О нас" />
+      <PageMetaData title="О нас" />
 
       <Row>
         <Col xs={12}>
