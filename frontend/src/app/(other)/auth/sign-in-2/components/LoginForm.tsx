@@ -16,31 +16,31 @@ const LoginForm = () => {
   })
   return (
     <form className="authentication-form" onSubmit={handleSubmit(() => {})}>
-      <TextFormInput control={control} name="email" containerClassName="mb-3" label="Email" id="email-id" placeholder="Enter your email" />
+      <TextFormInput control={control} name="email" containerClassName="mb-3" label="Email" id="email-id" placeholder="Введите ваш email" />
 
       <PasswordFormInput
         control={control}
         name="password"
         containerClassName="mb-3"
-        placeholder="Enter your password"
+        placeholder="Введите ваш пароль"
         id="password-id"
         label={
           <>
             <Link to="/auth/reset-pass" className="float-end text-muted text-unline-dashed ms-1">
-              Reset password
+              Сбросить пароль
             </Link>
             <label className="form-label" htmlFor="example-password">
-              Password
+              Пароль
             </label>
           </>
         }
       />
       <div className="mb-3">
-        <FormCheck label="Remember me" id="sign-in" />
+        <FormCheck label="Запомнить меня" id="sign-in" />
       </div>
       <div className="mb-1 text-center d-grid">
         <Button variant="primary" type="submit">
-          Sign In
+          Войти
         </Button>
       </div>
     </form>
