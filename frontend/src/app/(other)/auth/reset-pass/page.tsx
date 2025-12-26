@@ -10,7 +10,7 @@ import signInImg from '@/assets/images/sign-in.svg'
 const ResetPassword = () => {
   return (
     <>
-      <PageMetaData title="Reset Password" />
+      <PageMetaData title="Сброс пароля" />
 
       <Card className="auth-card">
         <CardBody className="p-0">
@@ -30,9 +30,9 @@ const ResetPassword = () => {
                   squareLogo={{ className: 'me-1' }}
                   containerClassName="mx-auto mb-4 text-center auth-logo"
                 />
-                <h2 className="fw-bold text-center fs-18">Reset Password</h2>
+                <h2 className="fw-bold text-center fs-18">Сброс пароля</h2>
                 <p className="text-muted text-center mt-1 mb-4">
-                  Enter your email address and we&apos;ll send you an email with instructions to reset your password.
+                  Введите ваш адрес электронной почты, и мы отправим вам письмо с инструкциями по сбросу пароля.
                 </p>
                 <Row className="justify-content-center">
                   <Col xs={12} md={8}>
@@ -45,9 +45,9 @@ const ResetPassword = () => {
         </CardBody>
       </Card>
       <p className="text-white mb-0 text-center">
-        Back to
+        Вернуться к
         <Link to="/auth/sign-in" className="text-white fw-bold ms-1">
-          Sign In
+          Входу
         </Link>
       </p>
     </>
