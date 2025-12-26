@@ -9,7 +9,7 @@ import SignUpForm from './components/SignUpForm'
 const SignUp2 = () => {
   return (
     <>
-      <PageMetaData title="Sign Up 2" />
+      <PageMetaData title="Регистрация 2" />
 
       <Col xl={5} className="mx-auto">
         <Card className="auth-card">
@@ -22,8 +22,8 @@ const SignUp2 = () => {
               squareLogo={{ className: 'me-2' }}
               containerClassName="mx-auto mb-4 text-center auth-logo"
             />
-            <h2 className="fw-bold text-center fs-18">Sign Up</h2>
-            <p className="text-muted text-center mt-1 mb-4">New to our platform? Sign up now! It only takes a minute.</p>
+            <h2 className="fw-bold text-center fs-18">Регистрация</h2>
+            <p className="text-muted text-center mt-1 mb-4">Впервые на нашей платформе? Зарегистрируйтесь сейчас! Это займет всего минуту.</p>
             <div className="px-4">
               <SignUpForm />
               <ThirdPartyAuth />
@@ -31,9 +31,9 @@ const SignUp2 = () => {
           </CardBody>
         </Card>
         <p className="text-white mb-0 text-center">
-          I already have an account
+          У меня уже есть аккаунт
           <Link to="/auth/sign-in-2" className="text-white fw-bold ms-1">
-            Sign In
+            Войти
           </Link>
         </p>
       </Col>
