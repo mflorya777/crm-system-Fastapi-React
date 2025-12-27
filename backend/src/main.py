@@ -8,13 +8,14 @@ from typing import (
 )
 from datetime import datetime
 
+
 # Создаем экземпляр FastAPI приложения
 app = FastAPI(
     title="CRM System API",
     description="API для CRM системы",
     version="1.0.0",
     docs_url="/docs",  # Swagger UI
-    redoc_url="/redoc",  # ReDoc альтернативная документация
+    redoc_url=None,  # ReDoc альтернативная документация
 )
 
 # Настройка CORS для работы с фронтендом
