@@ -2,7 +2,7 @@
 
 ```commandline
 cd backend
-uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+uvicorn src.app:app --reload --host 0.0.0.0 --port 8000
 
 Проверка Swagger:
 После запуска откройте в браузере:

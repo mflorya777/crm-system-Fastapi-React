@@ -16,13 +16,17 @@ from src.common.common_router_models import (
     ApiErrorCodes,
 )
 
+from typing import Optional
+
 from src.clients.mongo.client import MClient
 from src.model import AppConfig
 
 
 _LOG = logging.getLogger("uvicorn")
 APP_CONFIG = AppConfig()
-MONGO_CLIENT = MClient(APP_CONFIG.mongo_config)
+MONGO_CLIENT = None
+if APP_CONFIG.mongo_config and APP_CONFIG.mongo_config.db_name:
+    MONGO_CLIENT = MClient(APP_CONFIG.mongo_config)
 
 app = FastAPI()
 
@@ -65,7 +69,7 @@ async def startup():
 def setup_app(
     app_instance: FastAPI,
     app_config: AppConfig,
-    mongo_client: MClient,
+    mongo_client: Optional[MClient],
 ):
     app_instance.state.config = app_config
     app_instance.state.mongo_client = mongo_client

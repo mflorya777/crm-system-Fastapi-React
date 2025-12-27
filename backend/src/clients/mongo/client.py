@@ -34,6 +34,11 @@ codec_options: CodecOptions = CodecOptions(
 
 class MClient:
     def __init__(self, config: MongoConfig):
+        if not config.db_name:
+            raise ValueError("MongoDB db_name is required but not set in configuration")
+        if not config.host:
+            raise ValueError("MongoDB host is required but not set in configuration")
+        
         self.user = config.user
         self.password = config.password
         self.host = config.host
