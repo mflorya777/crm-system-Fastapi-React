@@ -10,6 +10,12 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from src.common.common_router_models import (
+    ResponseError,
+    ApiResponse,
+    ApiErrorCodes,
+)
+
 from src.clients.mongo.client import MClient
 from src.model import AppConfig
 
@@ -183,7 +189,6 @@ setup_app(
     APP_CONFIG,
     MONGO_CLIENT,
 )
-init(app)
 
 
 @app.exception_handler(HTTPException)
