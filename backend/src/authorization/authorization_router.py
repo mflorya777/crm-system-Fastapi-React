@@ -58,7 +58,10 @@ async def register(
     )
     if errors:
         message_text = "Ошибка валидации формы."
-        return ApiResponse.error_response(errors=errors, message_text=message_text)
+        return ApiResponse.error_response(
+            errors=errors,
+            message_text=message_text,
+        )
     try:
         await users_manager.register_user(
             name=user_data.name,
@@ -96,7 +99,10 @@ async def register(
         )
         errors.append(error)
         message_text = "Ошибка создания пользователя. " "Неизвестная ошибка"
-        return ApiResponse.error_response(errors=errors, message_text=message_text)
+        return ApiResponse.error_response(
+            errors=errors,
+            message_text=message_text,
+        )
 
     return ApiResponse.success_response()
 
@@ -134,6 +140,7 @@ async def login(
 ) -> ApiResponse:
     users_manager: UsersManager = request.app.state.users_manager
     users_storage: UsersStorage = users_manager.users_storage
+
     errors = []
     errors += await LoginFormValidator.validate(args, users_storage, users_manager)
     try:
@@ -205,7 +212,10 @@ async def login(
             )
         )
     if errors:
-        return ApiResponse.error_response(errors=errors, message_text="Ошибка авторизации.")
+        return ApiResponse.error_response(
+            errors=errors,
+            message_text="Ошибка авторизации.",
+        )
     return ApiResponse.success_response()
 
 
@@ -234,5 +244,8 @@ async def login_with_phone(
             text=str(e),
         )
         errors.append(error)
-        return ApiResponse.error_response(errors=errors, message_text=message_text)
+        return ApiResponse.error_response(
+            errors=errors,
+            message_text=message_text,
+        )
     return ApiResponse.success_response()
