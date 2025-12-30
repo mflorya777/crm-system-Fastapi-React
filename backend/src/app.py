@@ -10,19 +10,30 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from typing import Optional
+
+from src.clients.mongo.client import MClient
+from src.model import AppConfig
 from src.common.common_router_models import (
     ResponseError,
     ApiResponse,
     ApiErrorCodes,
 )
-
-from typing import Optional
-
-from src.clients.mongo.client import MClient
-from src.model import AppConfig
+from src.notifications.notifications_storage import NotificationsStorage
+from src.notifications.notifications_manager import NotificationManager
+from src.users.users_storage import UsersStorage
+from src.users.users_manager import UsersManager
+from src.permissions.permissions_manager import PermissionsManager
+from src.roles.roles_manager import RolesManager
+from src.signs.signs_storage import SignsStorage
+from src.signs.signs_manager import SignsManager
+from src.authorization.authorization_router import router as authorization_router
+from src.users.users_router import router as users_router
+from src.signs.signs_router import router as signs_router
 
 
 _LOG = logging.getLogger("uvicorn")
+
 APP_CONFIG = AppConfig()
 MONGO_CLIENT = None
 if APP_CONFIG.mongo_config and APP_CONFIG.mongo_config.db_name:
@@ -37,33 +48,21 @@ async def startup():
     # FIXME: on_event is deprecated, use lifespan event handlers instead.
     #  Read more about it in the
     #  [FastAPI docs for Lifespan Events](https:// fastapi. tiangolo. com/ advanced/ events/).
-    # forms_storage = FormsStorage(MONGO_CLIENT, PORTAL_PG_CLIENT)
-    # notes_storage = NotesStorage(MONGO_CLIENT)
-    # notifications_storage = NotificationsStorage(MONGO_CLIENT)
-    # users_storage = UsersStorage(MONGO_CLIENT)
-    # notifications_manager = NotificationManager(
-    #     notifications_storage,
-    #     users_storage,
-    #     forms_storage,
-    #     notes_storage,
-    # )
-    # permissions_manager = PermissionsManager(users_storage)
-    # appeals_storage = AppealsStorage(
-    #     MONGO_CLIENT,
-    #     APP_CONFIG.files_storage_directory_path,
-    # )
-    # forms_storage = FormsStorage(MONGO_CLIENT, PORTAL_PG_CLIENT)
-    # users_manager = UsersManager(
-    #     users_storage,
-    #     notifications_manager,
-    #     permissions_manager,
-    # )
+    if MONGO_CLIENT:
+        notifications_storage = NotificationsStorage(MONGO_CLIENT)
+        users_storage = UsersStorage(MONGO_CLIENT)
+        notifications_manager = NotificationManager(
+            notifications_storage,
+            users_storage,
+        )
+        permissions_manager = PermissionsManager(users_storage)
+        users_manager = UsersManager(
+            users_storage,
+            notifications_manager,
+            permissions_manager,
+        )
 
-    # await appeals_storage.create_indexes()
-    # await appeals_storage.create_files_storage_folder()
-    # await forms_storage.create_indexes()
-    # await users_manager.create_system_users()
-    pass
+        await users_manager.create_system_users()
 
 
 def setup_app(
@@ -73,67 +72,31 @@ def setup_app(
 ):
     app_instance.state.config = app_config
     app_instance.state.mongo_client = mongo_client
-    # users_storage = UsersStorage(mongo_client)
-    # notifications_storage = NotificationsStorage(mongo_client)
-    # forms_storage = FormsStorage(mongo_client)
-    # signs_storage = SignsStorage(mongo_client)
-    # notes_storage = NotesStorage(mongo_client)
-    # appeals_storage = AppealsStorage(
-    #     mongo_client,
-    #     files_storage_directory_path=app_config.files_storage_directory_path,
-    # )
+    
+    if mongo_client:
+        users_storage = UsersStorage(mongo_client)
+        notifications_storage = NotificationsStorage(mongo_client)
+        signs_storage = SignsStorage(mongo_client)
 
-    # notifications_manager = NotificationManager(
-    #     notifications_storage,
-    #     users_storage,
-    #     forms_storage,
-    #     notes_storage,
-    # )
-    # roles_manager = RolesManager(users_storage=users_storage)
-    # permissions_manager = PermissionsManager(users_storage=users_storage)
-    # users_manager = UsersManager(
-    #     users_storage,
-    #     notifications_manager,
-    #     permissions_manager,
-    # )
-    # signs_manager = SignsManager(
-    #     signs_storage=signs_storage,
-    #     notification_manager=notifications_manager,
-    #     users_storage=users_storage,
-    #     forms_storage=forms_storage,
-    # )
-    # notes_manager = NotesManager(
-    #     notes_storage,
-    #     users_storage,
-    #     users_manager,
-    #     permissions_manager,
-    # )
-    # forms_manager = FormsManager(
-    #     forms_storage=forms_storage,
-    #     files_storage_directory_path=app_config.files_storage_directory_path,
-    #     signs_manager=signs_manager,
-    #     users_storage=users_storage,
-    #     permissions_manager=permissions_manager,
-    #     notifications_manager=notifications_manager,
-    #     notes_manager=notes_manager,
-    #     notes_storage=notes_storage,
-    # )
+        notifications_manager = NotificationManager(
+            notifications_storage,
+            users_storage,
+        )
+        roles_manager = RolesManager(users_storage=users_storage)
+        permissions_manager = PermissionsManager(users_storage=users_storage)
+        users_manager = UsersManager(
+            users_storage,
+            notifications_manager,
+            permissions_manager,
+        )
+        signs_manager = SignsManager(
+            signs_storage=signs_storage,
+            notification_manager=notifications_manager,
+            users_storage=users_storage,
+        )
 
-    # appeals_manager = AppealsManager(
-    #     signs_manager=signs_manager,
-    #     appeals_storage=appeals_storage,
-    #     files_storage_directory_path=app_config.files_storage_directory_path,
-    #     permissions_manager=permissions_manager,
-    #     notifications_manager=notifications_manager,
-    #     forms_manager=forms_manager,
-    #     users_manager=users_manager,
-    # )
-
-    # app_instance.state.users_manager = users_manager
-    # app_instance.state.forms_manager = forms_manager
-    # app_instance.state.notes_manager = notes_manager
-    # app_instance.state.signs_manager = signs_manager
-    # app_instance.state.appeals_manager = appeals_manager
+        app_instance.state.users_manager = users_manager
+        app_instance.state.signs_manager = signs_manager
 
     origins = [
         "http://localhost:3000",
@@ -175,13 +138,9 @@ def setup_app(
     # app_instance.add_middleware(ApidocBasicAuthMiddleware)  # noqa
     # app_instance.add_middleware(RequestTimeMiddleware, stage="dev")
 
-    # app_instance.include_router(authorization_router)
-    # app_instance.include_router(misc_router)
-    # app_instance.include_router(users_router)
-    # app_instance.include_router(forms_router)
-    # app_instance.include_router(forms_common_router)
-    # app_instance.include_router(notes_router)
-    # app_instance.include_router(appeals_router)
+    app_instance.include_router(authorization_router)
+    app_instance.include_router(users_router)
+    app_instance.include_router(signs_router)
 
 
 setup_app(
