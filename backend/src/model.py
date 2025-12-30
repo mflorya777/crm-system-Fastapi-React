@@ -59,6 +59,13 @@ class AppConfig(BaseSettings):
     files_storage_directory_path: Optional[str] = None
     telegram_config: TelegramConfig = TelegramConfig()
     system_user_id: UUID = UUID("52432537-dbfd-4081-a47b-4e6c7ba1e6c9")
+    #
+    model_config = SettingsConfigDict(
+        env_file="local.env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore",
+    )
 
 
 class StorageABC(ABC):
