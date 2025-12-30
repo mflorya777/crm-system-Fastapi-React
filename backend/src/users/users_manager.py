@@ -28,7 +28,7 @@ from .users_storage import (
 )
 from src.misc.misc_lib import generate_random_approve_code
 from src.permissions.permissions_manager_models import Permissions
-from src.permissions.perimssions_manager import PermissionsManager
+from src.permissions.permissions_manager import PermissionsManager
 from cachetools import TTLCache
 from src.clients.cache import cachedmethod
 
