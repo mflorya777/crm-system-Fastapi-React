@@ -83,14 +83,14 @@ class LoginFormValidator:
             if isinstance(form_data, LoginWithEmailParams):
                 errors += await validate_email(form_data.email, users_storage, check_unique=False)
                 if not errors:
-                    _ = users_manager.authenticate_user(
+                    _ = await users_manager.authenticate_user(
                         form_data.password,
                         email=form_data.email,
                     )
             elif isinstance(form_data, LoginWithPhoneParams):
                 errors += await validate_phone(form_data.phone, users_storage, check_unique=False)
                 if not errors:
-                    _ = users_manager.authenticate_user(
+                    _ = await users_manager.authenticate_user(
                         form_data.password,
                         phone=form_data.phone,
                     )
