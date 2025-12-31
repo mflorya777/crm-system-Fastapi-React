@@ -1,22 +1,17 @@
 import PasswordFormInput from '@/components/form/PasswordFormInput'
 import TextFormInput from '@/components/form/TextFormInput'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, FormCheck } from 'react-bootstrap'
-import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
+import useSignUp from '../useSignUp'
 
 const SignUpForm = () => {
-  const signUpSchema = yup.object({
-    name: yup.string().required('пожалуйста, введите ваше имя'),
-    email: yup.string().email('Пожалуйста, введите действительный email').required('пожалуйста, введите ваш email'),
-    password: yup.string().required('Пожалуйста, введите ваш пароль'),
-  })
-  const { control, handleSubmit } = useForm({
-    resolver: yupResolver(signUpSchema),
-  })
+  const { loading, register, control } = useSignUp()
+
   return (
-    <form className="authentication-form" onSubmit={handleSubmit(() => {})}>
+    <form className="authentication-form" onSubmit={register}>
       <TextFormInput control={control} name="name" containerClassName="mb-3" label="Имя" id="name" placeholder="Введите ваше имя" />
+      <TextFormInput control={control} name="soname" containerClassName="mb-3" label="Фамилия" id="soname" placeholder="Введите вашу фамилию" />
+      <TextFormInput control={control} name="father_name" containerClassName="mb-3" label="Отчество" id="father_name" placeholder="Введите ваше отчество" />
+      <TextFormInput control={control} name="phone" containerClassName="mb-3" label="Номер телефона" id="phone" placeholder="+7 (xxx) xxx-xx-xx" />
       <TextFormInput control={control} name="email" containerClassName="mb-3" label="Email" id="email-id" placeholder="Введите ваш email" />
       <PasswordFormInput
         control={control}
@@ -30,8 +25,8 @@ const SignUpForm = () => {
         <FormCheck label="Я принимаю Условия использования" id="termAndCondition" />
       </div>
       <div className="mb-1 text-center d-grid">
-        <Button variant="primary" type="submit">
-          Зарегистрироваться
+        <Button variant="primary" type="submit" disabled={loading}>
+          {loading ? 'Регистрация...' : 'Зарегистрироваться'}
         </Button>
       </div>
     </form>

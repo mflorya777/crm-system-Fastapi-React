@@ -2,7 +2,8 @@ import type { UserType } from '@/types/auth'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-const mock = new MockAdapter(axios)
+// Настраиваем MockAdapter так, чтобы он пропускал незамоканные запросы к реальному API
+const mock = new MockAdapter(axios, { onNoMatch: 'passthrough' })
 
 export const fakeUsers: UserType[] = [
   {
