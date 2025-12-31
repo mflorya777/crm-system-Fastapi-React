@@ -2,8 +2,100 @@ import type { MenuItemType } from '@/types/menu'
 
 export const MENU_ITEMS: MenuItemType[] = [
   {
-    key: 'general',
+    key: 'general-main',
     label: 'ОБЩЕЕ',
+    isTitle: true,
+  },
+  {
+    key: 'account',
+    icon: 'iconamoon:profile-circle-duotone',
+    label: 'Аккаунт',
+    url: '/account',
+  },
+  {
+    key: 'dashboard',
+    icon: 'iconamoon:home-duotone',
+    label: 'Рабочий стол',
+    url: '/dashboard',
+  },
+  {
+    key: 'deals',
+    icon: 'iconamoon:handshake-duotone',
+    label: 'Сделки',
+    children: [
+      {
+        key: 'deals-mock-1',
+        label: 'mock 1',
+        url: '/deals/mock-1',
+        parentKey: 'deals',
+      },
+      {
+        key: 'deals-mock-2',
+        label: 'mock 2',
+        url: '/deals/mock-2',
+        parentKey: 'deals',
+      },
+    ],
+  },
+  {
+    key: 'sellers',
+    icon: 'iconamoon:sellers-duotone',
+    label: 'Продавцы',
+    children: [
+      {
+        key: 'sellers-mock-1',
+        label: 'mock 1',
+        url: '/sellers/mock-1',
+        parentKey: 'sellers',
+      },
+      {
+        key: 'sellers-mock-2',
+        label: 'mock 2',
+        url: '/sellers/mock-2',
+        parentKey: 'sellers',
+      },
+    ],
+  },
+  {
+    key: 'tasks',
+    icon: 'iconamoon:ticket-duotone',
+    label: 'Задачи',
+    url: '/tasks',
+  },
+  {
+    key: 'lists',
+    icon: 'iconamoon:ticket-duotone',
+    label: 'Списки',
+    url: '/lists',
+  },
+  {
+    key: 'mail',
+    icon: 'iconamoon:email-duotone',
+    label: 'Почта',
+    url: '/mail',
+  },
+  {
+    key: 'customers',
+    icon: 'iconamoon:users-duotone',
+    label: 'Покупатели',
+    children: [
+      {
+        key: 'customers-mock-1',
+        label: 'mock 1',
+        url: '/customers/mock-1',
+        parentKey: 'customers',
+      },
+      {
+        key: 'customers-mock-2',
+        label: 'mock 2',
+        url: '/customers/mock-2',
+        parentKey: 'customers',
+      },
+    ],
+  },
+  {
+    key: 'general',
+    label: 'ОБЩЕЕ (test)',
     isTitle: true,
   },
   {
@@ -33,7 +125,7 @@ export const MENU_ITEMS: MenuItemType[] = [
   },
   {
     key: 'apps',
-    label: 'ПРИЛОЖЕНИЯ',
+    label: 'ПРИЛОЖЕНИЯ (test)',
     isTitle: true,
   },
   {
@@ -324,7 +416,7 @@ export const MENU_ITEMS: MenuItemType[] = [
   },
   {
     key: 'components',
-    label: 'КОМПОНЕНТЫ',
+    label: 'КОМПОНЕНТЫ (test)',
     isTitle: true,
   },
   {
