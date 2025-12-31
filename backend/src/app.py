@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 
 from fastapi import (
     FastAPI,
@@ -11,6 +12,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from typing import Optional
+
+# Загружаем переменные окружения из local.env перед созданием конфигурации
+try:
+    from dotenv import load_dotenv
+    env_file = Path(__file__).parent.parent.parent / "local.env"
+    if env_file.exists():
+        load_dotenv(env_file, override=False)
+        _LOG = logging.getLogger("uvicorn")
+        _LOG.info(f"Loaded environment variables from {env_file}")
+except ImportError:
+    pass
+except Exception as e:
+    _LOG = logging.getLogger("uvicorn")
+    _LOG.warning(f"Failed to load .env file: {e}")
 
 from src.clients.mongo.client import MClient
 from src.model import AppConfig
@@ -37,7 +52,17 @@ _LOG = logging.getLogger("uvicorn")
 APP_CONFIG = AppConfig()
 MONGO_CLIENT = None
 if APP_CONFIG.mongo_config and APP_CONFIG.mongo_config.db_name:
-    MONGO_CLIENT = MClient(APP_CONFIG.mongo_config)
+    try:
+        MONGO_CLIENT = MClient(APP_CONFIG.mongo_config)
+        _LOG.info(f"MongoDB client created successfully. DB: {APP_CONFIG.mongo_config.db_name}")
+    except Exception as e:
+        _LOG.error(f"Failed to create MongoDB client: {e}")
+else:
+    _LOG.warning(
+        f"MongoDB client not created. "
+        f"mongo_config: {APP_CONFIG.mongo_config is not None}, "
+        f"db_name: {APP_CONFIG.mongo_config.db_name if APP_CONFIG.mongo_config else 'N/A'}"
+    )
 
 app = FastAPI()
 
@@ -74,29 +99,44 @@ def setup_app(
     app_instance.state.mongo_client = mongo_client
     
     if mongo_client:
-        users_storage = UsersStorage(mongo_client)
-        notifications_storage = NotificationsStorage(mongo_client)
-        signs_storage = SignsStorage(mongo_client)
+        try:
+            users_storage = UsersStorage(mongo_client)
+            notifications_storage = NotificationsStorage(mongo_client)
+            signs_storage = SignsStorage(mongo_client)
 
-        notifications_manager = NotificationManager(
-            notifications_storage,
-            users_storage,
-        )
-        roles_manager = RolesManager(users_storage=users_storage)
-        permissions_manager = PermissionsManager(users_storage=users_storage)
-        users_manager = UsersManager(
-            users_storage,
-            notifications_manager,
-            permissions_manager,
-        )
-        signs_manager = SignsManager(
-            signs_storage=signs_storage,
-            notification_manager=notifications_manager,
-            users_storage=users_storage,
-        )
+            notifications_manager = NotificationManager(
+                notifications_storage,
+                users_storage,
+            )
+            roles_manager = RolesManager(users_storage=users_storage)
+            permissions_manager = PermissionsManager(users_storage=users_storage)
+            users_manager = UsersManager(
+                users_storage,
+                notifications_manager,
+                permissions_manager,
+            )
+            signs_manager = SignsManager(
+                signs_storage=signs_storage,
+                notification_manager=notifications_manager,
+                users_storage=users_storage,
+            )
 
-        app_instance.state.users_manager = users_manager
-        app_instance.state.signs_manager = signs_manager
+            app_instance.state.users_manager = users_manager
+            app_instance.state.signs_manager = signs_manager
+            _LOG.info("Managers initialized successfully")
+        except Exception as e:
+            _LOG.error(f"Failed to initialize managers: {e}")
+            raise
+    else:
+        error_msg = (
+            "MongoDB client is not available. "
+            "Please check MongoDB configuration in local.env file.\n"
+            f"Current config: mongo_config={app_config.mongo_config is not None}, "
+            f"db_name={app_config.mongo_config.db_name if app_config.mongo_config else 'N/A'}, "
+            f"host={app_config.mongo_config.host if app_config.mongo_config else 'N/A'}"
+        )
+        _LOG.error(error_msg)
+        raise RuntimeError(error_msg)
 
     origins = [
         "http://localhost:3000",

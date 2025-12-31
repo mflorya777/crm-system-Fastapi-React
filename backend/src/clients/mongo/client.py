@@ -49,15 +49,22 @@ class MClient:
         self.db = self.client.get_database(self.db_name)
 
     def get_mongo_client(self) -> AsyncIOMotorClient:
-        return AsyncIOMotorClient(
-            host=self.host,
-            port=self.port,
-            username=self.user,
-            password=self.password,
-            tls=self.enable_ssl,
-            tlsAllowInvalidCertificates=True,
-            uuidRepresentation="standard",
-        )
+        # Формируем параметры подключения
+        client_params = {
+            "host": self.host,
+            "port": self.port,
+            "tls": self.enable_ssl,
+            "tlsAllowInvalidCertificates": True,
+            "uuidRepresentation": "standard",
+        }
+        
+        # Добавляем username и password только если они указаны (не None и не пустая строка)
+        if self.user and self.user.strip():
+            client_params["username"] = self.user
+        if self.password and self.password.strip():
+            client_params["password"] = self.password
+        
+        return AsyncIOMotorClient(**client_params)
 
     # Infrastructure
     async def ping(self):

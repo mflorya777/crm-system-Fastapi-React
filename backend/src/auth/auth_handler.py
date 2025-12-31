@@ -5,10 +5,8 @@ import jwt
 
 from src.model import AppConfig
 
-# Загружаем конфигурацию
 _app_config = AppConfig()
 
-# Получаем JWT настройки из конфигурации или переменных окружения
 JWT_SECRET = _app_config.jwt_secret or os.environ.get("JWT_SECRET", "")
 JWT_ALGORITHM = _app_config.jwt_algorithm or os.environ.get("JWT_ALGORITHM", "HS256")
 
@@ -37,5 +35,9 @@ def sign_jwt(
 
 
 def decode_jwt(token: str) -> dict:
-    decoded_token = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    decoded_token = jwt.decode(
+        token,
+        JWT_SECRET,
+        algorithms=[JWT_ALGORITHM],
+    )
     return decoded_token
