@@ -20,7 +20,7 @@ export const MENU_ITEMS: MenuItemType[] = [
   },
   {
     key: 'deals',
-    icon: 'iconamoon:handshake-duotone',
+    icon: 'iconamoon:shopping-bag-duotone',
     label: 'Сделки',
     children: [
       {
@@ -39,7 +39,7 @@ export const MENU_ITEMS: MenuItemType[] = [
   },
   {
     key: 'sellers',
-    icon: 'iconamoon:sellers-duotone',
+    icon: 'iconamoon:briefcase-duotone',
     label: 'Продавцы',
     children: [
       {
@@ -64,7 +64,7 @@ export const MENU_ITEMS: MenuItemType[] = [
   },
   {
     key: 'lists',
-    icon: 'iconamoon:ticket-duotone',
+    icon: 'iconamoon:copy-duotone',
     label: 'Списки',
     url: '/lists',
   },
