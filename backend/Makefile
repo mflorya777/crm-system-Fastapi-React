@@ -100,12 +100,8 @@ build_base_image:  ## Сбилдить базовый имедж
 		--platform $(DOCKER_DEFAULT_PLATFORM) \
 		--ssh default=${SSH_AUTH_SOCK} \
 		--target base \
-		--add-host=gitea.rzd.energy:192.168.53.106 \
 		-t $(BASE_IMAGE_NAME) . \
 	&& ssh-agent -k
-
-build_base_image:
-	eval `ssh-agent -s`; ssh-add /mnt/c/Users/mih2303/.ssh/id_rsa; DOCKER_BUILDKIT=1 docker build -f compose/base.Dockerfile --platform linux/amd64 --ssh default= --target base --add-host=gitea.rzd.energy:192.168.53.106 -t github.com/crm-system:base .; ssh-agent -k
 
 
 build_image:  ## Сбилдить имедж
@@ -117,7 +113,6 @@ build_image:  ## Сбилдить имедж
 		--platform $(DOCKER_DEFAULT_PLATFORM) \
 		--ssh default=${SSH_AUTH_SOCK} \
 		--target production \
-		--add-host=gitea.rzd.energy:192.168.53.106 \
 		-t $(call get_image_name) . \
 	&& ssh-agent -k
 
@@ -130,7 +125,6 @@ build_test_image:  ## Сбилдить тестовый имедж
 		--platform $(DOCKER_DEFAULT_PLATFORM) \
 		--ssh default=${SSH_AUTH_SOCK} \
 		--target dev \
-		--add-host=gitea.rzd.energy:192.168.53.106 \
 		-t $(APP_TEST_IMAGE_NEAME) . \
 	&& ssh-agent -k
 
@@ -141,7 +135,6 @@ build_test_image_local:  ## Сбилдить тестовый имедж лок�
 		--platform $(DOCKER_DEFAULT_PLATFORM) \
 		--ssh default=~/.ssh/id_rsa \
 		--target dev \
-		--add-host=gitea.rzd.energy:192.168.53.106 \
 		-t $(APP_TEST_LOCAL_IMAGE_NAME) .
 
 push_image:

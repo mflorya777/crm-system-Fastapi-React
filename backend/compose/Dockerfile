@@ -21,7 +21,7 @@ COPY main.py ${workDir}
 
 EXPOSE 8081
 
-CMD ["python", "./src/main.py"]
+CMD ["python", "main.py"]
 
 # Stage для prod сборки
 FROM production AS prod
