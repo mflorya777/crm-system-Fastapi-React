@@ -104,7 +104,11 @@ class UsersManager:
             raise ConflictError("Пользователь с таким email или телефоном уже существует")
         except Exception:
             raise
-        await self.notification_manager.handle_notifications_on_user_registration(user.id)
+        try:
+            await self.notification_manager.handle_notifications_on_user_registration(user.id)
+        except Exception as e:
+            _LOG.error(f"Failed to send registration notifications for user {user.id}: {e}")
+            # Не прерываем регистрацию, если уведомления не отправились
         return user
 
     async def create_system_users(
