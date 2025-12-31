@@ -7,6 +7,31 @@ export const MENU_ITEMS: MenuItemType[] = [
     isTitle: true,
   },
   {
+    key: 'dashboards',
+    icon: 'iconamoon:home-duotone',
+    label: 'Панели управления',
+    children: [
+      {
+        key: 'dashboard-analytics',
+        label: 'Аналитика',
+        url: '/dashboard/analytics',
+        parentKey: 'dashboards',
+      },
+      {
+        key: 'dashboard-finance',
+        label: 'Финансы',
+        url: '/dashboard/finance',
+        parentKey: 'dashboards',
+      },
+      {
+        key: 'dashboard-sales',
+        label: 'Продажи',
+        url: '/dashboard/sales',
+        parentKey: 'dashboards',
+      },
+    ],
+  },
+  {
     key: 'account',
     icon: 'iconamoon:profile-circle-duotone',
     label: 'Аккаунт',
@@ -75,23 +100,21 @@ export const MENU_ITEMS: MenuItemType[] = [
     url: '/mail',
   },
   {
-    key: 'customers',
-    icon: 'iconamoon:users-duotone',
-    label: 'Покупатели',
-    children: [
-      {
-        key: 'customers-mock-1',
-        label: 'mock 1',
-        url: '/customers/mock-1',
-        parentKey: 'customers',
-      },
-      {
-        key: 'customers-mock-2',
-        label: 'mock 2',
-        url: '/customers/mock-2',
-        parentKey: 'customers',
-      },
-    ],
+    key: 'calendar',
+    icon: 'iconamoon:calendar-1-duotone',
+    label: 'Календарь',
+    url: '/calendar',
+  },
+  {
+    key: 'plugins',
+    label: 'ПЛАГИНЫ',
+    isTitle: true,
+  },
+  {
+    key: 'chatgpt',
+    icon: 'iconamoon:comment-dots-duotone',
+    label: 'ChatGPT',
+    url: '/chatgpt',
   },
   {
     key: 'general',
