@@ -2,6 +2,7 @@ import type { UserType } from '@/types/auth'
 import { deleteCookie, getCookie, hasCookie, setCookie } from 'cookies-next'
 import { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import httpClient from '@/helpers/httpClient'
 import type { ChildrenType } from '../types/component-props'
 
 export type AuthContextType = {
@@ -39,17 +40,26 @@ export function AuthProvider({ children }: ChildrenType) {
     setUser(user)
   }
 
-  const removeSession = () => {
-    deleteCookie(authSessionKey)
-    setUser(undefined)
-    navigate('/auth/sign-in')
+  const removeSession = async () => {
+    try {
+      // Вызываем API для выхода (удаляет cookie на сервере)
+      await httpClient.post('/logout')
+    } catch (error) {
+      // Игнорируем ошибки при выходе, все равно очищаем локальную сессию
+      console.error('Logout error:', error)
+    } finally {
+      // Очищаем локальную сессию независимо от результата API запроса
+      deleteCookie(authSessionKey)
+      setUser(undefined)
+      navigate('/auth/sign-in')
+    }
   }
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        isAuthenticated: hasCookie(authSessionKey),
+        isAuthenticated: hasCookie(authSessionKey) && user !== undefined,
         saveSession,
         removeSession,
       }}>
