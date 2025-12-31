@@ -4,6 +4,8 @@
 cd backend
 uvicorn src.app:app --reload --host 0.0.0.0 --port 8000
 
+Строка подключения в mongodb: mongodb://localhost:27017/crm-fastapi
+
 Проверка Swagger:
 После запуска откройте в браузере:
 Swagger UI: http://localhost:8000/docs

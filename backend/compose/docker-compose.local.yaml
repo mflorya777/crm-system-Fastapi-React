@@ -1,5 +1,22 @@
 name: crm-system
 services:
+  mongodb:
+    image: mongo:7.0
+    container_name: crm-mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - vps-network
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=crm-fastapi
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   crm-system:
     image: ${IMAGE_NAME}
     hostname: crm-system
@@ -10,11 +27,20 @@ services:
       - vps-network
     env_file:
       - ../local.env
+    environment:
+      - PORT=8081
+      - MONGO_HOST=mongodb
     volumes:
       - ${FILES_STORAGE_DIRECTORY}:/opt/crm-system/files_storage_directory
+    depends_on:
+      mongodb:
+        condition: service_healthy
 
 networks:
   vps-network:
     name: vps-network
     driver: bridge
+
+volumes:
+  mongodb_data:
 
