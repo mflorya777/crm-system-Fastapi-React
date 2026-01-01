@@ -24,13 +24,14 @@ const createDealSchema = yup.object({
   currency: yup.string().optional(),
   client_id: yup.string().optional(),
   responsible_user_id: yup.string().required('Пожалуйста, выберите ответственного'),
+  stage_id: yup.string().required('Пожалуйста, выберите стадию'),
 })
 
 type CreateDealFormFields = yup.InferType<typeof createDealSchema>
 
 export const useCreateDeal = (
   categoryId: string,
-  stageId: string,
+  defaultStageId?: string,
   defaultResponsibleUserId?: string,
   onSuccess?: (deal: Deal) => void,
 ) => {
@@ -46,6 +47,7 @@ export const useCreateDeal = (
       currency: 'RUB',
       client_id: undefined,
       responsible_user_id: defaultResponsibleUserId || '',
+      stage_id: defaultStageId || '',
     },
   })
 
@@ -54,7 +56,7 @@ export const useCreateDeal = (
     try {
       const response: AxiosResponse<CreateDealApiResponse> = await httpClient.post('/deals', {
         category_id: categoryId,
-        stage_id: stageId,
+        stage_id: values.stage_id,
         title: values.title,
         description: values.description || undefined,
         amount: values.amount || undefined,

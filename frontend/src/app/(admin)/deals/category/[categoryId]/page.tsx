@@ -123,12 +123,12 @@ const DealCategoryPage = () => {
             currentStages={category?.stages || []}
             onStageAdded={handleStageAdded}
           />
-          {firstStage && categoryId && (
+          {categoryId && category && (
             <AddDealModal
               show={showAddDealModal}
               onHide={() => setShowAddDealModal(false)}
               categoryId={categoryId}
-              stageId={firstStage.id}
+              category={category}
               onDealCreated={handleDealCreated}
             />
           )}
