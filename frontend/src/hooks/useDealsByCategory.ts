@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import type { AxiosResponse } from 'axios'
 
 import httpClient from '@/helpers/httpClient'
@@ -36,40 +36,40 @@ export const useDealsByCategory = (categoryId: string | undefined, activeOnly: b
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
+  const fetchDeals = useCallback(async () => {
     if (!categoryId) {
       setLoading(false)
       return
     }
 
-    const fetchDeals = async () => {
-      setLoading(true)
-      setError(null)
-      try {
-        const response: AxiosResponse<DealsApiResponse> = await httpClient.get(`/deals/category/${categoryId}/deals`, {
-          params: {
-            active_only: activeOnly,
-          },
-        })
+    setLoading(true)
+    setError(null)
+    try {
+      const response: AxiosResponse<DealsApiResponse> = await httpClient.get(`/deals/category/${categoryId}/deals`, {
+        params: {
+          active_only: activeOnly,
+        },
+      })
 
-        if (response.data.status && response.data.data) {
-          setDeals(response.data.data)
-        } else {
-          const errorMessage = response.data.message?.text || response.data.message?.errors?.[0]?.text || 'Ошибка загрузки сделок'
-          setError(errorMessage)
-        }
-      } catch (err: any) {
-        console.error('Error fetching deals:', err)
-        const errorMessage = err.response?.data?.message?.text || err.response?.data?.message?.errors?.[0]?.text || err.message || 'Ошибка загрузки сделок'
+      if (response.data.status && response.data.data) {
+        setDeals(response.data.data)
+      } else {
+        const errorMessage = response.data.message?.text || response.data.message?.errors?.[0]?.text || 'Ошибка загрузки сделок'
         setError(errorMessage)
-      } finally {
-        setLoading(false)
       }
+    } catch (err: any) {
+      console.error('Error fetching deals:', err)
+      const errorMessage = err.response?.data?.message?.text || err.response?.data?.message?.errors?.[0]?.text || err.message || 'Ошибка загрузки сделок'
+      setError(errorMessage)
+    } finally {
+      setLoading(false)
     }
-
-    fetchDeals()
   }, [categoryId, activeOnly])
 
-  return { deals, loading, error }
+  useEffect(() => {
+    fetchDeals()
+  }, [fetchDeals])
+
+  return { deals, loading, error, refetch: fetchDeals }
 }
 

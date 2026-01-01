@@ -1,23 +1,44 @@
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Card, CardBody, Col, Row } from 'react-bootstrap'
+import { Button, Card, CardBody, Col, Row } from 'react-bootstrap'
 
+import IconifyIcon from '@/components/wrappers/IconifyIcon'
 import PageBreadcrumb from '@/components/layout/PageBreadcrumb'
 import PageMetaData from '@/components/PageTitle'
 import { useDealCategory } from '@/hooks/useDealCategory'
 import { useDealsByCategory } from '@/hooks/useDealsByCategory'
+import type { DealCategory } from '@/hooks/useDealCategories'
+import type { Deal } from '@/hooks/useDealsByCategory'
+import AddDealModal from './components/AddDealModal'
+import AddDealStageModal from './components/AddDealStageModal'
 import DealStages from './components/DealStages'
 import DealsList from './components/DealsList'
 
 const DealCategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>()
-  const { category, loading: categoryLoading, error: categoryError } = useDealCategory(categoryId)
-  const { deals, loading: dealsLoading } = useDealsByCategory(categoryId, true)
+  const { category, loading: categoryLoading, error: categoryError, refetch: refetchCategory } = useDealCategory(categoryId)
+  const { deals, loading: dealsLoading, refetch: refetchDeals } = useDealsByCategory(categoryId, true)
+  const [showAddStageModal, setShowAddStageModal] = useState(false)
+  const [showAddDealModal, setShowAddDealModal] = useState(false)
 
   // Группируем сделки по стадиям для отображения количества
   const dealsByStage: Record<string, number> = {}
   deals.forEach((deal) => {
     dealsByStage[deal.stage_id] = (dealsByStage[deal.stage_id] || 0) + 1
   })
+
+  // Получаем первую стадию для добавления сделки
+  const firstStage = category?.stages && category.stages.length > 0
+    ? [...category.stages].sort((a, b) => a.order - b.order)[0]
+    : null
+
+  const handleStageAdded = (updatedCategory: DealCategory) => {
+    refetchCategory()
+  }
+
+  const handleDealCreated = () => {
+    refetchDeals()
+  }
 
   if (categoryLoading || dealsLoading) {
     return (
@@ -58,13 +79,28 @@ const DealCategoryPage = () => {
       <Row>
         <Col xs={12}>
           {/* Стадии (воронка) */}
-          {category.stages && category.stages.length > 0 && (
-            <Card className="mb-4">
-              <CardBody>
-                <h5 className="mb-3">Воронка продаж</h5>
-                <DealStages category={category} dealsByStage={dealsByStage} />
-              </CardBody>
-            </Card>
+          <Card className="mb-4">
+            <CardBody>
+              <h5 className="mb-3">Воронка продаж</h5>
+              <DealStages
+                category={category}
+                dealsByStage={dealsByStage}
+                onAddStageClick={() => setShowAddStageModal(true)}
+              />
+            </CardBody>
+          </Card>
+
+          {/* Кнопка добавления сделки под первой стадией */}
+          {firstStage && (
+            <div className="mb-3">
+              <Button
+                variant="primary"
+                onClick={() => setShowAddDealModal(true)}
+                className="d-flex align-items-center gap-2">
+                <IconifyIcon icon="bx:plus" />
+                Добавить сделку
+              </Button>
+            </div>
           )}
 
           {/* Список сделок */}
@@ -76,6 +112,28 @@ const DealCategoryPage = () => {
           </Card>
         </Col>
       </Row>
+
+      {/* Модальные окна */}
+      {categoryId && (
+        <>
+          <AddDealStageModal
+            show={showAddStageModal}
+            onHide={() => setShowAddStageModal(false)}
+            categoryId={categoryId}
+            currentStages={category?.stages || []}
+            onStageAdded={handleStageAdded}
+          />
+          {firstStage && categoryId && (
+            <AddDealModal
+              show={showAddDealModal}
+              onHide={() => setShowAddDealModal(false)}
+              categoryId={categoryId}
+              stageId={firstStage.id}
+              onDealCreated={handleDealCreated}
+            />
+          )}
+        </>
+      )}
     </>
   )
 }

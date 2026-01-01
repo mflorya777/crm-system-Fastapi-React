@@ -1,14 +1,16 @@
-import { Card, CardBody } from 'react-bootstrap'
+import { Button, Card, CardBody } from 'react-bootstrap'
 import clsx from 'clsx'
 
+import IconifyIcon from '@/components/wrappers/IconifyIcon'
 import type { DealCategory } from '@/hooks/useDealCategories'
 
 interface DealStagesProps {
   category: DealCategory
   dealsByStage: Record<string, number>
+  onAddStageClick?: () => void
 }
 
-const DealStages = ({ category, dealsByStage }: DealStagesProps) => {
+const DealStages = ({ category, dealsByStage, onAddStageClick }: DealStagesProps) => {
   // Сортируем стадии по порядку
   const sortedStages = [...category.stages].sort((a, b) => a.order - b.order)
 
@@ -38,6 +40,28 @@ const DealStages = ({ category, dealsByStage }: DealStagesProps) => {
             </Card>
           )
         })}
+        {/* Кнопка добавления стадии справа */}
+        <Card
+          className={clsx('flex-shrink-0')}
+          style={{
+            width: '200px',
+            minWidth: '200px',
+            border: '2px dashed #dee2e6',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <CardBody className="p-3 text-center">
+            <Button
+              variant="light"
+              className="w-100 h-100 d-flex flex-column align-items-center justify-content-center"
+              style={{ minHeight: '80px', border: 'none' }}
+              onClick={onAddStageClick}>
+              <IconifyIcon icon="bx:plus" className="fs-24 mb-2" />
+              <span className="small">Добавить стадию</span>
+            </Button>
+          </CardBody>
+        </Card>
       </div>
     </div>
   )
