@@ -106,6 +106,12 @@ export const MENU_ITEMS: MenuItemType[] = [
     url: '/calendar',
   },
   {
+    key: 'integrations',
+    icon: 'iconamoon:link-duotone',
+    label: 'Интеграции',
+    url: '/integrations',
+  },
+  {
     key: 'plugins',
     label: 'ПЛАГИНЫ',
     isTitle: true,
