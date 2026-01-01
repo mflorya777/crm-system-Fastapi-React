@@ -18,7 +18,7 @@ const AboutCard = () => {
         <div>
           <div className="d-flex align-items-center">
             <div className="d-block">
-              <h4 className="mb-1">Jeannette C. Mullin</h4>
+              <h4 className="mb-1">Пупкин Василий Васильевич</h4>
               <p className="fs-14 mb-0">Frontend разработчик</p>
             </div>
             <div className="ms-auto">
@@ -49,7 +49,7 @@ const AboutCard = () => {
                 О себе
               </CardTitle>
               <p className="fs-15 mb-0 text-muted">
-                Привет, я Жаннетт Маллин. Я дизайнер пользовательского опыта и интерфейса. Я работаю Full Stack разработчиком уже 10 лет.
+                Привет, я Пупкин Василий. Я дизайнер пользовательского опыта и интерфейса. Я работаю Full Stack разработчиком уже 10 лет.
               </p>
               <div className="mt-3">
                 <div className="d-flex gap-2 flex-wrap">

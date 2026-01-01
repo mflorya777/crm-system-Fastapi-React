@@ -10,7 +10,7 @@ import PersonalInfo from './components/PersonalInfo'
 const Profile = () => {
   return (
     <>
-      <PageBreadcrumb subName="Страницы" title="Профиль" />
+      <PageBreadcrumb subName="" title="Профиль" />
       <PageMetaData title="Профиль" />
 
       <Row>
