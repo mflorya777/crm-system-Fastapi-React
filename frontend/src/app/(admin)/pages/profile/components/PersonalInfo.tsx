@@ -8,10 +8,22 @@ const PersonalInfo = () => {
       </CardHeader>
       <CardBody>
         <ul className="list-group">
-          <li className="list-group-item border-0 border-bottom px-0 pt-0">
+          <li className="list-group-item border-0 border-bottom px-0">
+            <div className="d-flex flex-wrap align-items-center">
+              <h5 className="me-2 fw-medium mb-0">Фамилия :</h5>
+              <span className="fs-14 text-muted">Пупкин</span>
+            </div>
+          </li>
+          <li className="list-group-item border-0 border-bottom px-0">
             <div className="d-flex flex-wrap align-items-center">
               <h5 className="me-2 fw-medium mb-0">Имя :</h5>
-              <span className="fs-14 text-muted">Jeannette C. Mullin</span>
+              <span className="fs-14 text-muted">Василий</span>
+            </div>
+          </li>
+          <li className="list-group-item border-0 border-bottom px-0">
+            <div className="d-flex flex-wrap align-items-center">
+              <h5 className="me-2 fw-medium mb-0">Отвечство :</h5>
+              <span className="fs-14 text-muted">Васильевич</span>
             </div>
           </li>
           <li className="list-group-item border-0 border-bottom px-0">

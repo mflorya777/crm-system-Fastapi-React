@@ -64,39 +64,16 @@ const AboutCard = () => {
                   <span className="badge text-secondary py-1 px-2 fs-12 border rounded-1">MongoDB</span>
                 </div>
               </div>
-              <div className="mt-4">
-                <h5 className="text-dark fw-medium">Ссылки :</h5>
-                <a href="#!" className="text-primary text-decoration-underline">
-                  https://myworkbench-portfolio.com
-                </a>
-                <p className="mb-0 mt-1">
-                  <a href="#!" className="text-primary text-decoration-underline">
-                    https://scaly-paddock.biz//a.portfolio
-                  </a>
-                </p>
-              </div>
             </Col>
           </Row>
         </div>
       </CardBody>
       <CardFooter className="bg-light-subtle">
         <Row className="g-2 mb-1">
-          <Col lg={4}>
-            <Button variant="primary" type="button" className="d-flex align-items-center justify-content-center gap-1 w-100">
-              <IconifyIcon icon="iconamoon:profile-duotone" />
-              Подписаться
-            </Button>
-          </Col>
-          <Col lg={4}>
+          <Col lg={12}>
             <Button variant="success" type="button" className="d-flex align-items-center justify-content-center gap-1 w-100">
               <IconifyIcon icon="iconamoon:comment-dots-duotone" />
               Сообщение
-            </Button>
-          </Col>
-          <Col lg={4}>
-            <Button variant="danger" type="button" className="d-flex align-items-center justify-content-center gap-1 w-100">
-              <IconifyIcon icon="iconamoon:share-1-duotone" />
-              Поделиться
             </Button>
           </Col>
         </Row>
