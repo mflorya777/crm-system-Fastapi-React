@@ -18,8 +18,9 @@ const DealCategoryPage = () => {
   const [showAddStageModal, setShowAddStageModal] = useState(false)
   const [showAddDealModal, setShowAddDealModal] = useState(false)
 
-  const handleStageAdded = () => {
-    refetchCategory()
+  const handleStageAdded = async () => {
+    await refetchCategory()
+    await refetchDeals()
   }
 
   const handleDealCreated = () => {
@@ -120,15 +121,15 @@ const DealCategoryPage = () => {
             <CardBody>
               <h5 className="mb-3">Воронка продаж</h5>
               {/* Колонки со сделками под стадиями */}
-              <div>
-                <Row className="g-3">
+              <div className="overflow-x-auto pb-2">
+                <div className="d-flex gap-3" style={{ flexWrap: 'nowrap' }}>
                   {sortedStages.map((stage) => {
                     const stageDeals = dealsByStageMap[stage.id] || []
                     const isFirstStage = stage.order === sortedStages[0]?.order
                     const stageColor = stage.color || '#6c757d'
 
                     return (
-                      <Col key={stage.id} xs={12} md={6} lg={4} xl={3}>
+                      <div key={stage.id} style={{ minWidth: '280px', flexShrink: 0 }}>
                         <div className="h-100">
                           <div
                             className="d-flex justify-content-between align-items-center mb-2 py-2"
@@ -170,11 +171,11 @@ const DealCategoryPage = () => {
                             )}
                           </div>
                         </div>
-                      </Col>
+                      </div>
                     )
                   })}
                   {/* Кнопка добавления стадии справа */}
-                  <Col xs={12} md={6} lg={4} xl={3}>
+                  <div style={{ minWidth: '280px', flexShrink: 0 }}>
                     <div className="h-100">
                       <div
                         className="d-flex justify-content-center align-items-center mb-2 py-2"
@@ -197,8 +198,8 @@ const DealCategoryPage = () => {
                         </Button>
                       </div>
                     </div>
-                  </Col>
-                </Row>
+                  </div>
+                </div>
               </div>
             </CardBody>
           </Card>
