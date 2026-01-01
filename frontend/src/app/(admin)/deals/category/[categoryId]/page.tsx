@@ -11,6 +11,7 @@ import type { Deal } from '@/hooks/useDealsByCategory'
 import AddDealModal from './components/AddDealModal'
 import AddDealStageModal from './components/AddDealStageModal'
 import EditDealModal from './components/EditDealModal'
+import EditDealStageModal from './components/EditDealStageModal'
 
 const DealCategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>()
@@ -20,10 +21,22 @@ const DealCategoryPage = () => {
   const [showAddDealModal, setShowAddDealModal] = useState(false)
   const [showEditDealModal, setShowEditDealModal] = useState(false)
   const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null)
+  const [showEditStageModal, setShowEditStageModal] = useState(false)
+  const [selectedStageId, setSelectedStageId] = useState<string | null>(null)
 
   const handleStageAdded = async () => {
     await refetchCategory()
     await refetchDeals()
+  }
+
+  const handleStageUpdated = async () => {
+    await refetchCategory()
+    await refetchDeals()
+  }
+
+  const handleStageClick = (stageId: string) => {
+    setSelectedStageId(stageId)
+    setShowEditStageModal(true)
   }
 
   const handleDealCreated = () => {
@@ -156,7 +169,9 @@ const DealCategoryPage = () => {
                               boxShadow: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)',
                               paddingLeft: '1.25rem',
                               paddingRight: '1.25rem',
-                            }}>
+                              cursor: 'pointer',
+                            }}
+                            onClick={() => handleStageClick(stage.id)}>
                             <h6 className="mb-0 fw-semibold">{stage.name}</h6>
                             <span className="badge bg-light text-dark">{stageDeals.length}</span>
                           </div>
@@ -250,6 +265,19 @@ const DealCategoryPage = () => {
               }}
               deal={selectedDeal}
               onDealUpdated={handleDealUpdated}
+            />
+          )}
+          {selectedStageId && categoryId && category && (
+            <EditDealStageModal
+              show={showEditStageModal}
+              onHide={() => {
+                setShowEditStageModal(false)
+                setSelectedStageId(null)
+              }}
+              categoryId={categoryId}
+              currentStages={category.stages}
+              stageId={selectedStageId}
+              onStageUpdated={handleStageUpdated}
             />
           )}
         </>
