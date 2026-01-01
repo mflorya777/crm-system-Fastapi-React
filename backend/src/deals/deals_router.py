@@ -331,6 +331,7 @@ async def create_deal(
             currency=deal_data.currency,
             client_id=deal_data.client_id,
             responsible_user_id=deal_data.responsible_user_id,
+            order=deal_data.order,
         )
         deal_response = DealResponse.from_deal(deal)
 
@@ -596,6 +597,7 @@ async def move_deal_to_stage(
             actor_id=user_id,
             deal_id=deal_id,
             new_stage_id=move_data.stage_id,
+            order=move_data.order,
         )
         deal_response = DealResponse.from_deal(deal)
 

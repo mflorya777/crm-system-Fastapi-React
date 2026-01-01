@@ -194,6 +194,7 @@ class DealsManager:
         amount: Optional[float] = None,
         currency: Optional[str] = "RUB",
         client_id: Optional[UUID] = None,
+        order: Optional[int] = None,
     ) -> DealToGet:
         """Создать новую сделку"""
         category = await self.get_category(
@@ -227,6 +228,7 @@ class DealsManager:
                 currency=currency,
                 client_id=client_id,
                 responsible_user_id=responsible_user_id,
+                order=order,
             )
             return deal
         except DealsStorageException as e:
@@ -360,6 +362,7 @@ class DealsManager:
         actor_id: UUID,
         deal_id: UUID,
         new_stage_id: UUID,
+        order: Optional[int] = None,
     ) -> DealToGet:
         """Переместить сделку в другую стадию"""
         deal = await self.get_deal(
@@ -383,6 +386,7 @@ class DealsManager:
                 actor_id=actor_id,
                 deal_id=deal_id,
                 new_stage_id=new_stage_id,
+                order=order,
             )
             return await self.get_deal(
                 actor_id,

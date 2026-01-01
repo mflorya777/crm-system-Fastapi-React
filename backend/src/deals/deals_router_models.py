@@ -114,6 +114,7 @@ class CreateDealParams(BaseModel):
     currency: Optional[str] = Field(default="RUB", description="Валюта сделки")
     client_id: Optional[UUID] = Field(default=None, description="ID клиента")
     responsible_user_id: UUID = Field(..., description="ID ответственного пользователя")
+    order: Optional[int] = Field(default=None, description="Порядок сделки в стадии")
 
 
 class UpdateDealParams(BaseModel):
@@ -129,6 +130,7 @@ class UpdateDealParams(BaseModel):
 class MoveDealToStageParams(BaseModel):
     """Параметры для перемещения сделки в стадию"""
     stage_id: UUID = Field(..., description="ID новой стадии")
+    order: Optional[int] = Field(default=None, description="Порядок сделки в новой стадии")
 
 
 class DealResponse(BaseModel):
@@ -142,6 +144,7 @@ class DealResponse(BaseModel):
     currency: Optional[str] = Field(default="RUB")
     client_id: Optional[UUID] = Field(default=None)
     responsible_user_id: UUID = Field(...)
+    order: int = Field(default=0, description="Порядок сделки в стадии")
     created_at: dt.datetime = Field(...)
     created_by: UUID | None = Field(...)
     updated_at: dt.datetime | None = Field(default=None)
@@ -162,6 +165,7 @@ class DealResponse(BaseModel):
             currency=deal.currency,
             client_id=deal.client_id,
             responsible_user_id=deal.responsible_user_id,
+            order=deal.order,
             created_at=deal.created_at,
             created_by=deal.created_by,
             updated_at=deal.updated_at,

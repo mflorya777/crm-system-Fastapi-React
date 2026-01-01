@@ -277,11 +277,20 @@ class DealsStorage:
         amount: Optional[float] = None,
         currency: Optional[str] = "RUB",
         client_id: Optional[UUID] = None,
+        order: Optional[int] = None,
     ) -> DealToGet:
         """Создать новую сделку"""
         new_deal_id = uuid4()
         if not actor_id:
             actor_id = new_deal_id
+        
+        # Если order не указан, вычисляем максимальный order для стадии + 1
+        if order is None:
+            max_order_deal = await self.deals_collection.find_one(
+                {"stage_id": stage_id},
+                sort=[("order", -1)],
+            )
+            order = (max_order_deal.get("order", -1) + 1) if max_order_deal else 0
         
         deal = DealToCreate(
             id=new_deal_id,
@@ -295,6 +304,7 @@ class DealsStorage:
             currency=currency,
             client_id=client_id,
             responsible_user_id=responsible_user_id,
+            order=order,
         )
         
         result = await self.deals_collection.insert_one(
@@ -381,7 +391,7 @@ class DealsStorage:
         cursor = self.deals_collection.find(
             query,
             projection=projection,
-        )
+        ).sort("order", 1)  # Сортируем по order по возрастанию
         deals = []
         async for deal in cursor:
             deals.append(DealToGet(**deal))
@@ -409,7 +419,7 @@ class DealsStorage:
         cursor = self.deals_collection.find(
             query,
             projection=projection,
-        )
+        ).sort("order", 1)  # Сортируем по order по возрастанию
         deals = []
         async for deal in cursor:
             deals.append(DealToGet(**deal))
@@ -479,11 +489,54 @@ class DealsStorage:
         actor_id: UUID,
         deal_id: UUID,
         new_stage_id: UUID,
+        order: Optional[int] = None,
     ):
         """Переместить сделку в другую стадию"""
+        # Получаем текущую сделку
+        current_deal = await self.get_deal(deal_id)
+        old_stage_id = current_deal.stage_id
+        old_order = current_deal.order
+        
+        # Если order не указан, вычисляем максимальный order для новой стадии + 1
+        if order is None:
+            max_order_deal = await self.deals_collection.find_one(
+                {"stage_id": new_stage_id},
+                sort=[("order", -1)],
+            )
+            order = (max_order_deal.get("order", -1) + 1) if max_order_deal else 0
+        
+        # Если перемещаем в ту же стадию, нужно обновить порядок других сделок
+        if old_stage_id == new_stage_id:
+            # Если порядок не изменился, ничего не делаем
+            if old_order == order:
+                return
+            # Сдвигаем порядок других сделок в стадии
+            await self._reorder_deals_in_stage(new_stage_id, deal_id, old_order, order)
+        else:
+            # Если перемещаем в другую стадию, нужно:
+            # 1. Сдвинуть порядок сделок в старой стадии (уменьшить order всех сделок после старой позиции)
+            await self.deals_collection.update_many(
+                {
+                    "stage_id": old_stage_id,
+                    "id": {"$ne": deal_id},
+                    "order": {"$gt": old_order},
+                },
+                {"$inc": {"order": -1}},
+            )
+            # 2. Сдвинуть порядок сделок в новой стадии (увеличить order всех сделок начиная с новой позиции)
+            await self.deals_collection.update_many(
+                {
+                    "stage_id": new_stage_id,
+                    "id": {"$ne": deal_id},
+                    "order": {"$gte": order},
+                },
+                {"$inc": {"order": 1}},
+            )
+        
         update_query = {
             "$set": {
                 "stage_id": new_stage_id,
+                "order": order,
             },
         }
         await self.update_deal_with_revision(
@@ -491,6 +544,40 @@ class DealsStorage:
             deal_id,
             update_query,
         )
+    
+    async def _reorder_deals_in_stage(
+        self,
+        stage_id: UUID,
+        moved_deal_id: UUID,
+        old_order: int,
+        new_order: int,
+    ):
+        """Переупорядочить сделки в стадии при перемещении в той же стадии"""
+        if old_order == new_order:
+            return  # Порядок не изменился
+        
+        # Если перемещаем вперед (уменьшаем order)
+        if new_order < old_order:
+            # Увеличиваем order всех сделок между new_order и old_order
+            await self.deals_collection.update_many(
+                {
+                    "stage_id": stage_id,
+                    "id": {"$ne": moved_deal_id},
+                    "order": {"$gte": new_order, "$lt": old_order},
+                },
+                {"$inc": {"order": 1}},
+            )
+        # Если перемещаем назад (увеличиваем order)
+        else:
+            # Уменьшаем order всех сделок между old_order и new_order
+            await self.deals_collection.update_many(
+                {
+                    "stage_id": stage_id,
+                    "id": {"$ne": moved_deal_id},
+                    "order": {"$gt": old_order, "$lte": new_order},
+                },
+                {"$inc": {"order": -1}},
+            )
 
     async def close_deal(
         self,
