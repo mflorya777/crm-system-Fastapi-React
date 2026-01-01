@@ -13,6 +13,7 @@ export interface Deal {
   currency?: string
   client_id?: string
   responsible_user_id: string
+  order: number
   created_at: string
   created_by?: string
   updated_at?: string

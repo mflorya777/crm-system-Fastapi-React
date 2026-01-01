@@ -26,6 +26,7 @@ const DealCategoryPage = () => {
   const [selectedStageId, setSelectedStageId] = useState<string | null>(null)
   const [draggedDealId, setDraggedDealId] = useState<string | null>(null)
   const [dragOverStageId, setDragOverStageId] = useState<string | null>(null)
+  const [dragOverPosition, setDragOverPosition] = useState<{ stageId: string; index: number } | null>(null)
   const [isDragging, setIsDragging] = useState(false)
 
   const { moveDealToStage } = useMoveDealToStage(() => {
@@ -75,39 +76,205 @@ const DealCategoryPage = () => {
     setIsDragging(false)
     setDraggedDealId(null)
     setDragOverStageId(null)
+    setDragOverPosition(null)
     // Возвращаем непрозрачность
     if (e.currentTarget instanceof HTMLElement) {
       e.currentTarget.style.opacity = '1'
     }
   }
 
+  // Группируем сделки по стадиям и сортируем по order (выносим выше, чтобы использовать в обработчиках)
+  const dealsByStageMap: Record<string, Deal[]> = {}
+  deals.forEach((deal) => {
+    if (!dealsByStageMap[deal.stage_id]) {
+      dealsByStageMap[deal.stage_id] = []
+    }
+    dealsByStageMap[deal.stage_id].push(deal)
+  })
+  
+  // Сортируем сделки по order в каждой стадии
+  Object.keys(dealsByStageMap).forEach((stageId) => {
+    dealsByStageMap[stageId].sort((a, b) => a.order - b.order)
+  })
+
   const handleDragOver = (e: React.DragEvent, stageId: string) => {
     e.preventDefault()
     e.dataTransfer.dropEffect = 'move'
     setDragOverStageId(stageId)
+    
+    // Вычисляем позицию вставки на основе координат курсора
+    const stageDeals = dealsByStageMap[stageId] || []
+    const container = e.currentTarget as HTMLElement
+    const rect = container.getBoundingClientRect()
+    const y = e.clientY - rect.top
+    
+    // Находим индекс вставки на основе позиции курсора
+    let insertIndex = stageDeals.length
+    
+    // Проверяем, над какой карточкой находится курсор
+    const dealElements = container.querySelectorAll('[data-deal-id]')
+    dealElements.forEach((element, index) => {
+      const elementRect = element.getBoundingClientRect()
+      const elementTop = elementRect.top - rect.top
+      const elementBottom = elementRect.bottom - rect.top
+      
+      if (y >= elementTop && y <= elementBottom) {
+        // Курсор находится над карточкой
+        const elementCenter = (elementTop + elementBottom) / 2
+        insertIndex = y < elementCenter ? index : index + 1
+      } else if (y < elementTop && index === 0) {
+        // Курсор выше первой карточки
+        insertIndex = 0
+      }
+    })
+    
+    setDragOverPosition({ stageId, index: insertIndex })
   }
 
-  const handleDragLeave = () => {
-    setDragOverStageId(null)
+  const handleCardDragOver = (e: React.DragEvent, stageId: string, dealIndex: number) => {
+    e.preventDefault()
+    e.stopPropagation()
+    e.dataTransfer.dropEffect = 'move'
+    
+    // Определяем, в какую половину карточки попадает курсор
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+    const y = e.clientY - rect.top
+    const height = rect.height
+    
+    // Если курсор в верхней половине - вставляем перед карточкой, иначе - после
+    const insertIndex = y < height / 2 ? dealIndex : dealIndex + 1
+    
+    setDragOverPosition({ stageId, index: insertIndex })
+    setDragOverStageId(stageId)
+  }
+
+  const handleEmptyZoneDragOver = (e: React.DragEvent, stageId: string) => {
+    e.preventDefault()
+    e.stopPropagation()
+    e.dataTransfer.dropEffect = 'move'
+    const stageDeals = dealsByStageMap[stageId] || []
+    setDragOverPosition({ stageId, index: stageDeals.length })
+    setDragOverStageId(stageId)
+  }
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    // Проверяем, что мы действительно покинули контейнер
+    const currentTarget = e.currentTarget as HTMLElement
+    const relatedTarget = e.relatedTarget as HTMLElement
+    
+    if (!currentTarget.contains(relatedTarget)) {
+      setDragOverStageId(null)
+      setDragOverPosition(null)
+    }
   }
 
   const handleDrop = async (e: React.DragEvent, targetStageId: string) => {
     e.preventDefault()
+    e.stopPropagation()
     setDragOverStageId(null)
     
     const dealId = e.dataTransfer.getData('text/plain')
     if (!dealId || !draggedDealId) return
 
-    // Проверяем, что сделка не перемещается в ту же стадию
     const deal = deals.find((d) => d.id === dealId)
-    if (deal && deal.stage_id === targetStageId) {
-      return
+    if (!deal) return
+
+    // Определяем позицию вставки
+    const stageDeals = dealsByStageMap[targetStageId] || []
+    let insertIndex = stageDeals.length
+    
+    if (dragOverPosition && dragOverPosition.stageId === targetStageId) {
+      insertIndex = dragOverPosition.index
+    } else {
+      // Если позиция не определена, вычисляем на основе координат
+      const container = e.currentTarget as HTMLElement
+      const rect = container.getBoundingClientRect()
+      const y = e.clientY - rect.top
+      
+      const dealElements = container.querySelectorAll('[data-deal-id]')
+      dealElements.forEach((element, index) => {
+        const elementRect = element.getBoundingClientRect()
+        const elementTop = elementRect.top - rect.top
+        const elementBottom = elementRect.bottom - rect.top
+        
+        if (y >= elementTop && y <= elementBottom) {
+          const elementCenter = (elementTop + elementBottom) / 2
+          insertIndex = y < elementCenter ? index : index + 1
+        } else if (y < elementTop && index === 0) {
+          insertIndex = 0
+        }
+      })
+    }
+
+    // Вычисляем order на основе позиции вставки
+    let order: number
+    if (insertIndex === 0) {
+      // Вставляем в начало
+      if (stageDeals.length === 0) {
+        order = 0
+      } else {
+        const firstDeal = stageDeals[0]
+        // Если перемещаем в ту же стадию и это та же карточка, не меняем порядок
+        if (deal.stage_id === targetStageId && deal.id === firstDeal.id) {
+          setDragOverPosition(null)
+          return
+        }
+        order = firstDeal.order - 1
+      }
+    } else if (insertIndex >= stageDeals.length) {
+      // Вставляем в конец
+      if (stageDeals.length === 0) {
+        order = 0
+      } else {
+        const lastDeal = stageDeals[stageDeals.length - 1]
+        // Если перемещаем в ту же стадию и это та же карточка, не меняем порядок
+        if (deal.stage_id === targetStageId && deal.id === lastDeal.id) {
+          setDragOverPosition(null)
+          return
+        }
+        order = lastDeal.order + 1
+      }
+    } else {
+      // Вставляем между карточками
+      const prevDeal = stageDeals[insertIndex - 1]
+      const nextDeal = stageDeals[insertIndex]
+      
+      // Если перемещаем в ту же стадию и позиция не изменилась, не делаем ничего
+      if (deal.stage_id === targetStageId) {
+        const currentIndex = stageDeals.findIndex((d) => d.id === dealId)
+        if (currentIndex === insertIndex - 1 || currentIndex === insertIndex) {
+          setDragOverPosition(null)
+          return
+        }
+      }
+      
+      // Вычисляем средний order между предыдущей и следующей карточками
+      const orderDiff = nextDeal.order - prevDeal.order
+      if (orderDiff > 1) {
+        // Есть место между порядками
+        order = Math.floor((prevDeal.order + nextDeal.order) / 2)
+      } else {
+        // Порядки слишком близки, нужно пересчитать порядки всех карточек
+        // Для простоты используем порядок следующей карточки
+        order = nextDeal.order
+      }
+    }
+
+    // Если перемещаем в ту же стадию, проверяем, изменилась ли позиция
+    if (deal.stage_id === targetStageId) {
+      const currentIndex = stageDeals.findIndex((d) => d.id === dealId)
+      if (currentIndex === insertIndex || (currentIndex === insertIndex - 1 && insertIndex > 0)) {
+        setDragOverPosition(null)
+        return // Позиция не изменилась
+      }
     }
 
     try {
-      await moveDealToStage(dealId, targetStageId)
+      await moveDealToStage(dealId, targetStageId, order)
+      setDragOverPosition(null)
     } catch (error) {
       console.error('Failed to move deal:', error)
+      setDragOverPosition(null)
     }
   }
 
@@ -142,34 +309,44 @@ const DealCategoryPage = () => {
     )
   }
 
-  // Группируем сделки по стадиям
-  const dealsByStageMap: Record<string, Deal[]> = {}
-  deals.forEach((deal) => {
-    if (!dealsByStageMap[deal.stage_id]) {
-      dealsByStageMap[deal.stage_id] = []
-    }
-    dealsByStageMap[deal.stage_id].push(deal)
-  })
-
   // Сортируем стадии по порядку
   const sortedStages = category.stages ? [...category.stages].sort((a, b) => a.order - b.order) : []
 
   // Компонент карточки сделки
-  const DealCard = ({ deal }: { deal: Deal }) => {
+  const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
+    const stageId = deal.stage_id
+    const showInsertIndicator = dragOverPosition?.stageId === stageId && dragOverPosition.index === index
+    
     return (
-      <Card 
-        className="mb-2" 
-        style={{ cursor: 'grab' }}
-        draggable
-        onDragStart={(e) => handleDragStart(e, deal.id)}
-        onDragEnd={handleDragEnd}
-        onClick={() => {
-          // Предотвращаем открытие модального окна при перетаскивании
-          if (!isDragging) {
-            handleDealClick(deal)
-          }
-        }}
-      >
+      <>
+        {/* Индикатор вставки перед карточкой */}
+        {showInsertIndicator && (
+          <div
+            style={{
+              height: '4px',
+              backgroundColor: '#0d6efd',
+              borderRadius: '2px',
+              marginBottom: '0.5rem',
+              transition: 'all 0.2s ease',
+            }}
+          />
+        )}
+        <Card 
+          className="mb-2" 
+          style={{ cursor: 'grab' }}
+          draggable
+          data-deal-id={deal.id}
+          onDragStart={(e) => handleDragStart(e, deal.id)}
+          onDragEnd={handleDragEnd}
+          onDragOver={(e) => handleCardDragOver(e, stageId, index)}
+          onDragLeave={handleDragLeave}
+          onClick={() => {
+            // Предотвращаем открытие модального окна при перетаскивании
+            if (!isDragging) {
+              handleDealClick(deal)
+            }
+          }}
+        >
         <CardBody className="p-3">
           <div className="d-flex justify-content-between align-items-start mb-2">
             <h6 className="mb-0 fw-semibold">{deal.title}</h6>
@@ -202,6 +379,7 @@ const DealCategoryPage = () => {
           )}
         </CardBody>
       </Card>
+      </>
     )
   }
 
@@ -228,9 +406,6 @@ const DealCategoryPage = () => {
                       <div 
                         key={stage.id} 
                         style={{ minWidth: '280px', flexShrink: 0 }}
-                        onDragOver={(e) => handleDragOver(e, stage.id)}
-                        onDragLeave={handleDragLeave}
-                        onDrop={(e) => handleDrop(e, stage.id)}
                       >
                         <div className="h-100">
                           <div
@@ -266,18 +441,52 @@ const DealCategoryPage = () => {
                             className="d-flex flex-column" 
                             style={{ 
                               minHeight: '100px',
-                              backgroundColor: dragOverStageId === stage.id ? 'rgba(0, 123, 255, 0.1)' : 'transparent',
+                              backgroundColor: dragOverStageId === stage.id ? 'rgba(0, 123, 255, 0.05)' : 'transparent',
                               borderRadius: '0.25rem',
                               padding: dragOverStageId === stage.id ? '0.5rem' : '0',
                               transition: 'all 0.2s ease',
                             }}
+                            onDragOver={(e) => handleDragOver(e, stage.id)}
+                            onDragLeave={handleDragLeave}
+                            onDrop={(e) => handleDrop(e, stage.id)}
                           >
                             {stageDeals.length > 0 ? (
-                              stageDeals.map((deal) => (
-                                <DealCard key={deal.id} deal={deal} />
-                              ))
+                              <>
+                                {/* Индикатор вставки в начало списка */}
+                                {dragOverPosition?.stageId === stage.id && dragOverPosition.index === 0 && (
+                                  <div
+                                    style={{
+                                      height: '4px',
+                                      backgroundColor: '#0d6efd',
+                                      borderRadius: '2px',
+                                      marginBottom: '0.5rem',
+                                      transition: 'all 0.2s ease',
+                                    }}
+                                  />
+                                )}
+                                {stageDeals.map((deal, index) => (
+                                  <DealCard key={deal.id} deal={deal} index={index} />
+                                ))}
+                                {/* Индикатор вставки в конец списка */}
+                                {dragOverPosition?.stageId === stage.id && dragOverPosition.index === stageDeals.length && (
+                                  <div
+                                    style={{
+                                      height: '4px',
+                                      backgroundColor: '#0d6efd',
+                                      borderRadius: '2px',
+                                      marginTop: '0.5rem',
+                                      transition: 'all 0.2s ease',
+                                    }}
+                                  />
+                                )}
+                              </>
                             ) : (
-                              <div className="text-center py-3 text-muted small">
+                              <div 
+                                className="text-center py-3 text-muted small"
+                                onDragOver={(e) => handleEmptyZoneDragOver(e, stage.id)}
+                                onDragLeave={handleDragLeave}
+                                onDrop={(e) => handleDrop(e, stage.id)}
+                              >
                                 {dragOverStageId === stage.id ? (
                                   <div className="py-3">
                                     <IconifyIcon icon="bx:move" className="fs-24 mb-2" />

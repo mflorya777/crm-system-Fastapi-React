@@ -18,11 +18,12 @@ export const useMoveDealToStage = (onSuccess?: (deal: Deal) => void) => {
   const [loading, setLoading] = useState(false)
   const { showNotification } = useNotificationContext()
 
-  const moveDealToStage = async (dealId: string, stageId: string) => {
+  const moveDealToStage = async (dealId: string, stageId: string, order?: number) => {
     setLoading(true)
     try {
       const response: AxiosResponse<MoveDealToStageApiResponse> = await httpClient.post(`/deals/${dealId}/move-to-stage`, {
         stage_id: stageId,
+        order: order,
       })
 
       if (response.data.status && response.data.data) {
@@ -32,11 +33,13 @@ export const useMoveDealToStage = (onSuccess?: (deal: Deal) => void) => {
         return response.data.data
       } else {
         const errors = response.data.message?.errors || []
+        let errorMessage = 'Ошибка при перемещении сделки'
         if (errors.length > 0) {
           const errorMessages = errors.map((err) => err.text).join('. ')
+          errorMessage = errorMessages
           showNotification({ message: errorMessages, variant: 'danger' })
         } else {
-          const errorMessage = response.data.message?.text || 'Ошибка при перемещении сделки'
+          errorMessage = response.data.message?.text || 'Ошибка при перемещении сделки'
           showNotification({ message: errorMessage, variant: 'danger' })
         }
         throw new Error(errorMessage)
