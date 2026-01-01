@@ -7,6 +7,7 @@ import PageBreadcrumb from '@/components/layout/PageBreadcrumb'
 import PageMetaData from '@/components/PageTitle'
 import { useDealCategory } from '@/hooks/useDealCategory'
 import { useDealsByCategory } from '@/hooks/useDealsByCategory'
+import { useMoveDealToStage } from '@/hooks/useMoveDealToStage'
 import type { Deal } from '@/hooks/useDealsByCategory'
 import AddDealModal from './components/AddDealModal'
 import AddDealStageModal from './components/AddDealStageModal'
@@ -23,6 +24,13 @@ const DealCategoryPage = () => {
   const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null)
   const [showEditStageModal, setShowEditStageModal] = useState(false)
   const [selectedStageId, setSelectedStageId] = useState<string | null>(null)
+  const [draggedDealId, setDraggedDealId] = useState<string | null>(null)
+  const [dragOverStageId, setDragOverStageId] = useState<string | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+
+  const { moveDealToStage } = useMoveDealToStage(() => {
+    refetchDeals()
+  })
 
   const handleStageAdded = async () => {
     await refetchCategory()
@@ -50,6 +58,57 @@ const DealCategoryPage = () => {
 
   const handleDealUpdated = () => {
     refetchDeals()
+  }
+
+  const handleDragStart = (e: React.DragEvent, dealId: string) => {
+    setIsDragging(true)
+    setDraggedDealId(dealId)
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/plain', dealId)
+    // Делаем карточку полупрозрачной при перетаскивании
+    if (e.currentTarget instanceof HTMLElement) {
+      e.currentTarget.style.opacity = '0.5'
+    }
+  }
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    setIsDragging(false)
+    setDraggedDealId(null)
+    setDragOverStageId(null)
+    // Возвращаем непрозрачность
+    if (e.currentTarget instanceof HTMLElement) {
+      e.currentTarget.style.opacity = '1'
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent, stageId: string) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    setDragOverStageId(stageId)
+  }
+
+  const handleDragLeave = () => {
+    setDragOverStageId(null)
+  }
+
+  const handleDrop = async (e: React.DragEvent, targetStageId: string) => {
+    e.preventDefault()
+    setDragOverStageId(null)
+    
+    const dealId = e.dataTransfer.getData('text/plain')
+    if (!dealId || !draggedDealId) return
+
+    // Проверяем, что сделка не перемещается в ту же стадию
+    const deal = deals.find((d) => d.id === dealId)
+    if (deal && deal.stage_id === targetStageId) {
+      return
+    }
+
+    try {
+      await moveDealToStage(dealId, targetStageId)
+    } catch (error) {
+      console.error('Failed to move deal:', error)
+    }
   }
 
   if (categoryLoading || dealsLoading) {
@@ -100,8 +159,16 @@ const DealCategoryPage = () => {
     return (
       <Card 
         className="mb-2" 
-        style={{ cursor: 'pointer' }}
-        onClick={() => handleDealClick(deal)}
+        style={{ cursor: 'grab' }}
+        draggable
+        onDragStart={(e) => handleDragStart(e, deal.id)}
+        onDragEnd={handleDragEnd}
+        onClick={() => {
+          // Предотвращаем открытие модального окна при перетаскивании
+          if (!isDragging) {
+            handleDealClick(deal)
+          }
+        }}
       >
         <CardBody className="p-3">
           <div className="d-flex justify-content-between align-items-start mb-2">
@@ -158,7 +225,13 @@ const DealCategoryPage = () => {
                     const stageColor = stage.color || '#6c757d'
 
                     return (
-                      <div key={stage.id} style={{ minWidth: '280px', flexShrink: 0 }}>
+                      <div 
+                        key={stage.id} 
+                        style={{ minWidth: '280px', flexShrink: 0 }}
+                        onDragOver={(e) => handleDragOver(e, stage.id)}
+                        onDragLeave={handleDragLeave}
+                        onDrop={(e) => handleDrop(e, stage.id)}
+                      >
                         <div className="h-100">
                           <div
                             className="d-flex justify-content-between align-items-center mb-2 py-2"
@@ -189,15 +262,33 @@ const DealCategoryPage = () => {
                             </div>
                           )}
                           {/* Список сделок для этой стадии */}
-                          <div className="d-flex flex-column" style={{ minHeight: '100px' }}>
+                          <div 
+                            className="d-flex flex-column" 
+                            style={{ 
+                              minHeight: '100px',
+                              backgroundColor: dragOverStageId === stage.id ? 'rgba(0, 123, 255, 0.1)' : 'transparent',
+                              borderRadius: '0.25rem',
+                              padding: dragOverStageId === stage.id ? '0.5rem' : '0',
+                              transition: 'all 0.2s ease',
+                            }}
+                          >
                             {stageDeals.length > 0 ? (
                               stageDeals.map((deal) => (
                                 <DealCard key={deal.id} deal={deal} />
                               ))
                             ) : (
                               <div className="text-center py-3 text-muted small">
-                                <IconifyIcon icon="bx:inbox" className="fs-24 mb-2" />
-                                <div>Нет сделок</div>
+                                {dragOverStageId === stage.id ? (
+                                  <div className="py-3">
+                                    <IconifyIcon icon="bx:move" className="fs-24 mb-2" />
+                                    <div>Отпустите для перемещения</div>
+                                  </div>
+                                ) : (
+                                  <>
+                                    <IconifyIcon icon="bx:inbox" className="fs-24 mb-2" />
+                                    <div>Нет сделок</div>
+                                  </>
+                                )}
                               </div>
                             )}
                           </div>
