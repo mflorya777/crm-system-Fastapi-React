@@ -10,6 +10,7 @@ import { useDealsByCategory } from '@/hooks/useDealsByCategory'
 import type { Deal } from '@/hooks/useDealsByCategory'
 import AddDealModal from './components/AddDealModal'
 import AddDealStageModal from './components/AddDealStageModal'
+import EditDealModal from './components/EditDealModal'
 
 const DealCategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>()
@@ -17,6 +18,8 @@ const DealCategoryPage = () => {
   const { deals, loading: dealsLoading, refetch: refetchDeals } = useDealsByCategory(categoryId, true)
   const [showAddStageModal, setShowAddStageModal] = useState(false)
   const [showAddDealModal, setShowAddDealModal] = useState(false)
+  const [showEditDealModal, setShowEditDealModal] = useState(false)
+  const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null)
 
   const handleStageAdded = async () => {
     await refetchCategory()
@@ -24,6 +27,15 @@ const DealCategoryPage = () => {
   }
 
   const handleDealCreated = () => {
+    refetchDeals()
+  }
+
+  const handleDealClick = (deal: Deal) => {
+    setSelectedDeal(deal)
+    setShowEditDealModal(true)
+  }
+
+  const handleDealUpdated = () => {
     refetchDeals()
   }
 
@@ -73,7 +85,11 @@ const DealCategoryPage = () => {
   // Компонент карточки сделки
   const DealCard = ({ deal }: { deal: Deal }) => {
     return (
-      <Card className="mb-2">
+      <Card 
+        className="mb-2" 
+        style={{ cursor: 'pointer' }}
+        onClick={() => handleDealClick(deal)}
+      >
         <CardBody className="p-3">
           <div className="d-flex justify-content-between align-items-start mb-2">
             <h6 className="mb-0 fw-semibold">{deal.title}</h6>
@@ -223,6 +239,17 @@ const DealCategoryPage = () => {
               categoryId={categoryId}
               category={category}
               onDealCreated={handleDealCreated}
+            />
+          )}
+          {selectedDeal && (
+            <EditDealModal
+              show={showEditDealModal}
+              onHide={() => {
+                setShowEditDealModal(false)
+                setSelectedDeal(null)
+              }}
+              deal={selectedDeal}
+              onDealUpdated={handleDealUpdated}
             />
           )}
         </>
