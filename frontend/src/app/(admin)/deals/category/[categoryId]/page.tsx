@@ -151,6 +151,8 @@ const DealCategoryPage = () => {
                               borderBottom: `2px solid ${stageColor}`,
                               borderRadius: '0.3rem',
                               boxShadow: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)',
+                              paddingLeft: '1.25rem',
+                              paddingRight: '1.25rem',
                             }}>
                             <h6 className="mb-0 fw-semibold">{stage.name}</h6>
                             <span className="badge bg-light text-dark">{stageDeals.length}</span>
@@ -185,6 +187,31 @@ const DealCategoryPage = () => {
                       </Col>
                     )
                   })}
+                  {/* Кнопка добавления стадии справа */}
+                  <Col xs={12} md={6} lg={4} xl={3}>
+                    <div className="h-100">
+                      <div
+                        className="d-flex justify-content-center align-items-center mb-2 py-2"
+                        style={{
+                          border: '2px dashed #dee2e6',
+                          borderRadius: '0.3rem',
+                          boxShadow: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)',
+                          paddingLeft: '1.25rem',
+                          paddingRight: '1.25rem',
+                          minHeight: '43px',
+                        }}>
+                        <Button
+                          variant="light"
+                          size="sm"
+                          onClick={() => setShowAddStageModal(true)}
+                          className="d-flex align-items-center justify-content-center gap-2"
+                          style={{ border: 'none', padding: '0', background: 'transparent' }}>
+                          <IconifyIcon icon="bx:plus" className="fs-18" />
+                          <span className="small">Добавить стадию</span>
+                        </Button>
+                      </div>
+                    </div>
+                  </Col>
                 </Row>
               </div>
             </CardBody>
