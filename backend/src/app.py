@@ -42,9 +42,12 @@ from src.permissions.permissions_manager import PermissionsManager
 from src.roles.roles_manager import RolesManager
 from src.signs.signs_storage import SignsStorage
 from src.signs.signs_manager import SignsManager
+from src.deals.deals_storage import DealsStorage
+from src.deals.deals_manager import DealsManager
 from src.authorization.authorization_router import router as authorization_router
 from src.users.users_router import router as users_router
 from src.signs.signs_router import router as signs_router
+from src.deals.deals_router import router as deals_router
 
 
 _LOG = logging.getLogger("uvicorn")
@@ -103,6 +106,7 @@ def setup_app(
             users_storage = UsersStorage(mongo_client)
             notifications_storage = NotificationsStorage(mongo_client)
             signs_storage = SignsStorage(mongo_client)
+            deals_storage = DealsStorage(mongo_client)
 
             notifications_manager = NotificationManager(
                 notifications_storage,
@@ -120,9 +124,15 @@ def setup_app(
                 notification_manager=notifications_manager,
                 users_storage=users_storage,
             )
+            deals_manager = DealsManager(
+                deals_storage=deals_storage,
+                users_storage=users_storage,
+                permissions_manager=permissions_manager,
+            )
 
             app_instance.state.users_manager = users_manager
             app_instance.state.signs_manager = signs_manager
+            app_instance.state.deals_manager = deals_manager
             _LOG.info("Managers initialized successfully")
         except Exception as e:
             _LOG.error(f"Failed to initialize managers: {e}")
@@ -141,12 +151,15 @@ def setup_app(
     origins = [
         "http://localhost:3000",
         "http://localhost:3001",
+        "http://localhost:5173",
         "http://localhost:8081",
         "https://localhost:3000",
         "https://localhost:3001",
+        "https://localhost:5173",
         "https://localhost:8081",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
+        "http://127.0.0.1:5173",
         "http://127.0.0.1:8081",
     ]
 
@@ -181,6 +194,7 @@ def setup_app(
     app_instance.include_router(authorization_router)
     app_instance.include_router(users_router)
     app_instance.include_router(signs_router)
+    app_instance.include_router(deals_router)
 
 
 setup_app(

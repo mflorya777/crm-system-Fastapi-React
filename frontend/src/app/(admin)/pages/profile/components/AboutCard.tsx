@@ -18,7 +18,7 @@ const AboutCard = () => {
         <div>
           <div className="d-flex align-items-center">
             <div className="d-block">
-              <h4 className="mb-1">Jeannette C. Mullin</h4>
+              <h4 className="mb-1">Пупкин Василий Васильевич</h4>
               <p className="fs-14 mb-0">Frontend разработчик</p>
             </div>
             <div className="ms-auto">
@@ -49,7 +49,7 @@ const AboutCard = () => {
                 О себе
               </CardTitle>
               <p className="fs-15 mb-0 text-muted">
-                Привет, я Жаннетт Маллин. Я дизайнер пользовательского опыта и интерфейса. Я работаю Full Stack разработчиком уже 10 лет.
+                Привет, я Пупкин Василий. Я дизайнер пользовательского опыта и интерфейса. Я работаю Full Stack разработчиком уже 10 лет.
               </p>
               <div className="mt-3">
                 <div className="d-flex gap-2 flex-wrap">
@@ -64,39 +64,16 @@ const AboutCard = () => {
                   <span className="badge text-secondary py-1 px-2 fs-12 border rounded-1">MongoDB</span>
                 </div>
               </div>
-              <div className="mt-4">
-                <h5 className="text-dark fw-medium">Ссылки :</h5>
-                <a href="#!" className="text-primary text-decoration-underline">
-                  https://myworkbench-portfolio.com
-                </a>
-                <p className="mb-0 mt-1">
-                  <a href="#!" className="text-primary text-decoration-underline">
-                    https://scaly-paddock.biz//a.portfolio
-                  </a>
-                </p>
-              </div>
             </Col>
           </Row>
         </div>
       </CardBody>
       <CardFooter className="bg-light-subtle">
         <Row className="g-2 mb-1">
-          <Col lg={4}>
-            <Button variant="primary" type="button" className="d-flex align-items-center justify-content-center gap-1 w-100">
-              <IconifyIcon icon="iconamoon:profile-duotone" />
-              Подписаться
-            </Button>
-          </Col>
-          <Col lg={4}>
+          <Col lg={12}>
             <Button variant="success" type="button" className="d-flex align-items-center justify-content-center gap-1 w-100">
               <IconifyIcon icon="iconamoon:comment-dots-duotone" />
               Сообщение
-            </Button>
-          </Col>
-          <Col lg={4}>
-            <Button variant="danger" type="button" className="d-flex align-items-center justify-content-center gap-1 w-100">
-              <IconifyIcon icon="iconamoon:share-1-duotone" />
-              Поделиться
             </Button>
           </Col>
         </Row>

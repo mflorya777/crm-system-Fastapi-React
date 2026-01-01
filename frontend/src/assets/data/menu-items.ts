@@ -2,7 +2,7 @@ import type { MenuItemType } from '@/types/menu'
 
 export const MENU_ITEMS: MenuItemType[] = [
   {
-    key: 'general',
+    key: 'general-main',
     label: 'ОБЩЕЕ',
     isTitle: true,
   },
@@ -32,8 +32,129 @@ export const MENU_ITEMS: MenuItemType[] = [
     ],
   },
   {
+    key: 'account',
+    icon: 'iconamoon:profile-circle-duotone',
+    label: 'Аккаунт',
+    url: '/account/',
+  },
+  {
+    key: 'dashboard',
+    icon: 'iconamoon:home-duotone',
+    label: 'Рабочий стол',
+    url: '/dashboard',
+  },
+  {
+    key: 'deals',
+    icon: 'iconamoon:shopping-bag-duotone',
+    label: 'Сделки',
+    children: [
+      {
+        key: 'deals-mock-1',
+        label: 'mock 1',
+        url: '/deals/mock-1',
+        parentKey: 'deals',
+      },
+      {
+        key: 'deals-mock-2',
+        label: 'mock 2',
+        url: '/deals/mock-2',
+        parentKey: 'deals',
+      },
+    ],
+  },
+  {
+    key: 'sellers',
+    icon: 'iconamoon:briefcase-duotone',
+    label: 'Продавцы',
+    children: [
+      {
+        key: 'sellers-mock-1',
+        label: 'mock 1',
+        url: '/sellers/mock-1',
+        parentKey: 'sellers',
+      },
+      {
+        key: 'sellers-mock-2',
+        label: 'mock 2',
+        url: '/sellers/mock-2',
+        parentKey: 'sellers',
+      },
+    ],
+  },
+  {
+    key: 'tasks',
+    icon: 'iconamoon:ticket-duotone',
+    label: 'Задачи',
+    url: '/tasks',
+  },
+  {
+    key: 'lists',
+    icon: 'iconamoon:copy-duotone',
+    label: 'Списки',
+    url: '/lists',
+  },
+  {
+    key: 'mail',
+    icon: 'iconamoon:email-duotone',
+    label: 'Почта',
+    url: '/mail',
+  },
+  {
+    key: 'calendar',
+    icon: 'iconamoon:calendar-1-duotone',
+    label: 'Календарь',
+    url: '/calendar',
+  },
+  {
+    key: 'integrations',
+    icon: 'iconamoon:link-duotone',
+    label: 'Интеграции',
+    url: '/integrations',
+  },
+  {
+    key: 'plugins',
+    label: 'ПЛАГИНЫ',
+    isTitle: true,
+  },
+  {
+    key: 'chatgpt',
+    icon: 'iconamoon:comment-dots-duotone',
+    label: 'ChatGPT',
+    url: '/chatgpt',
+  },
+  {
+    key: 'general',
+    label: 'ОБЩЕЕ (test)',
+    isTitle: true,
+  },
+  {
+    key: 'dashboards',
+    icon: 'iconamoon:home-duotone',
+    label: 'Панели управления',
+    children: [
+      {
+        key: 'dashboard-analytics',
+        label: 'Аналитика',
+        url: '/dashboard/analytics',
+        parentKey: 'dashboards',
+      },
+      {
+        key: 'dashboard-finance',
+        label: 'Финансы',
+        url: '/dashboard/finance',
+        parentKey: 'dashboards',
+      },
+      {
+        key: 'dashboard-sales',
+        label: 'Продажи',
+        url: '/dashboard/sales',
+        parentKey: 'dashboards',
+      },
+    ],
+  },
+  {
     key: 'apps',
-    label: 'ПРИЛОЖЕНИЯ',
+    label: 'ПРИЛОЖЕНИЯ (test)',
     isTitle: true,
   },
   {
@@ -324,7 +445,7 @@ export const MENU_ITEMS: MenuItemType[] = [
   },
   {
     key: 'components',
-    label: 'КОМПОНЕНТЫ',
+    label: 'КОМПОНЕНТЫ (test)',
     isTitle: true,
   },
   {

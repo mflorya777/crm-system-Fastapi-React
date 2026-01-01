@@ -273,6 +273,11 @@ const customRoutes: RoutesProps[] = [
     element: <Profile />,
   },
   {
+    name: 'Account',
+    path: '/account/',
+    element: <Profile />,
+  },
+  {
     name: 'Contact Us',
     path: '/pages/contact-us',
     element: <ContactUs />,

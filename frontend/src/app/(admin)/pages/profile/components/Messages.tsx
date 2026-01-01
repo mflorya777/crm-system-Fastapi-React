@@ -19,12 +19,6 @@ const Messages = () => {
     <Card>
       <CardHeader className="d-flex align-items-center">
         <CardTitle as={'h5'}>Сообщения</CardTitle>
-        <div className="ms-auto">
-          <span className="text-primary icons-center" role="button">
-            Экспорт
-            <IconifyIcon icon="bx:export" className="ms-1" />
-          </span>
-        </div>
       </CardHeader>
       <CardBody>
         <ul className="list-unstyled mb-0">
