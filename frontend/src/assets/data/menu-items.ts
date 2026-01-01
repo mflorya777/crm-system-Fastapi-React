@@ -35,7 +35,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'account',
     icon: 'iconamoon:profile-circle-duotone',
     label: 'Аккаунт',
-    url: '/account',
+    url: '/account/',
   },
   {
     key: 'dashboard',
