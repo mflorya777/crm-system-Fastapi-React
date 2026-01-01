@@ -16,7 +16,7 @@ const DealStages = ({ category, dealsByStage, onAddStageClick }: DealStagesProps
 
   return (
     <div className="mb-4">
-      <div className="d-flex gap-3 overflow-x-auto pb-2" style={{ minHeight: '120px' }}>
+      <div className="d-flex gap-3 overflow-x-auto pb-2" style={{ maxHeight: '70px' }}>
         {sortedStages.map((stage) => {
           const dealCount = dealsByStage[stage.id] || 0
           const stageColor = stage.color || '#6c757d'
@@ -28,14 +28,14 @@ const DealStages = ({ category, dealsByStage, onAddStageClick }: DealStagesProps
               style={{
                 width: '200px',
                 minWidth: '200px',
-                borderTop: `4px solid ${stageColor}`,
+                borderTop: `2px solid ${stageColor}`,
+                borderBottom: `2px solid ${stageColor}`,
               }}>
-              <CardBody className="p-3">
-                <div className="d-flex justify-content-between align-items-center mb-2">
+              <CardBody className="py-2 px-3">
+                <div className="d-flex justify-content-between align-items-center">
                   <h6 className="mb-0 fw-semibold">{stage.name}</h6>
                   <span className="badge bg-light text-dark">{dealCount}</span>
                 </div>
-                <div className="text-muted small">Стадия {stage.order}</div>
               </CardBody>
             </Card>
           )
@@ -51,14 +51,14 @@ const DealStages = ({ category, dealsByStage, onAddStageClick }: DealStagesProps
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <CardBody className="p-3 text-center">
+          <CardBody className="py-1 px-3 text-center" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Button
               variant="light"
-              className="w-100 h-100 d-flex flex-column align-items-center justify-content-center"
-              style={{ minHeight: '80px', border: 'none' }}
+              className="w-100 h-100 d-flex align-items-center justify-content-center gap-2"
+              style={{ border: 'none', padding: '0' }}
               onClick={onAddStageClick}>
-              <IconifyIcon icon="bx:plus" className="fs-24 mb-2" />
-              <span className="small">Добавить стадию</span>
+              <IconifyIcon icon="bx:plus" className="fs-18" />
+              <span className="small" style={{ fontSize: '0.75rem' }}>Добавить стадию</span>
             </Button>
           </CardBody>
         </Card>
