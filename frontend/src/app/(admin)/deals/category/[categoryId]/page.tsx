@@ -10,7 +10,6 @@ import { useDealsByCategory } from '@/hooks/useDealsByCategory'
 import type { Deal } from '@/hooks/useDealsByCategory'
 import AddDealModal from './components/AddDealModal'
 import AddDealStageModal from './components/AddDealStageModal'
-import DealStages from './components/DealStages'
 
 const DealCategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>()
@@ -57,12 +56,6 @@ const DealCategoryPage = () => {
       </>
     )
   }
-
-  // Группируем сделки по стадиям для отображения количества
-  const dealsByStage: Record<string, number> = {}
-  deals.forEach((deal) => {
-    dealsByStage[deal.stage_id] = (dealsByStage[deal.stage_id] || 0) + 1
-  })
 
   // Группируем сделки по стадиям
   const dealsByStageMap: Record<string, Deal[]> = {}
@@ -126,15 +119,8 @@ const DealCategoryPage = () => {
           <Card>
             <CardBody>
               <h5 className="mb-3">Воронка продаж</h5>
-              {/* Стадии (воронка) */}
-              <DealStages
-                category={category}
-                dealsByStage={dealsByStage}
-                onAddStageClick={() => setShowAddStageModal(true)}
-              />
-
               {/* Колонки со сделками под стадиями */}
-              <div className="mt-4">
+              <div>
                 <Row className="g-3">
                   {sortedStages.map((stage) => {
                     const stageDeals = dealsByStageMap[stage.id] || []
