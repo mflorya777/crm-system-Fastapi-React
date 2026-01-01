@@ -7,7 +7,15 @@ import IconifyIcon from '@/components/wrappers/IconifyIcon'
 import { findAllParent, findMenuItem, getMenuItemFromURL } from '@/helpers/menu'
 import type { MenuItemType, SubMenus } from '@/types/menu'
 
-const MenuItemWithChildren = ({ item, className, linkClassName, subMenuClassName, activeMenuItems, toggleMenu }: SubMenus) => {
+const MenuItemWithChildren = ({
+  item,
+  className,
+  linkClassName,
+  subMenuClassName,
+  activeMenuItems,
+  toggleMenu,
+  onAddCategoryClick,
+}: SubMenus & { onAddCategoryClick?: () => void }) => {
   const [open, setOpen] = useState<boolean>(activeMenuItems!.includes(item.key))
 
   useEffect(() => {
@@ -59,9 +67,15 @@ const MenuItemWithChildren = ({ item, className, linkClassName, subMenuClassName
                       className="sub-nav-item"
                       subMenuClassName="nav sub-navbar-nav"
                       toggleMenu={toggleMenu}
+                      onAddCategoryClick={onAddCategoryClick}
                     />
                   ) : (
-                    <MenuItem item={child} className="sub-nav-item" linkClassName={clsx('sub-nav-link', getActiveClass(child))} />
+                    <MenuItem
+                      item={child}
+                      className="sub-nav-item"
+                      linkClassName={clsx('sub-nav-link', getActiveClass(child))}
+                      onAddCategoryClick={onAddCategoryClick}
+                    />
                   )}
                 </Fragment>
               )
@@ -73,15 +87,39 @@ const MenuItemWithChildren = ({ item, className, linkClassName, subMenuClassName
   )
 }
 
-const MenuItem = ({ item, className, linkClassName }: SubMenus) => {
+const MenuItem = ({ item, className, linkClassName, onAddCategoryClick }: SubMenus & { onAddCategoryClick?: () => void }) => {
   return (
     <li className={className}>
-      <MenuItemLink item={item} className={linkClassName} />
+      <MenuItemLink item={item} className={linkClassName} onAddCategoryClick={onAddCategoryClick} />
     </li>
   )
 }
 
-const MenuItemLink = ({ item, className }: SubMenus) => {
+const MenuItemLink = ({ item, className, onAddCategoryClick }: SubMenus & { onAddCategoryClick?: () => void }) => {
+  // Обработка клика на "Добавить категорию +"
+  if (item.key === 'deals-add-category' && item.url === '#') {
+    return (
+      <span
+        role="button"
+        onClick={(e) => {
+          e.preventDefault()
+          if (onAddCategoryClick) {
+            onAddCategoryClick()
+          }
+        }}
+        className={clsx(className, { disabled: item.isDisabled })}
+        style={{ cursor: 'pointer' }}>
+        {item.icon && (
+          <span className="nav-icon">
+            <IconifyIcon icon={item.icon} />
+          </span>
+        )}
+        <span className="nav-text">{item.label}</span>
+        {item.badge && <span className={`badge badge-pill text-end bg-${item.badge.variant}`}>{item.badge.text}</span>}
+      </span>
+    )
+  }
+
   return (
     <Link to={item.url ?? ''} target={item.target} className={clsx(className, { disabled: item.isDisabled })}>
       {item.icon && (
@@ -97,9 +135,10 @@ const MenuItemLink = ({ item, className }: SubMenus) => {
 
 type AppMenuProps = {
   menuItems: Array<MenuItemType>
+  onAddCategoryClick?: () => void
 }
 
-const AppMenu = ({ menuItems }: AppMenuProps) => {
+const AppMenu = ({ menuItems, onAddCategoryClick }: AppMenuProps) => {
   const { pathname } = useLocation()
 
   const [activeMenuItems, setActiveMenuItems] = useState<Array<string>>([])
@@ -182,9 +221,15 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
                     linkClassName={clsx('nav-link', getActiveClass(item))}
                     subMenuClassName="nav sub-navbar-nav"
                     activeMenuItems={activeMenuItems}
+                    onAddCategoryClick={onAddCategoryClick}
                   />
                 ) : (
-                  <MenuItem item={item} linkClassName={clsx('nav-link', getActiveClass(item))} className="nav-item" />
+                  <MenuItem
+                    item={item}
+                    linkClassName={clsx('nav-link', getActiveClass(item))}
+                    className="nav-item"
+                    onAddCategoryClick={onAddCategoryClick}
+                  />
                 )}
               </>
             )}
