@@ -1,7 +1,9 @@
+import { useState } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from 'react-bootstrap'
 
 import TextFormInput from '@/components/form/TextFormInput'
 import { useUpdateDealStage } from '@/hooks/useUpdateDealStage'
+import { useDeleteDealStage } from '@/hooks/useDeleteDealStage'
 import type { DealCategory } from '@/hooks/useDealCategories'
 
 interface EditDealStageModalProps {
@@ -11,9 +13,12 @@ interface EditDealStageModalProps {
   currentStages: DealCategory['stages']
   stageId: string
   onStageUpdated?: (category: DealCategory) => void
+  onStageDeleted?: () => void
 }
 
-const EditDealStageModal = ({ show, onHide, categoryId, currentStages, stageId, onStageUpdated }: EditDealStageModalProps) => {
+const EditDealStageModal = ({ show, onHide, categoryId, currentStages, stageId, onStageUpdated, onStageDeleted }: EditDealStageModalProps) => {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  
   const { control, updateStage, loading, reset } = useUpdateDealStage(categoryId, currentStages, stageId, (category) => {
     onHide()
     if (onStageUpdated) {
@@ -21,9 +26,21 @@ const EditDealStageModal = ({ show, onHide, categoryId, currentStages, stageId, 
     }
   })
 
+  const { deleteStage, loading: deleteLoading } = useDeleteDealStage(() => {
+    onHide()
+    if (onStageDeleted) {
+      onStageDeleted()
+    }
+  })
+
   const handleClose = () => {
     reset()
+    setShowDeleteConfirm(false)
     onHide()
+  }
+
+  const handleDelete = async () => {
+    await deleteStage(categoryId, stageId)
   }
 
   return (
@@ -59,14 +76,51 @@ const EditDealStageModal = ({ show, onHide, categoryId, currentStages, stageId, 
             label="Цвет стадии"
             id="stage-color"
           />
+
+          {/* Подтверждение удаления */}
+          {showDeleteConfirm && (
+            <div className="alert alert-danger mt-3">
+              <strong>Вы уверены, что хотите удалить эту стадию?</strong>
+              <p className="small mb-2 text-muted">Сделки, привязанные к этой стадии, останутся, но стадия будет скрыта.</p>
+              <div>
+                <Button 
+                  variant="danger" 
+                  size="sm" 
+                  onClick={handleDelete} 
+                  disabled={deleteLoading}
+                  className="me-2"
+                >
+                  {deleteLoading ? 'Удаление...' : 'Да, удалить'}
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  size="sm" 
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={deleteLoading}
+                >
+                  Отмена
+                </Button>
+              </div>
+            </div>
+          )}
         </ModalBody>
-        <ModalFooter>
-          <Button type="button" variant="secondary" onClick={handleClose} disabled={loading}>
-            Отмена
+        <ModalFooter className="justify-content-between">
+          <Button 
+            type="button" 
+            variant="outline-danger" 
+            onClick={() => setShowDeleteConfirm(true)} 
+            disabled={loading || deleteLoading || showDeleteConfirm}
+          >
+            Удалить
           </Button>
-          <Button type="submit" variant="primary" disabled={loading}>
-            {loading ? 'Сохранение...' : 'Сохранить'}
-          </Button>
+          <div>
+            <Button type="button" variant="secondary" onClick={handleClose} disabled={loading || deleteLoading} className="me-2">
+              Отмена
+            </Button>
+            <Button type="submit" variant="primary" disabled={loading || deleteLoading}>
+              {loading ? 'Сохранение...' : 'Сохранить'}
+            </Button>
+          </div>
         </ModalFooter>
       </form>
     </Modal>
@@ -74,4 +128,3 @@ const EditDealStageModal = ({ show, onHide, categoryId, currentStages, stageId, 
 }
 
 export default EditDealStageModal
-

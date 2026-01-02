@@ -22,6 +22,7 @@ class DealStage(BaseModel):
     name: str = Field(..., description="Название стадии")
     order: int = Field(..., description="Порядок стадии в воронке")
     color: Optional[str] = Field(default=None, description="Цвет стадии (hex код)")
+    is_active: bool = Field(default=True, description="Активна ли стадия")
     created_at: dt.datetime = Field(default_factory=utc_now)
     updated_at: Optional[dt.datetime] = Field(default=None)
 

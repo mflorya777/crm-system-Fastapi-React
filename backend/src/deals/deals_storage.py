@@ -286,6 +286,37 @@ class DealsStorage:
             update_query=update_query,
         )
 
+    async def soft_delete_stage(
+        self,
+        actor_id: UUID,
+        category_id: UUID,
+        stage_id: UUID,
+    ):
+        """Мягкое удаление стадии (установка is_active = False)"""
+        _LOG.info(f"Мягкое удаление стадии: {stage_id} в категории: {category_id}")
+        
+        # Получаем категорию
+        category = await self.get_category(category_id)
+        
+        # Находим и обновляем стадию
+        stage_found = False
+        for stage in category.stages:
+            if stage.id == stage_id:
+                stage.is_active = False
+                stage.updated_at = utc_now()
+                stage_found = True
+                break
+        
+        if not stage_found:
+            raise DealsStorageException(f"Стадия {stage_id} не найдена в категории {category_id}")
+        
+        # Обновляем категорию с новыми стадиями
+        await self.update_category_stages(
+            actor_id=actor_id,
+            category_id=category_id,
+            stages=category.stages,
+        )
+
     async def add_deal(
         self,
         actor_id: UUID | None,

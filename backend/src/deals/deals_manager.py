@@ -203,6 +203,33 @@ class DealsManager:
                 f"Ошибка при удалении категории: {str(e)}",
             )
 
+    async def delete_stage(
+        self,
+        actor_id: UUID,
+        category_id: UUID,
+        stage_id: UUID,
+    ):
+        """Мягкое удаление стадии (установка is_active = False)"""
+        # Проверяем, что категория существует
+        category = await self.get_category(actor_id, category_id)
+        
+        # Проверяем, что стадия существует
+        stage_exists = any(stage.id == stage_id for stage in category.stages)
+        if not stage_exists:
+            raise InvalidStageError(f"Стадия {stage_id} не найдена в категории {category_id}")
+        
+        try:
+            await self.deals_storage.soft_delete_stage(
+                actor_id=actor_id,
+                category_id=category_id,
+                stage_id=stage_id,
+            )
+        except Exception as e:
+            _LOG.error(e)
+            raise DealsManagerException(
+                f"Ошибка при удалении стадии: {str(e)}",
+            )
+
     async def create_deal(
         self,
         actor_id: UUID,

@@ -359,6 +359,59 @@ async def update_category_stages(
         )
 
 
+@router.delete(
+    "/categories/{category_id}/stages/{stage_id}",
+    dependencies=[Depends(CookieAuthMiddleware())],
+)
+async def delete_stage(
+    request: Request,
+    category_id: UUID,
+    stage_id: UUID,
+) -> DealCategoryApiResponse | None:
+    """Мягкое удаление стадии (установка is_active = False)"""
+    deals_manager: DealsManager = request.app.state.deals_manager
+    user_id = request.state.jwt_payload["user_id"]
+
+    errors = []
+    try:
+        await deals_manager.delete_stage(
+            actor_id=user_id,
+            category_id=category_id,
+            stage_id=stage_id,
+        )
+
+        return DealCategoryApiResponse.success_response(
+            message_text="Стадия успешно удалена.",
+        )
+    except NoSuchDealCategoryError as e:
+        _LOG.error(e)
+        error = ResponseError(
+            code=ApiErrorCodes.BASE_EXCEPTION,
+            text=str(e),
+        )
+        errors.append(error)
+    except InvalidStageError as e:
+        _LOG.error(e)
+        error = ResponseError(
+            code=ApiErrorCodes.BASE_EXCEPTION,
+            text=str(e),
+        )
+        errors.append(error)
+    except Exception as e:
+        _LOG.error(e)
+        error = ResponseError(
+            code=ApiErrorCodes.BASE_EXCEPTION,
+            text=f"Неизвестная ошибка. {str(e)}",
+        )
+        errors.append(error)
+
+    if errors:
+        return DealCategoryApiResponse.error_response(
+            errors=errors,
+            message_text="Ошибка при удалении стадии.",
+        )
+
+
 @router.post(
     "",
     dependencies=[Depends(CookieAuthMiddleware())],

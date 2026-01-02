@@ -32,6 +32,7 @@ class DealStageResponse(BaseModel):
     name: str = Field(...)
     order: int = Field(...)
     color: Optional[str] = Field(default=None)
+    is_active: bool = Field(default=True)
     created_at: dt.datetime = Field(...)
     updated_at: Optional[dt.datetime] = Field(default=None)
 
@@ -42,6 +43,7 @@ class DealStageResponse(BaseModel):
             name=stage.name,
             order=stage.order,
             color=stage.color,
+            is_active=stage.is_active,
             created_at=stage.created_at,
             updated_at=stage.updated_at,
         )

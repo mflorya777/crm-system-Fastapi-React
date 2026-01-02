@@ -429,8 +429,12 @@ const DealCategoryPage = () => {
     )
   }
 
-  // Сортируем стадии по порядку
-  const sortedStages = category.stages ? [...category.stages].sort((a, b) => a.order - b.order) : []
+  // Сортируем стадии по порядку и фильтруем только активные
+  const sortedStages = category.stages 
+    ? [...category.stages]
+        .filter((stage) => stage.is_active !== false) // Показываем только активные стадии
+        .sort((a, b) => a.order - b.order) 
+    : []
   
   // Фильтруем стадии для отображения в режиме колонок (если выбран фильтр по стадии)
   const filteredStages = filterStageId 
@@ -1012,6 +1016,7 @@ const DealCategoryPage = () => {
               currentStages={category.stages}
               stageId={selectedStageId}
               onStageUpdated={handleStageUpdated}
+              onStageDeleted={handleStageUpdated}
             />
           )}
         </>
