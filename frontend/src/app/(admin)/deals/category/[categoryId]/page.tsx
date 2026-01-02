@@ -132,7 +132,7 @@ const DealCategoryPage = () => {
     }
   }
 
-  // Группируем сделки по стадиям и сортируем по order (выносим выше, чтобы использовать в обработчиках)
+  // Группируем сделки по стадиям (выносим выше, чтобы использовать в обработчиках)
   // Применяем поиск для фильтрации в режиме колонок
   const filteredDealsForColumns = deals.filter((deal) => {
     if (searchQuery && !deal.title.toLowerCase().includes(searchQuery.toLowerCase())) {
@@ -149,9 +149,22 @@ const DealCategoryPage = () => {
     dealsByStageMap[deal.stage_id].push(deal)
   })
   
-  // Сортируем сделки по order в каждой стадии
+  // Сортируем сделки внутри каждой стадии по выбранному полю
   Object.keys(dealsByStageMap).forEach((stageId) => {
-    dealsByStageMap[stageId].sort((a, b) => a.order - b.order)
+    dealsByStageMap[stageId].sort((a, b) => {
+      let comparison = 0
+      if (sortField === 'created_at') {
+        comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      } else if (sortField === 'amount') {
+        comparison = (a.amount || 0) - (b.amount || 0)
+      } else if (sortField === 'title') {
+        comparison = a.title.localeCompare(b.title)
+      } else {
+        // По умолчанию сортируем по order
+        comparison = a.order - b.order
+      }
+      return sortDirection === 'asc' ? comparison : -comparison
+    })
   })
 
   const handleDragOver = (e: React.DragEvent, stageId: string) => {
@@ -412,6 +425,11 @@ const DealCategoryPage = () => {
 
   // Сортируем стадии по порядку
   const sortedStages = category.stages ? [...category.stages].sort((a, b) => a.order - b.order) : []
+  
+  // Фильтруем стадии для отображения в режиме колонок (если выбран фильтр по стадии)
+  const filteredStages = filterStageId 
+    ? sortedStages.filter((stage) => stage.id === filterStageId)
+    : sortedStages
 
   const renderPlaceholder = (stageId: string, index: number) => {
     const isActive = dragOverPosition?.stageId === stageId && dragOverPosition.index === index
@@ -653,9 +671,9 @@ const DealCategoryPage = () => {
               {viewMode === 'columns' && (
               <div className="overflow-x-auto pb-2">
                 <div className="d-flex gap-3" style={{ flexWrap: 'nowrap' }}>
-                  {sortedStages.map((stage, idx) => {
+                  {filteredStages.map((stage, idx) => {
                     const stageDeals = dealsByStageMap[stage.id] || []
-                    const isFirstStage = stage.order === sortedStages[0]?.order
+                    const isFirstStage = stage.order === filteredStages[0]?.order
                     const stageColor = stage.color || '#6c757d'
                     const baseBg = idx % 2 === 0 ? 'transparent' : '#f7f8fa'
                     const hoverBg = 'rgba(0, 123, 255, 0.04)'
