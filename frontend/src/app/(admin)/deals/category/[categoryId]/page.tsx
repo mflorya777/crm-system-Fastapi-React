@@ -159,6 +159,29 @@ const DealCategoryPage = () => {
     setDragOverPosition({ stageId, index: insertIndex })
   }
 
+  const handleCardDragOver = (e: React.DragEvent, stageId: string, dealIndex: number) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    const threshold = Math.max(12, draggedCardHeight / 6)
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+    const y = e.clientY - rect.top
+    const elementTop = 0
+    const elementBottom = rect.height
+    const elementCenter = rect.height / 2
+
+    let insertIndex = dealIndex
+    if (y <= elementTop + threshold) {
+      insertIndex = dealIndex
+    } else if (y >= elementBottom - threshold) {
+      insertIndex = dealIndex + 1
+    } else {
+      insertIndex = y < elementCenter ? dealIndex : dealIndex + 1
+    }
+
+    setDragOverStageId(stageId)
+    setDragOverPosition({ stageId, index: insertIndex })
+  }
+
   const handleDragLeave = (e: React.DragEvent) => {
     // Проверяем, что мы действительно покинули контейнер
     const currentTarget = e.currentTarget as HTMLElement
@@ -366,6 +389,10 @@ const DealCategoryPage = () => {
         data-deal-id={deal.id}
         onDragStart={(e) => handleDragStart(e, deal.id)}
         onDragEnd={handleDragEnd}
+        onDragOver={(e) => {
+          if (!isDragging || !draggedDealId) return
+          handleCardDragOver(e, deal.stage_id, (dealsByStageMap[deal.stage_id] || []).findIndex((d) => d.id === deal.id))
+        }}
         onClick={() => {
           // Предотвращаем открытие модального окна при перетаскивании
           if (dragStartedRef.current || isDragging) {
@@ -423,10 +450,12 @@ const DealCategoryPage = () => {
               {/* Колонки со сделками под стадиями */}
               <div className="overflow-x-auto pb-2">
                 <div className="d-flex gap-3" style={{ flexWrap: 'nowrap' }}>
-                  {sortedStages.map((stage) => {
+                  {sortedStages.map((stage, idx) => {
                     const stageDeals = dealsByStageMap[stage.id] || []
                     const isFirstStage = stage.order === sortedStages[0]?.order
                     const stageColor = stage.color || '#6c757d'
+                    const baseBg = idx % 2 === 0 ? 'transparent' : '#f7f8fa'
+                    const hoverBg = 'rgba(0, 123, 255, 0.04)'
 
                     return (
                   <div 
@@ -434,7 +463,7 @@ const DealCategoryPage = () => {
                     style={{ 
                       minWidth: '280px', 
                       flexShrink: 0,
-                      backgroundColor: dragOverStageId === stage.id ? 'rgba(0, 123, 255, 0.04)' : 'transparent',
+                      backgroundColor: dragOverStageId === stage.id ? hoverBg : baseBg,
                       padding: '6px',
                       borderRadius: '0.35rem',
                       transition: 'all 0.15s ease',
