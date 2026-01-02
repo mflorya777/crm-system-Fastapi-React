@@ -185,3 +185,14 @@ class DealApiResponse(ApiResponse):
 class DealsListApiResponse(ApiResponse):
     """API ответ со списком сделок"""
     data: List[DealResponse] | dict = Field(default={})
+
+
+class DealsCountResponse(BaseModel):
+    """Модель для ответа с количеством сделок"""
+    count: int = Field(..., description="Количество сделок")
+    category_id: UUID = Field(..., description="ID категории")
+
+
+class DealsCountApiResponse(ApiResponse):
+    """API ответ с количеством сделок"""
+    data: DealsCountResponse | dict = Field(default={})

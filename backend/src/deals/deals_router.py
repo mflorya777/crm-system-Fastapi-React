@@ -34,6 +34,8 @@ from src.deals.deals_router_models import (
     DealResponse,
     DealApiResponse,
     DealsListApiResponse,
+    DealsCountResponse,
+    DealsCountApiResponse,
 )
 from src.deals.deals_storage_models import DealStage
 
@@ -469,6 +471,59 @@ async def get_deals_by_category(
         return DealsListApiResponse.error_response(
             errors=errors,
             message_text="Ошибка при получении сделок.",
+        )
+
+
+@router.get(
+    "/category/{category_id}/deals/count",
+    dependencies=[Depends(CookieAuthMiddleware())],
+)
+async def count_deals_by_category(
+    request: Request,
+    category_id: UUID,
+    active_only: bool = Query(
+        default=True,
+        description="Только активные сделки",
+    ),
+) -> DealsCountApiResponse | None:
+    """Получить количество сделок в категории"""
+    deals_manager: DealsManager = request.app.state.deals_manager
+    user_id = request.state.jwt_payload["user_id"]
+
+    errors = []
+    try:
+        count = await deals_manager.count_deals_by_category(
+            actor_id=user_id,
+            category_id=category_id,
+            active_only=active_only,
+        )
+        count_response = DealsCountResponse(
+            count=count,
+            category_id=category_id,
+        )
+
+        return DealsCountApiResponse.success_response(
+            data=count_response,
+        )
+    except NoSuchDealCategoryError as e:
+        _LOG.error(e)
+        error = ResponseError(
+            code=ApiErrorCodes.BASE_EXCEPTION,
+            text=str(e),
+        )
+        errors.append(error)
+    except Exception as e:
+        _LOG.error(e)
+        error = ResponseError(
+            code=ApiErrorCodes.BASE_EXCEPTION,
+            text=f"Неизвестная ошибка. {str(e)}",
+        )
+        errors.append(error)
+
+    if errors:
+        return DealsCountApiResponse.error_response(
+            errors=errors,
+            message_text="Ошибка при подсчете сделок.",
         )
 
 

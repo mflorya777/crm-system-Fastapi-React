@@ -449,7 +449,10 @@ const DealCategoryPage = () => {
           <Card>
             <CardBody>
               <div className="d-flex align-items-center justify-content-between mb-3">
-                <h5 className="mb-0">Воронка продаж</h5>
+                <div className="d-flex align-items-center gap-2">
+                  <h5 className="mb-0">Воронка продаж</h5>
+                  <span className="text-muted small">({deals.length} {deals.length === 1 ? 'сделка' : deals.length >= 2 && deals.length <= 4 ? 'сделки' : 'сделок'})</span>
+                </div>
                 <div className="d-flex gap-1">
                   <Button
                     variant={viewMode === 'columns' ? 'primary' : 'light'}

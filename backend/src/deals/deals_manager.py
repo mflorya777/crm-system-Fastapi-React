@@ -295,6 +295,30 @@ class DealsManager:
                 f"Ошибка при получении сделок: {str(e)}",
             )
 
+    async def count_deals_by_category(
+        self,
+        actor_id: UUID,
+        category_id: UUID,
+        active_only: bool = True,
+    ) -> int:
+        """Получить количество сделок в категории"""
+        # Проверяем, что категория существует
+        await self.get_category(
+            actor_id,
+            category_id,
+            )
+        
+        try:
+            return await self.deals_storage.count_deals_by_category(
+                category_id=category_id,
+                active_only=active_only,
+            )
+        except Exception as e:
+            _LOG.error(e)
+            raise DealsManagerException(
+                f"Ошибка при подсчете сделок: {str(e)}",
+            )
+
     async def update_deal(
         self,
         actor_id: UUID,

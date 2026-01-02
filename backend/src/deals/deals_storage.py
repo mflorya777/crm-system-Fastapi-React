@@ -397,6 +397,22 @@ class DealsStorage:
             deals.append(DealToGet(**deal))
         return deals
 
+    async def count_deals_by_category(
+        self,
+        category_id: UUID,
+        active_only: bool = True,
+    ) -> int:
+        """Получить количество сделок в категории"""
+        _LOG.info(f"Считаю сделки по категории: {category_id}")
+        query = {
+            "category_id": category_id,
+        }
+        if active_only:
+            query["is_active"] = True
+        
+        count = await self.deals_collection.count_documents(query)
+        return count
+
     async def get_deals_by_responsible_user(
         self,
         user_id: UUID,
