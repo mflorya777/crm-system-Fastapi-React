@@ -31,10 +31,13 @@ from src.signs.signs_storage import SignsStorage
 from src.signs.signs_manager import SignsManager
 from src.deals.deals_storage import DealsStorage
 from src.deals.deals_manager import DealsManager
+from src.buyers.buyers_storage import BuyersStorage
+from src.buyers.buyers_manager import BuyersManager
 from src.authorization.authorization_router import router as authorization_router
 from src.users.users_router import router as users_router
 from src.signs.signs_router import router as signs_router
 from src.deals.deals_router import router as deals_router
+from src.buyers.buyers_router import router as buyers_router
 
 
 # Загружаем переменные окружения из local.env перед созданием конфигурации
@@ -111,6 +114,7 @@ def setup_app(
             notifications_storage = NotificationsStorage(mongo_client)
             signs_storage = SignsStorage(mongo_client)
             deals_storage = DealsStorage(mongo_client)
+            buyers_storage = BuyersStorage(mongo_client)
 
             notifications_manager = NotificationManager(
                 notifications_storage,
@@ -133,10 +137,16 @@ def setup_app(
                 users_storage=users_storage,
                 permissions_manager=permissions_manager,
             )
+            buyers_manager = BuyersManager(
+                buyers_storage=buyers_storage,
+                users_storage=users_storage,
+                permissions_manager=permissions_manager,
+            )
 
             app_instance.state.users_manager = users_manager
             app_instance.state.signs_manager = signs_manager
             app_instance.state.deals_manager = deals_manager
+            app_instance.state.buyers_manager = buyers_manager
             _LOG.info("Managers initialized successfully")
         except Exception as e:
             _LOG.error(f"Failed to initialize managers: {e}")
@@ -200,6 +210,7 @@ def setup_app(
     app_instance.include_router(users_router)
     app_instance.include_router(signs_router)
     app_instance.include_router(deals_router)
+    app_instance.include_router(buyers_router)
 
 
 setup_app(

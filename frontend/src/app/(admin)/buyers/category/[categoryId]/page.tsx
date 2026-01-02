@@ -5,31 +5,31 @@ import { Button, Card, CardBody, Col, Row, Form, InputGroup, Dropdown } from 're
 import IconifyIcon from '@/components/wrappers/IconifyIcon'
 import PageBreadcrumb from '@/components/layout/PageBreadcrumb'
 import PageMetaData from '@/components/PageTitle'
-import { useDealCategory } from '@/hooks/useDealCategory'
-import { useDealsByCategory } from '@/hooks/useDealsByCategory'
-import { useMoveDealToStage } from '@/hooks/useMoveDealToStage'
-import { useDeleteDealCategory } from '@/hooks/useDeleteDealCategory'
-import type { Deal } from '@/hooks/useDealsByCategory'
-import AddDealModal from './components/AddDealModal'
-import AddDealStageModal from './components/AddDealStageModal'
-import EditDealModal from './components/EditDealModal'
-import EditDealStageModal from './components/EditDealStageModal'
+import { useBuyerCategory } from '@/hooks/useBuyerCategory'
+import { useBuyersByCategory } from '@/hooks/useBuyersByCategory'
+import { useMoveBuyerToStage } from '@/hooks/useMoveBuyerToStage'
+import { useDeleteBuyerCategory } from '@/hooks/useDeleteBuyerCategory'
+import type { Buyer } from '@/hooks/useBuyersByCategory'
+import AddBuyerModal from './components/AddBuyerModal'
+import AddBuyerStageModal from './components/AddBuyerStageModal'
+import EditBuyerModal from './components/EditBuyerModal'
+import EditBuyerStageModal from './components/EditBuyerStageModal'
 
-const DealCategoryPage = () => {
+const BuyerCategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>()
   const navigate = useNavigate()
-  const { category, loading: categoryLoading, error: categoryError, refetch: refetchCategory } = useDealCategory(categoryId)
-  const { deals, loading: dealsLoading, refetch: refetchDeals } = useDealsByCategory(categoryId, { activeOnly: true })
-  const { deleteCategory, loading: deleteCategoryLoading } = useDeleteDealCategory(() => {
-    navigate('/deals')
+  const { category, loading: categoryLoading, error: categoryError, refetch: refetchCategory } = useBuyerCategory(categoryId)
+  const { buyers, loading: buyersLoading, refetch: refetchBuyers } = useBuyersByCategory(categoryId, { activeOnly: true })
+  const { deleteCategory, loading: deleteCategoryLoading } = useDeleteBuyerCategory(() => {
+    navigate('/buyers')
   })
   const [showAddStageModal, setShowAddStageModal] = useState(false)
-  const [showAddDealModal, setShowAddDealModal] = useState(false)
-  const [showEditDealModal, setShowEditDealModal] = useState(false)
-  const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null)
+  const [showAddBuyerModal, setShowAddBuyerModal] = useState(false)
+  const [showEditBuyerModal, setShowEditBuyerModal] = useState(false)
+  const [selectedBuyer, setSelectedBuyer] = useState<Buyer | null>(null)
   const [showEditStageModal, setShowEditStageModal] = useState(false)
   const [selectedStageId, setSelectedStageId] = useState<string | null>(null)
-  const [draggedDealId, setDraggedDealId] = useState<string | null>(null)
+  const [draggedBuyerId, setDraggedBuyerId] = useState<string | null>(null)
   const [draggedCardHeight, setDraggedCardHeight] = useState<number>(80)
   const [dragOverStageId, setDragOverStageId] = useState<string | null>(null)
   const [dragOverPosition, setDragOverPosition] = useState<{ stageId: string; index: number } | null>(null)
@@ -40,22 +40,22 @@ const DealCategoryPage = () => {
   
   // Поиск, сортировка, фильтрация
   const [searchQuery, setSearchQuery] = useState('')
-  const [sortField, setSortField] = useState<'order' | 'created_at' | 'amount' | 'title'>('order')
+  const [sortField, setSortField] = useState<'order' | 'created_at' | 'potential_value' | 'name'>('order')
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
   const [filterStageId, setFilterStageId] = useState<string | null>(null)
 
-  const { moveDealToStage } = useMoveDealToStage(() => {
-    refetchDeals()
+  const { moveBuyerToStage } = useMoveBuyerToStage(() => {
+    refetchBuyers()
   })
 
   const handleStageAdded = async () => {
     await refetchCategory()
-    await refetchDeals()
+    await refetchBuyers()
   }
 
   const handleStageUpdated = async () => {
     await refetchCategory()
-    await refetchDeals()
+    await refetchBuyers()
   }
 
   const handleStageClick = (stageId: string) => {
@@ -63,28 +63,28 @@ const DealCategoryPage = () => {
     setShowEditStageModal(true)
   }
 
-  const handleDealCreated = () => {
-    refetchDeals()
+  const handleBuyerCreated = () => {
+    refetchBuyers()
   }
 
-  const handleDealClick = (deal: Deal) => {
-    setSelectedDeal(deal)
-    setShowEditDealModal(true)
+  const handleBuyerClick = (buyer: Buyer) => {
+    setSelectedBuyer(buyer)
+    setShowEditBuyerModal(true)
   }
 
-  const handleDealUpdated = () => {
-    refetchDeals()
+  const handleBuyerUpdated = () => {
+    refetchBuyers()
   }
 
-  // Фильтрация и сортировка сделок
-  const filteredAndSortedDeals = deals
-    .filter((deal) => {
-      // Поиск по названию
-      if (searchQuery && !deal.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+  // Фильтрация и сортировка покупателей
+  const filteredAndSortedBuyers = buyers
+    .filter((buyer) => {
+      // Поиск по имени
+      if (searchQuery && !buyer.name.toLowerCase().includes(searchQuery.toLowerCase())) {
         return false
       }
       // Фильтр по стадии
-      if (filterStageId && deal.stage_id !== filterStageId) {
+      if (filterStageId && buyer.stage_id !== filterStageId) {
         return false
       }
       return true
@@ -95,10 +95,10 @@ const DealCategoryPage = () => {
         comparison = a.order - b.order
       } else if (sortField === 'created_at') {
         comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      } else if (sortField === 'amount') {
-        comparison = (a.amount || 0) - (b.amount || 0)
-      } else if (sortField === 'title') {
-        comparison = a.title.localeCompare(b.title)
+      } else if (sortField === 'potential_value') {
+        comparison = (a.potential_value || 0) - (b.potential_value || 0)
+      } else if (sortField === 'name') {
+        comparison = a.name.localeCompare(b.name)
       }
       return sortDirection === 'asc' ? comparison : -comparison
     })
@@ -110,16 +110,16 @@ const DealCategoryPage = () => {
   const sortFieldLabels: Record<string, string> = {
     order: 'Порядок',
     created_at: 'Дата создания',
-    amount: 'Сумма',
-    title: 'Название',
+    potential_value: 'Сумма',
+    name: 'Имя',
   }
 
-  const handleDragStart = (e: React.DragEvent, dealId: string) => {
+  const handleDragStart = (e: React.DragEvent, buyerId: string) => {
     dragStartedRef.current = true
     setIsDragging(true)
-    setDraggedDealId(dealId)
+    setDraggedBuyerId(buyerId)
     e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.setData('text/plain', dealId)
+    e.dataTransfer.setData('text/plain', buyerId)
     if (e.currentTarget instanceof HTMLElement) {
       const rect = e.currentTarget.getBoundingClientRect()
       setDraggedCardHeight(rect.height || 80)
@@ -129,7 +129,7 @@ const DealCategoryPage = () => {
 
   const handleDragEnd = (e: React.DragEvent) => {
     setIsDragging(false)
-    setDraggedDealId(null)
+    setDraggedBuyerId(null)
     setDragOverStageId(null)
     setDragOverPosition(null)
     // сбрасываем флаг начала драга, чтобы клик после дропа не открывал модалку
@@ -141,35 +141,35 @@ const DealCategoryPage = () => {
     }
   }
 
-  // Группируем сделки по стадиям (выносим выше, чтобы использовать в обработчиках)
+  // Группируем покупателей по стадиям (выносим выше, чтобы использовать в обработчиках)
   // Применяем поиск для фильтрации в режиме колонок
-  const filteredDealsForColumns = deals.filter((deal) => {
-    if (searchQuery && !deal.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+  const filteredBuyersForColumns = buyers.filter((buyer) => {
+    if (searchQuery && !buyer.name.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false
     }
     return true
   })
   
-  const dealsByStageMap: Record<string, Deal[]> = {}
-  filteredDealsForColumns.forEach((deal) => {
-    if (!dealsByStageMap[deal.stage_id]) {
-      dealsByStageMap[deal.stage_id] = []
+  const buyersByStageMap: Record<string, Buyer[]> = {}
+  filteredBuyersForColumns.forEach((buyer) => {
+    if (!buyersByStageMap[buyer.stage_id]) {
+      buyersByStageMap[buyer.stage_id] = []
     }
-    dealsByStageMap[deal.stage_id].push(deal)
+    buyersByStageMap[buyer.stage_id].push(buyer)
   })
   
-  // Сортируем сделки внутри каждой стадии по выбранному полю
-  Object.keys(dealsByStageMap).forEach((stageId) => {
-    dealsByStageMap[stageId].sort((a, b) => {
+  // Сортируем покупателей внутри каждой стадии по выбранному полю
+  Object.keys(buyersByStageMap).forEach((stageId) => {
+    buyersByStageMap[stageId].sort((a, b) => {
       let comparison = 0
       if (sortField === 'order') {
         comparison = a.order - b.order
       } else if (sortField === 'created_at') {
         comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      } else if (sortField === 'amount') {
-        comparison = (a.amount || 0) - (b.amount || 0)
-      } else if (sortField === 'title') {
-        comparison = a.title.localeCompare(b.title)
+      } else if (sortField === 'potential_value') {
+        comparison = (a.potential_value || 0) - (b.potential_value || 0)
+      } else if (sortField === 'name') {
+        comparison = a.name.localeCompare(b.name)
       }
       return sortDirection === 'asc' ? comparison : -comparison
     })
@@ -180,24 +180,24 @@ const DealCategoryPage = () => {
     e.dataTransfer.dropEffect = 'move'
     setDragOverStageId(stageId)
     
-    const stageDeals = dealsByStageMap[stageId] || []
+    const stageBuyers = buyersByStageMap[stageId] || []
     const container = e.currentTarget as HTMLElement
     const rect = container.getBoundingClientRect()
     const y = e.clientY - rect.top
     const threshold = Math.max(12, draggedCardHeight / 6) // слегка расширяем верх/низ зоны карточки
     
     // Находим все карточки в контейнере
-    const dealElements = container.querySelectorAll('[data-deal-id]')
-    let insertIndex = stageDeals.length
+    const buyerElements = container.querySelectorAll('[data-buyer-id]')
+    let insertIndex = stageBuyers.length
     
-    if (dealElements.length === 0) {
+    if (buyerElements.length === 0) {
       // Нет карточек, вставляем в начало
       insertIndex = 0
     } else {
       // Проверяем позицию курсора относительно карточек
       let foundPosition = false
       
-      dealElements.forEach((element, idx) => {
+      buyerElements.forEach((element, idx) => {
         if (foundPosition) return
         
         const elementRect = element.getBoundingClientRect()
@@ -219,9 +219,9 @@ const DealCategoryPage = () => {
           // Курсор выше первой карточки
           insertIndex = 0
           foundPosition = true
-        } else if (idx === dealElements.length - 1 && y > elementBottom) {
+        } else if (idx === buyerElements.length - 1 && y > elementBottom) {
           // Курсор ниже последней карточки
-          insertIndex = stageDeals.length
+          insertIndex = stageBuyers.length
           foundPosition = true
         }
       })
@@ -230,7 +230,7 @@ const DealCategoryPage = () => {
     setDragOverPosition({ stageId, index: insertIndex })
   }
 
-  const handleCardDragOver = (e: React.DragEvent, stageId: string, dealIndex: number) => {
+  const handleCardDragOver = (e: React.DragEvent, stageId: string, buyerIndex: number) => {
     e.preventDefault()
     e.dataTransfer.dropEffect = 'move'
     const threshold = Math.max(12, draggedCardHeight / 6)
@@ -240,13 +240,13 @@ const DealCategoryPage = () => {
     const elementBottom = rect.height
     const elementCenter = rect.height / 2
 
-    let insertIndex = dealIndex
+    let insertIndex = buyerIndex
     if (y <= elementTop + threshold) {
-      insertIndex = dealIndex
+      insertIndex = buyerIndex
     } else if (y >= elementBottom - threshold) {
-      insertIndex = dealIndex + 1
+      insertIndex = buyerIndex + 1
     } else {
-      insertIndex = y < elementCenter ? dealIndex : dealIndex + 1
+      insertIndex = y < elementCenter ? buyerIndex : buyerIndex + 1
     }
 
     setDragOverStageId(stageId)
@@ -270,19 +270,19 @@ const DealCategoryPage = () => {
     
     const currentDragOverPosition = dragOverPosition
     
-    const dealId = e.dataTransfer.getData('text/plain')
-    if (!dealId || !draggedDealId) {
+    const buyerId = e.dataTransfer.getData('text/plain')
+    if (!buyerId || !draggedBuyerId) {
       return
     }
 
-    const deal = deals.find((d) => d.id === dealId)
-    if (!deal) {
+    const buyer = buyers.find((b) => b.id === buyerId)
+    if (!buyer) {
       return
     }
 
     // Определяем позицию вставки
-    const stageDeals = dealsByStageMap[targetStageId] || []
-    let insertIndex = stageDeals.length
+    const stageBuyers = buyersByStageMap[targetStageId] || []
+    let insertIndex = stageBuyers.length
     
     // Используем сохраненную позицию из dragOverPosition
     if (currentDragOverPosition && currentDragOverPosition.stageId === targetStageId) {
@@ -294,12 +294,12 @@ const DealCategoryPage = () => {
       const y = e.clientY - rect.top
       const threshold = Math.max(12, draggedCardHeight / 6)
       
-      const dealElements = container.querySelectorAll('[data-deal-id]')
-      if (dealElements.length === 0) {
+      const buyerElements = container.querySelectorAll('[data-buyer-id]')
+      if (buyerElements.length === 0) {
         insertIndex = 0
       } else {
         let foundPosition = false
-        dealElements.forEach((element, index) => {
+        buyerElements.forEach((element, index) => {
           if (foundPosition) return
           
           const elementRect = element.getBoundingClientRect()
@@ -319,8 +319,8 @@ const DealCategoryPage = () => {
           } else if (y < elementTop && index === 0) {
             insertIndex = 0
             foundPosition = true
-          } else if (index === dealElements.length - 1 && y > elementBottom) {
-            insertIndex = stageDeals.length
+          } else if (index === buyerElements.length - 1 && y > elementBottom) {
+            insertIndex = stageBuyers.length
             foundPosition = true
           }
         })
@@ -331,38 +331,38 @@ const DealCategoryPage = () => {
     let order: number
     if (insertIndex === 0) {
       // Вставляем в начало
-      if (stageDeals.length === 0) {
+      if (stageBuyers.length === 0) {
         order = 0
       } else {
-        const firstDeal = stageDeals[0]
+        const firstBuyer = stageBuyers[0]
         // Если перемещаем в ту же стадию и это та же карточка, не меняем порядок
-        if (deal.stage_id === targetStageId && deal.id === firstDeal.id) {
+        if (buyer.stage_id === targetStageId && buyer.id === firstBuyer.id) {
           setDragOverPosition(null)
           return
         }
-        order = firstDeal.order - 1
+        order = firstBuyer.order - 1
       }
-    } else if (insertIndex >= stageDeals.length) {
+    } else if (insertIndex >= stageBuyers.length) {
       // Вставляем в конец
-      if (stageDeals.length === 0) {
+      if (stageBuyers.length === 0) {
         order = 0
       } else {
-        const lastDeal = stageDeals[stageDeals.length - 1]
+        const lastBuyer = stageBuyers[stageBuyers.length - 1]
         // Если перемещаем в ту же стадию и это та же карточка, не меняем порядок
-        if (deal.stage_id === targetStageId && deal.id === lastDeal.id) {
+        if (buyer.stage_id === targetStageId && buyer.id === lastBuyer.id) {
           setDragOverPosition(null)
           return
         }
-        order = lastDeal.order + 1
+        order = lastBuyer.order + 1
       }
     } else {
       // Вставляем между карточками
-      const prevDeal = stageDeals[insertIndex - 1]
-      const nextDeal = stageDeals[insertIndex]
+      const prevBuyer = stageBuyers[insertIndex - 1]
+      const nextBuyer = stageBuyers[insertIndex]
       
       // Если перемещаем в ту же стадию и позиция не изменилась, не делаем ничего
-      if (deal.stage_id === targetStageId) {
-        const currentIndex = stageDeals.findIndex((d) => d.id === dealId)
+      if (buyer.stage_id === targetStageId) {
+        const currentIndex = stageBuyers.findIndex((b) => b.id === buyerId)
         if (currentIndex === insertIndex - 1 || currentIndex === insertIndex) {
           setDragOverPosition(null)
           return
@@ -370,29 +370,29 @@ const DealCategoryPage = () => {
       }
       
       // Вычисляем средний order между предыдущей и следующей карточками
-      const orderDiff = nextDeal.order - prevDeal.order
+      const orderDiff = nextBuyer.order - prevBuyer.order
       if (orderDiff > 1) {
         // Есть место между порядками
-        order = Math.floor((prevDeal.order + nextDeal.order) / 2)
+        order = Math.floor((prevBuyer.order + nextBuyer.order) / 2)
       } else {
         // Порядки слишком близки, нужно пересчитать порядки всех карточек
         // Для простоты используем порядок следующей карточки
-        order = nextDeal.order
+        order = nextBuyer.order
       }
     }
 
     // Если перемещаем в ту же стадию, проверяем, изменилась ли позиция
-    if (deal.stage_id === targetStageId) {
-      const currentIndex = stageDeals.findIndex((d) => d.id === dealId)
+    if (buyer.stage_id === targetStageId) {
+      const currentIndex = stageBuyers.findIndex((b) => b.id === buyerId)
       if (currentIndex === insertIndex || (currentIndex === insertIndex - 1 && insertIndex > 0)) {
         return // Позиция не изменилась
       }
     }
 
     try {
-      await moveDealToStage(dealId, targetStageId, order)
+      await moveBuyerToStage(buyerId, targetStageId, order)
     } catch (error) {
-      console.error('Failed to move deal:', error)
+      console.error('Failed to move buyer:', error)
     } finally {
       setDragOverStageId(null)
       setDragOverPosition(null)
@@ -400,10 +400,10 @@ const DealCategoryPage = () => {
   }
 
   // Показываем спиннер только при первой загрузке, когда данных еще нет
-  if ((categoryLoading || dealsLoading) && !category) {
+  if ((categoryLoading || buyersLoading) && !category) {
     return (
       <>
-        <PageBreadcrumb subName="Сделки" title="Загрузка..." />
+        <PageBreadcrumb subName="Покупатели" title="Загрузка..." />
         <PageMetaData title="Загрузка..." />
         <Card>
           <CardBody className="text-center py-5">
@@ -419,7 +419,7 @@ const DealCategoryPage = () => {
   if (categoryError || !category) {
     return (
       <>
-        <PageBreadcrumb subName="Сделки" title="Ошибка" />
+        <PageBreadcrumb subName="Покупатели" title="Ошибка" />
         <PageMetaData title="Ошибка" />
         <Card>
           <CardBody className="text-center py-5">
@@ -460,46 +460,48 @@ const DealCategoryPage = () => {
     )
   }
 
-  // Компонент карточки сделки
-  const DealCard = ({ deal }: { deal: Deal }) => {
+  // Компонент карточки покупателя
+  const BuyerCard = ({ buyer }: { buyer: Buyer }) => {
     return (
       <Card 
         className="mb-2" 
         style={{ cursor: 'grab' }}
         draggable
-        data-deal-id={deal.id}
-        onDragStart={(e) => handleDragStart(e, deal.id)}
+        data-buyer-id={buyer.id}
+        onDragStart={(e) => handleDragStart(e, buyer.id)}
         onDragEnd={handleDragEnd}
         onDragOver={(e) => {
-          if (!isDragging || !draggedDealId) return
-          handleCardDragOver(e, deal.stage_id, (dealsByStageMap[deal.stage_id] || []).findIndex((d) => d.id === deal.id))
+          if (!isDragging || !draggedBuyerId) return
+          handleCardDragOver(e, buyer.stage_id, (buyersByStageMap[buyer.stage_id] || []).findIndex((b) => b.id === buyer.id))
         }}
         onClick={() => {
           // Предотвращаем открытие модального окна при перетаскивании
           if (dragStartedRef.current || isDragging) {
             return
           }
-          handleDealClick(deal)
+          handleBuyerClick(buyer)
         }}
       >
         <CardBody className="p-3">
           <div className="d-flex justify-content-between align-items-start mb-2">
-            <h6 className="mb-0 fw-semibold">{deal.title}</h6>
+            <h6 className="mb-0 fw-semibold">{buyer.name}</h6>
           </div>
-          {deal.description && <p className="text-muted small mb-2">{deal.description}</p>}
+          {buyer.email && <p className="text-muted small mb-1">{buyer.email}</p>}
+          {buyer.phone && <p className="text-muted small mb-1">{buyer.phone}</p>}
+          {buyer.company && <p className="text-muted small mb-2"><strong>Компания:</strong> {buyer.company}</p>}
           <div className="d-flex flex-wrap gap-2 mb-2">
-            {deal.amount && (
+            {buyer.potential_value && (
               <div className="d-flex align-items-center gap-1">
                 <IconifyIcon icon="bx:dollar" className="fs-14" />
                 <span className="small fw-semibold">
-                  {deal.amount.toLocaleString('ru-RU')} {deal.currency || 'RUB'}
+                  {buyer.potential_value.toLocaleString('ru-RU')} {buyer.currency || 'RUB'}
                 </span>
               </div>
             )}
             <div className="d-flex align-items-center gap-1 text-muted">
               <IconifyIcon icon="bx:calendar" className="fs-14" />
               <span className="small">
-                {new Date(deal.created_at).toLocaleDateString('ru-RU', {
+                {new Date(buyer.created_at).toLocaleDateString('ru-RU', {
                   day: '2-digit',
                   month: '2-digit',
                   year: 'numeric',
@@ -507,9 +509,9 @@ const DealCategoryPage = () => {
               </span>
             </div>
           </div>
-          {!deal.is_active && (
+          {!buyer.is_active && (
             <div className="mt-2">
-              <span className="badge bg-secondary">Закрыта</span>
+              <span className="badge bg-secondary">Закрыт</span>
             </div>
           )}
         </CardBody>
@@ -519,7 +521,7 @@ const DealCategoryPage = () => {
 
   return (
     <>
-      <PageBreadcrumb subName="Сделки" title={category.name} />
+      <PageBreadcrumb subName="Покупатели" title={category.name} />
       <PageMetaData title={category.name} />
 
       {/* Кнопка удаления категории */}
@@ -559,15 +561,15 @@ const DealCategoryPage = () => {
 
       <Row>
         <Col xs={12}>
-          {/* Стадии и сделки в одной обертке */}
+          {/* Стадии и покупатели в одной обертке */}
           <Card>
             <CardBody>
               <div className="d-flex align-items-center justify-content-between mb-3">
                 <div className="d-flex align-items-center gap-2">
-                  <h5 className="mb-0">Воронка продаж</h5>
+                  <h5 className="mb-0">Воронка покупателей</h5>
                   <span className="text-muted small">
-                    ({deals.length} {deals.length === 1 ? 'сделка' : deals.length >= 2 && deals.length <= 4 ? 'сделки' : 'сделок'}
-                    {deals.length > 0 && `, ожидается ${deals.reduce((sum, deal) => sum + (deal.amount || 0), 0).toLocaleString('ru-RU')} ₽`})
+                    ({buyers.length} {buyers.length === 1 ? 'покупатель' : buyers.length >= 2 && buyers.length <= 4 ? 'покупателя' : 'покупателей'}
+                    {buyers.length > 0 && `, ожидается ${buyers.reduce((sum, buyer) => sum + (buyer.potential_value || 0), 0).toLocaleString('ru-RU')} ₽`})
                   </span>
                 </div>
                 <div className="d-flex gap-1">
@@ -601,7 +603,7 @@ const DealCategoryPage = () => {
                   </InputGroup.Text>
                   <Form.Control
                     type="text"
-                    placeholder="Поиск по названию..."
+                    placeholder="Поиск по имени..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -636,16 +638,16 @@ const DealCategoryPage = () => {
                       Дата создания
                     </Dropdown.Item>
                     <Dropdown.Item 
-                      active={sortField === 'amount'} 
-                      onClick={() => setSortField('amount')}
+                      active={sortField === 'potential_value'} 
+                      onClick={() => setSortField('potential_value')}
                     >
                       Сумма
                     </Dropdown.Item>
                     <Dropdown.Item 
-                      active={sortField === 'title'} 
-                      onClick={() => setSortField('title')}
+                      active={sortField === 'name'} 
+                      onClick={() => setSortField('name')}
                     >
-                      Название
+                      Имя
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -725,7 +727,7 @@ const DealCategoryPage = () => {
               <div className="overflow-x-auto pb-2">
                 <div className="d-flex gap-3" style={{ flexWrap: 'nowrap' }}>
                   {filteredStages.map((stage, idx) => {
-                    const stageDeals = dealsByStageMap[stage.id] || []
+                    const stageBuyers = buyersByStageMap[stage.id] || []
                     const isFirstStage = stage.order === filteredStages[0]?.order
                     const stageColor = stage.color || '#6c757d'
                     const baseBg = idx % 2 === 0 ? 'transparent' : '#f7f8fa'
@@ -747,7 +749,7 @@ const DealCategoryPage = () => {
                       setDragOverStageId(stage.id)
                       // Если ещё не выбрана позиция, ставим в конец по умолчанию
                       if (!dragOverPosition || dragOverPosition.stageId !== stage.id) {
-                        setDragOverPosition({ stageId: stage.id, index: stageDeals.length })
+                        setDragOverPosition({ stageId: stage.id, index: stageBuyers.length })
                       }
                     }}
                     onDragOver={(e) => {
@@ -775,22 +777,22 @@ const DealCategoryPage = () => {
                             }}
                             onClick={() => handleStageClick(stage.id)}>
                             <h6 className="mb-0 fw-semibold">{stage.name}</h6>
-                            <span className="badge bg-light text-dark">{stageDeals.length}</span>
+                            <span className="badge bg-light text-dark">{stageBuyers.length}</span>
                           </div>
-                          {/* Кнопка добавления сделки только для первой стадии */}
+                          {/* Кнопка добавления покупателя только для первой стадии */}
                           {isFirstStage && (
                             <div className="mb-2">
                               <Button
                                 variant="primary"
                                 size="sm"
-                                onClick={() => setShowAddDealModal(true)}
+                                onClick={() => setShowAddBuyerModal(true)}
                                 className="w-100 d-flex align-items-center justify-content-center gap-2">
                                 <IconifyIcon icon="bx:plus" />
-                                Добавить сделку
+                                Добавить покупателя
                               </Button>
                             </div>
                           )}
-                          {/* Список сделок для этой стадии */}
+                          {/* Список покупателей для этой стадии */}
                           <div 
                             className="d-flex flex-column" 
                             style={{ 
@@ -798,12 +800,12 @@ const DealCategoryPage = () => {
                               transition: 'all 0.2s ease',
                             }}
                           >
-                            {stageDeals.length > 0 ? (
+                            {stageBuyers.length > 0 ? (
                               <>
                                 {renderPlaceholder(stage.id, 0)}
-                                {stageDeals.map((deal, index) => (
-                                  <div key={deal.id}>
-                                    <DealCard deal={deal} />
+                                {stageBuyers.map((buyer, index) => (
+                                  <div key={buyer.id}>
+                                    <BuyerCard buyer={buyer} />
                                     {renderPlaceholder(stage.id, index + 1)}
                                   </div>
                                 ))}
@@ -832,7 +834,7 @@ const DealCategoryPage = () => {
                                 ) : (
                                   <>
                                     <IconifyIcon icon="bx:inbox" className="fs-24 mb-2" />
-                                    <div>Нет сделок</div>
+                                    <div>Нет покупателей</div>
                                   </>
                                 )}
                               </div>
@@ -884,21 +886,21 @@ const DealCategoryPage = () => {
                       fontSize: '0.875rem',
                     }}
                   >
-                    <div style={{ flex: 2 }}>Название</div>
+                    <div style={{ flex: 2 }}>Имя</div>
                     <div style={{ flex: 1 }}>Стадия</div>
                     <div style={{ flex: 1 }}>Сумма</div>
                     <div style={{ flex: 1 }}>Дата создания</div>
                   </div>
                   
-                  {/* Список сделок */}
-                  {filteredAndSortedDeals.length > 0 ? (
-                    filteredAndSortedDeals.map((deal) => {
-                        const stage = sortedStages.find((s) => s.id === deal.stage_id)
+                  {/* Список покупателей */}
+                  {filteredAndSortedBuyers.length > 0 ? (
+                    filteredAndSortedBuyers.map((buyer) => {
+                        const stage = sortedStages.find((s) => s.id === buyer.stage_id)
                         const stageColor = stage?.color || '#6c757d'
                         
                         return (
                           <div
-                            key={deal.id}
+                            key={buyer.id}
                             className="d-flex align-items-center py-2 px-3 mb-1"
                             style={{
                               backgroundColor: '#fff',
@@ -907,7 +909,7 @@ const DealCategoryPage = () => {
                               cursor: 'pointer',
                               transition: 'all 0.15s ease',
                             }}
-                            onClick={() => handleDealClick(deal)}
+                            onClick={() => handleBuyerClick(buyer)}
                             onMouseEnter={(e) => {
                               e.currentTarget.style.backgroundColor = '#f8f9fa'
                             }}
@@ -916,10 +918,10 @@ const DealCategoryPage = () => {
                             }}
                           >
                             <div style={{ flex: 2 }}>
-                              <span className="fw-semibold">{deal.title}</span>
-                              {deal.description && (
+                              <span className="fw-semibold">{buyer.name}</span>
+                              {buyer.email && (
                                 <div className="text-muted small text-truncate" style={{ maxWidth: '300px' }}>
-                                  {deal.description}
+                                  {buyer.email}
                                 </div>
                               )}
                             </div>
@@ -935,16 +937,16 @@ const DealCategoryPage = () => {
                               </span>
                             </div>
                             <div style={{ flex: 1 }}>
-                              {deal.amount ? (
+                              {buyer.potential_value ? (
                                 <span className="fw-semibold">
-                                  {deal.amount.toLocaleString('ru-RU')} {deal.currency || 'RUB'}
+                                  {buyer.potential_value.toLocaleString('ru-RU')} {buyer.currency || 'RUB'}
                                 </span>
                               ) : (
                                 <span className="text-muted">—</span>
                               )}
                             </div>
                             <div style={{ flex: 1 }} className="text-muted small">
-                              {new Date(deal.created_at).toLocaleDateString('ru-RU', {
+                              {new Date(buyer.created_at).toLocaleDateString('ru-RU', {
                                 day: '2-digit',
                                 month: '2-digit',
                                 year: 'numeric',
@@ -956,20 +958,20 @@ const DealCategoryPage = () => {
                   ) : (
                     <div className="text-center py-4 text-muted">
                       <IconifyIcon icon="bx:inbox" className="fs-32 mb-2" />
-                      <div>Нет сделок</div>
+                      <div>Нет покупателей</div>
                     </div>
                   )}
                   
-                  {/* Кнопка добавления сделки */}
+                  {/* Кнопка добавления покупателя */}
                   <div className="mt-3">
                     <Button
                       variant="primary"
                       size="sm"
-                      onClick={() => setShowAddDealModal(true)}
+                      onClick={() => setShowAddBuyerModal(true)}
                       className="d-flex align-items-center gap-2"
                     >
                       <IconifyIcon icon="bx:plus" />
-                      Добавить сделку
+                      Добавить покупателя
                     </Button>
                   </div>
                 </div>
@@ -982,43 +984,43 @@ const DealCategoryPage = () => {
       {/* Модальные окна */}
       {categoryId && (
         <>
-          <AddDealStageModal
+          <AddBuyerStageModal
             show={showAddStageModal}
             onHide={() => setShowAddStageModal(false)}
             categoryId={categoryId}
-            currentStages={category?.stages || []}
+            currentStages={sortedStages}
             onStageAdded={handleStageAdded}
           />
           {categoryId && category && (
-            <AddDealModal
-              show={showAddDealModal}
-              onHide={() => setShowAddDealModal(false)}
+            <AddBuyerModal
+              show={showAddBuyerModal}
+              onHide={() => setShowAddBuyerModal(false)}
               categoryId={categoryId}
               category={category}
-              onDealCreated={handleDealCreated}
+              onBuyerCreated={handleBuyerCreated}
             />
           )}
-          {selectedDeal && (
-            <EditDealModal
-              show={showEditDealModal}
+          {selectedBuyer && (
+            <EditBuyerModal
+              show={showEditBuyerModal}
               onHide={() => {
-                setShowEditDealModal(false)
-                setSelectedDeal(null)
+                setShowEditBuyerModal(false)
+                setSelectedBuyer(null)
               }}
-              deal={selectedDeal}
-              onDealUpdated={handleDealUpdated}
-              onDealDeleted={handleDealUpdated}
+              buyer={selectedBuyer}
+              onBuyerUpdated={handleBuyerUpdated}
+              onBuyerDeleted={handleBuyerUpdated}
             />
           )}
           {selectedStageId && categoryId && category && (
-            <EditDealStageModal
+            <EditBuyerStageModal
               show={showEditStageModal}
               onHide={() => {
                 setShowEditStageModal(false)
                 setSelectedStageId(null)
               }}
               categoryId={categoryId}
-              currentStages={category.stages}
+              currentStages={sortedStages}
               stageId={selectedStageId}
               onStageUpdated={handleStageUpdated}
               onStageDeleted={handleStageUpdated}
@@ -1030,5 +1032,5 @@ const DealCategoryPage = () => {
   )
 }
 
-export default DealCategoryPage
+export default BuyerCategoryPage
 

@@ -50,23 +50,10 @@ export const MENU_ITEMS: MenuItemType[] = [
     children: [], // Заполнение из API
   },
   {
-    key: 'sellers',
-    icon: 'iconamoon:briefcase-duotone',
-    label: 'Продавцы',
-    children: [
-      {
-        key: 'sellers-mock-1',
-        label: 'mock 1',
-        url: '/sellers/mock-1',
-        parentKey: 'sellers',
-      },
-      {
-        key: 'sellers-mock-2',
-        label: 'mock 2',
-        url: '/sellers/mock-2',
-        parentKey: 'sellers',
-      },
-    ],
+    key: 'buyers',
+    icon: 'iconamoon:profile-circle-duotone',
+    label: 'Покупатели',
+    children: [], // Заполнение из API
   },
   {
     key: 'tasks',

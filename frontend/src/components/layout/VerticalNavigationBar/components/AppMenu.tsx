@@ -15,7 +15,7 @@ const MenuItemWithChildren = ({
   activeMenuItems,
   toggleMenu,
   onAddCategoryClick,
-}: SubMenus & { onAddCategoryClick?: () => void }) => {
+}: SubMenus & { onAddCategoryClick?: (key: string) => void }) => {
   const [open, setOpen] = useState<boolean>(activeMenuItems!.includes(item.key))
 
   useEffect(() => {
@@ -95,16 +95,16 @@ const MenuItem = ({ item, className, linkClassName, onAddCategoryClick }: SubMen
   )
 }
 
-const MenuItemLink = ({ item, className, onAddCategoryClick }: SubMenus & { onAddCategoryClick?: () => void }) => {
+const MenuItemLink = ({ item, className, onAddCategoryClick }: SubMenus & { onAddCategoryClick?: (key: string) => void }) => {
   // Обработка клика на "Добавить категорию +"
-  if (item.key === 'deals-add-category' && item.url === '#') {
+  if ((item.key === 'deals-add-category' || item.key === 'buyers-add-category') && item.url === '#') {
     return (
       <span
         role="button"
         onClick={(e) => {
           e.preventDefault()
           if (onAddCategoryClick) {
-            onAddCategoryClick()
+            onAddCategoryClick(item.key)
           }
         }}
         className={clsx(className, { disabled: item.isDisabled })}
@@ -135,7 +135,7 @@ const MenuItemLink = ({ item, className, onAddCategoryClick }: SubMenus & { onAd
 
 type AppMenuProps = {
   menuItems: Array<MenuItemType>
-  onAddCategoryClick?: () => void
+  onAddCategoryClick?: (key: string) => void
 }
 
 const AppMenu = ({ menuItems, onAddCategoryClick }: AppMenuProps) => {
