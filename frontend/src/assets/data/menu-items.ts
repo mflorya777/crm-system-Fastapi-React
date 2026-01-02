@@ -51,22 +51,9 @@ export const MENU_ITEMS: MenuItemType[] = [
   },
   {
     key: 'buyers',
-    icon: 'iconamoon:briefcase-duotone',
+    icon: 'iconamoon:profile-circle-duotone',
     label: 'Покупатели',
-    children: [
-      {
-        key: 'buyers-mock-1',
-        label: 'mock 1',
-        url: '/buyers/mock-1',
-        parentKey: 'buyers',
-      },
-      {
-        key: 'buyers-mock-2',
-        label: 'mock 2',
-        url: '/buyers/mock-2',
-        parentKey: 'buyers',
-      },
-    ],
+    children: [], // Заполнение из API
   },
   {
     key: 'tasks',

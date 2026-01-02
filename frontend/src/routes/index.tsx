@@ -113,6 +113,9 @@ const IconaMoonIcons = lazy(() => import('@/app/(admin)/icons/iconamoon/page'))
 // Deals Routes
 const DealCategoryPage = lazy(() => import('@/app/(admin)/deals/category/[categoryId]/page'))
 
+// Buyers Routes
+const BuyerCategoryPage = lazy(() => import('@/app/(admin)/buyers/category/[categoryId]/page'))
+
 // Not Found Routes
 const NotFoundAdmin = lazy(() => import('@/app/(admin)/not-found'))
 const NotFound = lazy(() => import('@/app/(other)/(error-pages)/error-404/page'))
@@ -284,6 +287,11 @@ const customRoutes: RoutesProps[] = [
     name: 'Deal Category',
     path: '/deals/category/:categoryId',
     element: <DealCategoryPage />,
+  },
+  {
+    name: 'Buyer Category',
+    path: '/buyers/category/:categoryId',
+    element: <BuyerCategoryPage />,
   },
   {
     name: 'Contact Us',
