@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { Button, Card, CardBody, Col, Row } from 'react-bootstrap'
 
@@ -29,6 +29,7 @@ const DealCategoryPage = () => {
   const [dragOverStageId, setDragOverStageId] = useState<string | null>(null)
   const [dragOverPosition, setDragOverPosition] = useState<{ stageId: string; index: number } | null>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const dragStartedRef = useRef(false)
 
   const { moveDealToStage } = useMoveDealToStage(() => {
     refetchDeals()
@@ -63,6 +64,7 @@ const DealCategoryPage = () => {
   }
 
   const handleDragStart = (e: React.DragEvent, dealId: string) => {
+    dragStartedRef.current = true
     setIsDragging(true)
     setDraggedDealId(dealId)
     e.dataTransfer.effectAllowed = 'move'
@@ -79,6 +81,10 @@ const DealCategoryPage = () => {
     setDraggedDealId(null)
     setDragOverStageId(null)
     setDragOverPosition(null)
+    // сбрасываем флаг начала драга, чтобы клик после дропа не открывал модалку
+    setTimeout(() => {
+      dragStartedRef.current = false
+    }, 0)
     if (e.currentTarget instanceof HTMLElement) {
       e.currentTarget.style.opacity = '1'
     }
@@ -362,9 +368,10 @@ const DealCategoryPage = () => {
         onDragEnd={handleDragEnd}
         onClick={() => {
           // Предотвращаем открытие модального окна при перетаскивании
-          if (!isDragging) {
-            handleDealClick(deal)
+          if (dragStartedRef.current || isDragging) {
+            return
           }
+          handleDealClick(deal)
         }}
       >
         <CardBody className="p-3">
