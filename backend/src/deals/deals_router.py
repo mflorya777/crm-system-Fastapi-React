@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 from uuid import UUID
 
 from fastapi import (
@@ -437,8 +438,24 @@ async def get_deals_by_category(
         default=True,
         description="Только активные сделки",
     ),
+    search: Optional[str] = Query(
+        default=None,
+        description="Поиск по названию сделки",
+    ),
+    stage_id: Optional[UUID] = Query(
+        default=None,
+        description="Фильтр по ID стадии",
+    ),
+    sort_field: str = Query(
+        default="order",
+        description="Поле сортировки: order, created_at, amount, title",
+    ),
+    sort_direction: str = Query(
+        default="asc",
+        description="Направление сортировки: asc или desc",
+    ),
 ) -> DealsListApiResponse | None:
-    """Получить все сделки в категории"""
+    """Получить все сделки в категории с поддержкой поиска, фильтрации и сортировки"""
     deals_manager: DealsManager = request.app.state.deals_manager
     user_id = request.state.jwt_payload["user_id"]
 
@@ -448,6 +465,10 @@ async def get_deals_by_category(
             actor_id=user_id,
             category_id=category_id,
             active_only=active_only,
+            search=search,
+            stage_id=stage_id,
+            sort_field=sort_field,
+            sort_direction=sort_direction,
         )
         deals_response = [DealResponse.from_deal(deal) for deal in deals]
 

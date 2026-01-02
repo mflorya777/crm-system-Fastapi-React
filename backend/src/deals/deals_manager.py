@@ -254,8 +254,12 @@ class DealsManager:
         actor_id: UUID,
         category_id: UUID,
         active_only: bool = True,
+        search: Optional[str] = None,
+        stage_id: Optional[UUID] = None,
+        sort_field: str = "order",
+        sort_direction: str = "asc",
     ) -> List[DealToGet]:
-        """Получить все сделки в категории"""
+        """Получить все сделки в категории с поддержкой поиска, фильтрации и сортировки"""
         # Проверяем, что категория существует
         await self.get_category(actor_id, category_id)
         
@@ -263,6 +267,10 @@ class DealsManager:
             return await self.deals_storage.get_deals_by_category(
                 category_id=category_id,
                 active_only=active_only,
+                search=search,
+                stage_id=stage_id,
+                sort_field=sort_field,
+                sort_direction=sort_direction,
             )
         except Exception as e:
             _LOG.error(e)

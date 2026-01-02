@@ -375,23 +375,51 @@ class DealsStorage:
         self,
         category_id: UUID,
         active_only: bool = True,
+        search: Optional[str] = None,
+        stage_id: Optional[UUID] = None,
+        sort_field: str = "order",
+        sort_direction: str = "asc",
     ) -> List[DealToGet]:
-        """Получить все сделки в категории"""
+        """Получить все сделки в категории с поддержкой поиска, фильтрации и сортировки"""
         _LOG.info(f"Запрашиваю сделки по категории: {category_id}")
-        query = {
+        query: dict = {
             "category_id": category_id,
         }
         if active_only:
             query["is_active"] = True
         
+        # Фильтр по стадии
+        if stage_id:
+            query["stage_id"] = stage_id
+        
+        # Поиск по названию (регистронезависимый)
+        if search:
+            query["title"] = {"$regex": search, "$options": "i"}
+        
         projection = {"_id": False}
         for key in DealToGet.model_fields:
             projection[key] = True
         
+        # Определяем направление сортировки
+        sort_dir = 1 if sort_direction == "asc" else -1
+        
+        # Маппинг полей сортировки
+        sort_field_map = {
+            "order": "order",
+            "created_at": "created_at",
+            "amount": "amount",
+            "title": "title",
+        }
+        mongo_sort_field = sort_field_map.get(
+            sort_field,
+            "order",
+        )
+        
         cursor = self.deals_collection.find(
             query,
             projection=projection,
-        ).sort("order", 1)  # Сортируем по order по возрастанию
+        ).sort(mongo_sort_field, sort_dir)
+        
         deals = []
         async for deal in cursor:
             deals.append(DealToGet(**deal))

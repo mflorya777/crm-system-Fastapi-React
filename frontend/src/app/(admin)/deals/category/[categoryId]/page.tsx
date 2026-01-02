@@ -17,7 +17,7 @@ import EditDealStageModal from './components/EditDealStageModal'
 const DealCategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>()
   const { category, loading: categoryLoading, error: categoryError, refetch: refetchCategory } = useDealCategory(categoryId)
-  const { deals, loading: dealsLoading, refetch: refetchDeals } = useDealsByCategory(categoryId, true)
+  const { deals, loading: dealsLoading, refetch: refetchDeals } = useDealsByCategory(categoryId, { activeOnly: true })
   const [showAddStageModal, setShowAddStageModal] = useState(false)
   const [showAddDealModal, setShowAddDealModal] = useState(false)
   const [showEditDealModal, setShowEditDealModal] = useState(false)

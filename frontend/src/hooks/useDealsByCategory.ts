@@ -32,7 +32,26 @@ interface DealsApiResponse {
   }
 }
 
-export const useDealsByCategory = (categoryId: string | undefined, activeOnly: boolean = true) => {
+export interface DealsFetchParams {
+  activeOnly?: boolean
+  search?: string
+  stageId?: string
+  sortField?: 'order' | 'created_at' | 'amount' | 'title'
+  sortDirection?: 'asc' | 'desc'
+}
+
+export const useDealsByCategory = (
+  categoryId: string | undefined,
+  params: DealsFetchParams = {}
+) => {
+  const {
+    activeOnly = true,
+    search,
+    stageId,
+    sortField = 'order',
+    sortDirection = 'asc',
+  } = params
+
   const [deals, setDeals] = useState<Deal[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -53,6 +72,10 @@ export const useDealsByCategory = (categoryId: string | undefined, activeOnly: b
       const response: AxiosResponse<DealsApiResponse> = await httpClient.get(`/deals/category/${categoryId}/deals`, {
         params: {
           active_only: activeOnly,
+          search: search || undefined,
+          stage_id: stageId || undefined,
+          sort_field: sortField,
+          sort_direction: sortDirection,
         },
       })
 
@@ -73,7 +96,7 @@ export const useDealsByCategory = (categoryId: string | undefined, activeOnly: b
       setLoading(false)
       isInitialLoad.current = false
     }
-  }, [categoryId, activeOnly])
+  }, [categoryId, activeOnly, search, stageId, sortField, sortDirection])
 
   useEffect(() => {
     isInitialLoad.current = true
@@ -85,4 +108,3 @@ export const useDealsByCategory = (categoryId: string | undefined, activeOnly: b
 
   return { deals, loading, error, refetch }
 }
-
