@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
-import { Button, Card, CardBody, Col, Row } from 'react-bootstrap'
+import { Button, Card, CardBody, Col, Row, Form, InputGroup, Dropdown } from 'react-bootstrap'
 
 import IconifyIcon from '@/components/wrappers/IconifyIcon'
 import PageBreadcrumb from '@/components/layout/PageBreadcrumb'
@@ -31,6 +31,12 @@ const DealCategoryPage = () => {
   const [isDragging, setIsDragging] = useState(false)
   const dragStartedRef = useRef(false)
   const [viewMode, setViewMode] = useState<'columns' | 'list'>('columns')
+  
+  // Поиск, сортировка, фильтрация
+  const [searchQuery, setSearchQuery] = useState('')
+  const [sortField, setSortField] = useState<'created_at' | 'amount' | 'title'>('created_at')
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
+  const [filterStageId, setFilterStageId] = useState<string | null>(null)
 
   const { moveDealToStage } = useMoveDealToStage(() => {
     refetchDeals()
@@ -64,6 +70,41 @@ const DealCategoryPage = () => {
     refetchDeals()
   }
 
+  // Фильтрация и сортировка сделок
+  const filteredAndSortedDeals = deals
+    .filter((deal) => {
+      // Поиск по названию
+      if (searchQuery && !deal.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false
+      }
+      // Фильтр по стадии
+      if (filterStageId && deal.stage_id !== filterStageId) {
+        return false
+      }
+      return true
+    })
+    .sort((a, b) => {
+      let comparison = 0
+      if (sortField === 'created_at') {
+        comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      } else if (sortField === 'amount') {
+        comparison = (a.amount || 0) - (b.amount || 0)
+      } else if (sortField === 'title') {
+        comparison = a.title.localeCompare(b.title)
+      }
+      return sortDirection === 'asc' ? comparison : -comparison
+    })
+
+  const toggleSortDirection = () => {
+    setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+  }
+
+  const sortFieldLabels: Record<string, string> = {
+    created_at: 'Дата создания',
+    amount: 'Сумма',
+    title: 'Название',
+  }
+
   const handleDragStart = (e: React.DragEvent, dealId: string) => {
     dragStartedRef.current = true
     setIsDragging(true)
@@ -92,8 +133,16 @@ const DealCategoryPage = () => {
   }
 
   // Группируем сделки по стадиям и сортируем по order (выносим выше, чтобы использовать в обработчиках)
+  // Применяем поиск для фильтрации в режиме колонок
+  const filteredDealsForColumns = deals.filter((deal) => {
+    if (searchQuery && !deal.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false
+    }
+    return true
+  })
+  
   const dealsByStageMap: Record<string, Deal[]> = {}
-  deals.forEach((deal) => {
+  filteredDealsForColumns.forEach((deal) => {
     if (!dealsByStageMap[deal.stage_id]) {
       dealsByStageMap[deal.stage_id] = []
     }
@@ -477,6 +526,128 @@ const DealCategoryPage = () => {
                   </Button>
                 </div>
               </div>
+
+              {/* Поиск, сортировка, фильтрация */}
+              <div className="d-flex align-items-center gap-2 mb-3 flex-wrap">
+                {/* Поиск */}
+                <InputGroup style={{ maxWidth: '300px' }}>
+                  <InputGroup.Text className="bg-white">
+                    <IconifyIcon icon="bx:search" />
+                  </InputGroup.Text>
+                  <Form.Control
+                    type="text"
+                    placeholder="Поиск по названию..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  {searchQuery && (
+                    <Button
+                      variant="outline-secondary"
+                      onClick={() => setSearchQuery('')}
+                      style={{ borderLeft: 'none' }}
+                    >
+                      <IconifyIcon icon="bx:x" />
+                    </Button>
+                  )}
+                </InputGroup>
+
+                {/* Сортировка */}
+                <Dropdown>
+                  <Dropdown.Toggle variant="light" size="sm" className="d-flex align-items-center gap-1">
+                    <IconifyIcon icon="bx:sort-alt-2" className="fs-18" />
+                    {sortFieldLabels[sortField]}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item 
+                      active={sortField === 'created_at'} 
+                      onClick={() => setSortField('created_at')}
+                    >
+                      Дата создания
+                    </Dropdown.Item>
+                    <Dropdown.Item 
+                      active={sortField === 'amount'} 
+                      onClick={() => setSortField('amount')}
+                    >
+                      Сумма
+                    </Dropdown.Item>
+                    <Dropdown.Item 
+                      active={sortField === 'title'} 
+                      onClick={() => setSortField('title')}
+                    >
+                      Название
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+                <Button
+                  variant="light"
+                  size="sm"
+                  onClick={toggleSortDirection}
+                  title={sortDirection === 'asc' ? 'По возрастанию' : 'По убыванию'}
+                  className="d-flex align-items-center"
+                >
+                  <IconifyIcon 
+                    icon={sortDirection === 'asc' ? 'bx:sort-up' : 'bx:sort-down'} 
+                    className="fs-18" 
+                  />
+                </Button>
+
+                {/* Фильтрация по стадии */}
+                <Dropdown>
+                  <Dropdown.Toggle 
+                    variant={filterStageId ? 'primary' : 'light'} 
+                    size="sm" 
+                    className="d-flex align-items-center gap-1"
+                  >
+                    <IconifyIcon icon="bx:filter-alt" className="fs-18" />
+                    {filterStageId 
+                      ? sortedStages.find((s) => s.id === filterStageId)?.name || 'Стадия' 
+                      : 'Все стадии'
+                    }
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item 
+                      active={filterStageId === null} 
+                      onClick={() => setFilterStageId(null)}
+                    >
+                      Все стадии
+                    </Dropdown.Item>
+                    <Dropdown.Divider />
+                    {sortedStages.map((stage) => (
+                      <Dropdown.Item
+                        key={stage.id}
+                        active={filterStageId === stage.id}
+                        onClick={() => setFilterStageId(stage.id)}
+                      >
+                        <span 
+                          className="d-inline-block rounded-circle me-2" 
+                          style={{ 
+                            width: '10px', 
+                            height: '10px', 
+                            backgroundColor: stage.color || '#6c757d' 
+                          }} 
+                        />
+                        {stage.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+
+                {/* Индикатор активных фильтров */}
+                {(searchQuery || filterStageId) && (
+                  <Button
+                    variant="outline-secondary"
+                    size="sm"
+                    onClick={() => {
+                      setSearchQuery('')
+                      setFilterStageId(null)
+                    }}
+                    className="d-flex align-items-center gap-1"
+                  >
+                    <IconifyIcon icon="bx:x" />
+                    Сбросить фильтры
+                  </Button>
+                )}
+              </div>
               
               {/* Отображение колонками */}
               {viewMode === 'columns' && (
@@ -649,11 +820,8 @@ const DealCategoryPage = () => {
                   </div>
                   
                   {/* Список сделок */}
-                  {deals.length > 0 ? (
-                    deals
-                      .slice()
-                      .sort((a, b) => a.order - b.order)
-                      .map((deal) => {
+                  {filteredAndSortedDeals.length > 0 ? (
+                    filteredAndSortedDeals.map((deal) => {
                         const stage = sortedStages.find((s) => s.id === deal.stage_id)
                         const stageColor = stage?.color || '#6c757d'
                         
