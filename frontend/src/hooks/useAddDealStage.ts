@@ -45,13 +45,16 @@ export const useAddDealStage = (categoryId: string, currentStages: DealCategory[
     setLoading(true)
     try {
       // Создаем новый список стадий с добавленной стадией
+      // ВАЖНО: для существующих стадий передаём их id, чтобы сохранить связь со сделками
       const newStages = [
         ...currentStages.map((stage) => ({
+          id: stage.id, // Сохраняем id существующих стадий!
           name: stage.name,
           order: stage.order,
           color: stage.color || undefined,
         })),
         {
+          // Новая стадия без id - бэкенд сгенерирует новый
           name: values.name,
           order: values.order,
           color: values.color || undefined,

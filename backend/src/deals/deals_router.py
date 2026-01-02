@@ -259,14 +259,17 @@ async def update_category_stages(
 
     errors = []
     try:
-        stages = [
-            DealStage(
-                name=stage.name,
-                order=stage.order,
-                color=stage.color,
-            )
-            for stage in stages_data.stages
-        ]
+        stages = []
+        for stage in stages_data.stages:
+            stage_data = {
+                "name": stage.name,
+                "order": stage.order,
+                "color": stage.color,
+            }
+            # Если id передан, используем его (обновление существующей стадии)
+            if stage.id:
+                stage_data["id"] = stage.id
+            stages.append(DealStage(**stage_data))
         
         category = await deals_manager.update_category_stages(
             actor_id=user_id,

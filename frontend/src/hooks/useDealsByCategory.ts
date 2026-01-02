@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { AxiosResponse } from 'axios'
 
 import httpClient from '@/helpers/httpClient'
@@ -36,15 +36,19 @@ export const useDealsByCategory = (categoryId: string | undefined, activeOnly: b
   const [deals, setDeals] = useState<Deal[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const isInitialLoad = useRef(true)
 
-  const fetchDeals = useCallback(async () => {
+  const fetchDeals = useCallback(async (showLoading = false) => {
     if (!categoryId) {
       setLoading(false)
       return
     }
 
-    setLoading(true)
-    setError(null)
+    // Показываем loading только при первой загрузке или если явно запрошено
+    if (isInitialLoad.current || showLoading) {
+      setLoading(true)
+    }
+    
     try {
       const response: AxiosResponse<DealsApiResponse> = await httpClient.get(`/deals/category/${categoryId}/deals`, {
         params: {
@@ -54,23 +58,31 @@ export const useDealsByCategory = (categoryId: string | undefined, activeOnly: b
 
       if (response.data.status && response.data.data) {
         setDeals(response.data.data)
+        setError(null)
       } else {
         const errorMessage = response.data.message?.text || response.data.message?.errors?.[0]?.text || 'Ошибка загрузки сделок'
+        // Не сбрасываем deals при ошибке, чтобы UI не пропадал
         setError(errorMessage)
       }
     } catch (err: any) {
       console.error('Error fetching deals:', err)
       const errorMessage = err.response?.data?.message?.text || err.response?.data?.message?.errors?.[0]?.text || err.message || 'Ошибка загрузки сделок'
+      // Не сбрасываем deals при ошибке
       setError(errorMessage)
     } finally {
       setLoading(false)
+      isInitialLoad.current = false
     }
   }, [categoryId, activeOnly])
 
   useEffect(() => {
-    fetchDeals()
+    isInitialLoad.current = true
+    fetchDeals(true)
   }, [fetchDeals])
 
-  return { deals, loading, error, refetch: fetchDeals }
+  // refetch без показа loading, чтобы не мигал UI
+  const refetch = useCallback(() => fetchDeals(false), [fetchDeals])
+
+  return { deals, loading, error, refetch }
 }
 

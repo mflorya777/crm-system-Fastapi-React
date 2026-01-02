@@ -328,7 +328,8 @@ const DealCategoryPage = () => {
     }
   }
 
-  if (categoryLoading || dealsLoading) {
+  // Показываем спиннер только при первой загрузке, когда данных еще нет
+  if ((categoryLoading || dealsLoading) && !category) {
     return (
       <>
         <PageBreadcrumb subName="Сделки" title="Загрузка..." />

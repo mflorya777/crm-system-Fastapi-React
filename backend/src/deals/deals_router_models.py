@@ -20,6 +20,7 @@ from src.deals.deals_storage_models import (
 
 class DealStageRequest(BaseModel):
     """Модель стадии для запроса"""
+    id: Optional[UUID] = Field(default=None, description="ID стадии (если обновляем существующую)")
     name: str = Field(..., description="Название стадии")
     order: int = Field(..., description="Порядок стадии в воронке")
     color: Optional[str] = Field(default=None, description="Цвет стадии (hex код)")

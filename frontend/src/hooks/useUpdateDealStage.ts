@@ -61,15 +61,18 @@ export const useUpdateDealStage = (
     setLoading(true)
     try {
       // Создаем обновленный список стадий, заменяя редактируемую стадию
+      // ВАЖНО: передаём id всех стадий, чтобы сохранить связь со сделками
       const updatedStages = currentStages.map((stage) => {
         if (stage.id === stageId) {
           return {
+            id: stage.id, // Сохраняем id стадии!
             name: values.name,
             order: values.order,
             color: values.color || undefined,
           }
         }
         return {
+          id: stage.id, // Сохраняем id стадии!
           name: stage.name,
           order: stage.order,
           color: stage.color || undefined,
