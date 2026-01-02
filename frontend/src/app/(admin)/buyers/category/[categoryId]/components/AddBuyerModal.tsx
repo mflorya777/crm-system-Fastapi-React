@@ -139,11 +139,11 @@ const AddBuyerModal = ({ show, onHide, categoryId, category, onBuyerCreated }: A
             <div className="col-md-6">
               <TextFormInput
                 control={control}
-                name="value"
+                name="potential_value"
                 type="number"
                 containerClassName="mb-3"
                 label="Сумма (необязательно)"
-                id="buyer-value"
+                id="buyer-potential-value"
                 placeholder="0.00"
                 step="0.01"
               />

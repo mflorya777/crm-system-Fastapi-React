@@ -24,7 +24,7 @@ const updateBuyerSchema = yup.object({
   company: yup.string().optional(),
   address: yup.string().optional(),
   notes: yup.string().optional(),
-  value: yup.number().optional().min(0, 'Сумма не может быть отрицательной'),
+  potential_value: yup.number().optional().min(0, 'Сумма не может быть отрицательной'),
   currency: yup.string().optional(),
   source: yup.string().optional(),
   responsible_user_id: yup.string().optional(),
@@ -49,7 +49,7 @@ export const useUpdateBuyer = (
       company: initialData.company || '',
       address: initialData.address || '',
       notes: initialData.notes || '',
-      value: initialData.value || undefined,
+      potential_value: initialData.potential_value || undefined,
       currency: initialData.currency || 'RUB',
       source: initialData.source || '',
       responsible_user_id: initialData.responsible_user_id || '',
@@ -79,8 +79,8 @@ export const useUpdateBuyer = (
       if (values.notes !== undefined) {
         updateData.notes = values.notes || undefined
       }
-      if (values.value !== undefined) {
-        updateData.value = values.value
+      if (values.potential_value !== undefined) {
+        updateData.potential_value = values.potential_value
       }
       if (values.currency !== undefined) {
         updateData.currency = values.currency || undefined

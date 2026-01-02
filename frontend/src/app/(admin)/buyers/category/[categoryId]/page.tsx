@@ -40,7 +40,7 @@ const BuyerCategoryPage = () => {
   
   // Поиск, сортировка, фильтрация
   const [searchQuery, setSearchQuery] = useState('')
-  const [sortField, setSortField] = useState<'created_at' | 'value' | 'name'>('created_at')
+  const [sortField, setSortField] = useState<'created_at' | 'potential_value' | 'name'>('created_at')
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
   const [filterStageId, setFilterStageId] = useState<string | null>(null)
 
@@ -93,8 +93,8 @@ const BuyerCategoryPage = () => {
       let comparison = 0
       if (sortField === 'created_at') {
         comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      } else if (sortField === 'value') {
-        comparison = (a.value || 0) - (b.value || 0)
+      } else if (sortField === 'potential_value') {
+        comparison = (a.potential_value || 0) - (b.potential_value || 0)
       } else if (sortField === 'name') {
         comparison = a.name.localeCompare(b.name)
       }
@@ -107,7 +107,7 @@ const BuyerCategoryPage = () => {
 
   const sortFieldLabels: Record<string, string> = {
     created_at: 'Дата создания',
-    value: 'Сумма',
+    potential_value: 'Сумма',
     name: 'Имя',
   }
 
@@ -161,8 +161,8 @@ const BuyerCategoryPage = () => {
       let comparison = 0
       if (sortField === 'created_at') {
         comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      } else if (sortField === 'value') {
-        comparison = (a.value || 0) - (b.value || 0)
+      } else if (sortField === 'potential_value') {
+        comparison = (a.potential_value || 0) - (b.potential_value || 0)
       } else if (sortField === 'name') {
         comparison = a.name.localeCompare(b.name)
       } else {
@@ -488,11 +488,11 @@ const BuyerCategoryPage = () => {
           {buyer.phone && <p className="text-muted small mb-1">{buyer.phone}</p>}
           {buyer.company && <p className="text-muted small mb-2"><strong>Компания:</strong> {buyer.company}</p>}
           <div className="d-flex flex-wrap gap-2 mb-2">
-            {buyer.value && (
+            {buyer.potential_value && (
               <div className="d-flex align-items-center gap-1">
                 <IconifyIcon icon="bx:dollar" className="fs-14" />
                 <span className="small fw-semibold">
-                  {buyer.value.toLocaleString('ru-RU')} {buyer.currency || 'RUB'}
+                  {buyer.potential_value.toLocaleString('ru-RU')} {buyer.currency || 'RUB'}
                 </span>
               </div>
             )}
@@ -570,7 +570,7 @@ const BuyerCategoryPage = () => {
                   <h5 className="mb-0">Воронка покупателей</h5>
                   <span className="text-muted small">
                     ({buyers.length} {buyers.length === 1 ? 'покупатель' : buyers.length >= 2 && buyers.length <= 4 ? 'покупателя' : 'покупателей'}
-                    {buyers.length > 0 && `, ожидается ${buyers.reduce((sum, buyer) => sum + (buyer.value || 0), 0).toLocaleString('ru-RU')} ₽`})
+                    {buyers.length > 0 && `, ожидается ${buyers.reduce((sum, buyer) => sum + (buyer.potential_value || 0), 0).toLocaleString('ru-RU')} ₽`})
                   </span>
                 </div>
                 <div className="d-flex gap-1">
@@ -633,8 +633,8 @@ const BuyerCategoryPage = () => {
                       Дата создания
                     </Dropdown.Item>
                     <Dropdown.Item 
-                      active={sortField === 'value'} 
-                      onClick={() => setSortField('value')}
+                      active={sortField === 'potential_value'} 
+                      onClick={() => setSortField('potential_value')}
                     >
                       Сумма
                     </Dropdown.Item>
@@ -932,9 +932,9 @@ const BuyerCategoryPage = () => {
                               </span>
                             </div>
                             <div style={{ flex: 1 }}>
-                              {buyer.value ? (
+                              {buyer.potential_value ? (
                                 <span className="fw-semibold">
-                                  {buyer.value.toLocaleString('ru-RU')} {buyer.currency || 'RUB'}
+                                  {buyer.potential_value.toLocaleString('ru-RU')} {buyer.currency || 'RUB'}
                                 </span>
                               ) : (
                                 <span className="text-muted">—</span>

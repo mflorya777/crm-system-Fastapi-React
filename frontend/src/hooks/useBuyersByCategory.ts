@@ -13,7 +13,7 @@ export interface Buyer {
   company?: string
   address?: string
   notes?: string
-  value?: number
+  potential_value?: number
   currency?: string
   source?: string
   responsible_user_id: string
@@ -41,7 +41,7 @@ export interface BuyersFetchParams {
   activeOnly?: boolean
   search?: string
   stageId?: string
-  sortField?: 'order' | 'created_at' | 'value' | 'name'
+  sortField?: 'order' | 'created_at' | 'potential_value' | 'name'
   sortDirection?: 'asc' | 'desc'
 }
 
