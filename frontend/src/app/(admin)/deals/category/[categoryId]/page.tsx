@@ -522,42 +522,39 @@ const DealCategoryPage = () => {
       <PageBreadcrumb subName="Сделки" title={category.name} />
       <PageMetaData title={category.name} />
 
-      {/* Заголовок с кнопкой удаления категории */}
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4 className="mb-0">{category.name}</h4>
-        <div className="d-flex gap-2 align-items-center">
-          {showDeleteCategoryConfirm ? (
-            <div className="d-flex align-items-center gap-2">
-              <span className="text-danger small">Удалить категорию?</span>
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => categoryId && deleteCategory(categoryId)}
-                disabled={deleteCategoryLoading}
-              >
-                {deleteCategoryLoading ? 'Удаление...' : 'Да'}
-              </Button>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => setShowDeleteCategoryConfirm(false)}
-                disabled={deleteCategoryLoading}
-              >
-                Нет
-              </Button>
-            </div>
-          ) : (
+      {/* Кнопка удаления категории */}
+      <div className="d-flex justify-content-end align-items-center mb-3">
+        {showDeleteCategoryConfirm ? (
+          <div className="d-flex align-items-center gap-2">
+            <span className="text-danger small">Удалить категорию?</span>
             <Button
-              variant="outline-danger"
+              variant="danger"
               size="sm"
-              onClick={() => setShowDeleteCategoryConfirm(true)}
-              className="d-flex align-items-center gap-1"
+              onClick={() => categoryId && deleteCategory(categoryId)}
+              disabled={deleteCategoryLoading}
             >
-              <IconifyIcon icon="bx:trash" />
-              Удалить категорию
+              {deleteCategoryLoading ? 'Удаление...' : 'Да'}
             </Button>
-          )}
-        </div>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setShowDeleteCategoryConfirm(false)}
+              disabled={deleteCategoryLoading}
+            >
+              Нет
+            </Button>
+          </div>
+        ) : (
+          <Button
+            variant="outline-danger"
+            size="sm"
+            onClick={() => setShowDeleteCategoryConfirm(true)}
+            className="d-flex align-items-center gap-1"
+          >
+            <IconifyIcon icon="bx:trash" />
+            Удалить категорию
+          </Button>
+        )}
       </div>
 
       <Row>
