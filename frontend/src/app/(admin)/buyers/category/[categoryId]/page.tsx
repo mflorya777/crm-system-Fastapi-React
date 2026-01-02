@@ -40,8 +40,8 @@ const BuyerCategoryPage = () => {
   
   // Поиск, сортировка, фильтрация
   const [searchQuery, setSearchQuery] = useState('')
-  const [sortField, setSortField] = useState<'created_at' | 'potential_value' | 'name'>('created_at')
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
+  const [sortField, setSortField] = useState<'order' | 'created_at' | 'potential_value' | 'name'>('order')
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
   const [filterStageId, setFilterStageId] = useState<string | null>(null)
 
   const { moveBuyerToStage } = useMoveBuyerToStage(() => {
@@ -91,7 +91,9 @@ const BuyerCategoryPage = () => {
     })
     .sort((a, b) => {
       let comparison = 0
-      if (sortField === 'created_at') {
+      if (sortField === 'order') {
+        comparison = a.order - b.order
+      } else if (sortField === 'created_at') {
         comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       } else if (sortField === 'potential_value') {
         comparison = (a.potential_value || 0) - (b.potential_value || 0)
@@ -106,6 +108,7 @@ const BuyerCategoryPage = () => {
   }
 
   const sortFieldLabels: Record<string, string> = {
+    order: 'Порядок',
     created_at: 'Дата создания',
     potential_value: 'Сумма',
     name: 'Имя',
@@ -159,15 +162,14 @@ const BuyerCategoryPage = () => {
   Object.keys(buyersByStageMap).forEach((stageId) => {
     buyersByStageMap[stageId].sort((a, b) => {
       let comparison = 0
-      if (sortField === 'created_at') {
+      if (sortField === 'order') {
+        comparison = a.order - b.order
+      } else if (sortField === 'created_at') {
         comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       } else if (sortField === 'potential_value') {
         comparison = (a.potential_value || 0) - (b.potential_value || 0)
       } else if (sortField === 'name') {
         comparison = a.name.localeCompare(b.name)
-      } else {
-        // По умолчанию сортируем по order
-        comparison = a.order - b.order
       }
       return sortDirection === 'asc' ? comparison : -comparison
     })
@@ -626,6 +628,12 @@ const BuyerCategoryPage = () => {
                     {sortFieldLabels[sortField]}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
+                    <Dropdown.Item 
+                      active={sortField === 'order'} 
+                      onClick={() => setSortField('order')}
+                    >
+                      Порядок
+                    </Dropdown.Item>
                     <Dropdown.Item 
                       active={sortField === 'created_at'} 
                       onClick={() => setSortField('created_at')}

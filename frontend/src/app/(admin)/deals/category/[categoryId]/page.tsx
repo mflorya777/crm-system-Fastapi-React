@@ -40,8 +40,8 @@ const DealCategoryPage = () => {
   
   // Поиск, сортировка, фильтрация
   const [searchQuery, setSearchQuery] = useState('')
-  const [sortField, setSortField] = useState<'created_at' | 'amount' | 'title'>('created_at')
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
+  const [sortField, setSortField] = useState<'order' | 'created_at' | 'amount' | 'title'>('order')
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
   const [filterStageId, setFilterStageId] = useState<string | null>(null)
 
   const { moveDealToStage } = useMoveDealToStage(() => {
@@ -91,7 +91,9 @@ const DealCategoryPage = () => {
     })
     .sort((a, b) => {
       let comparison = 0
-      if (sortField === 'created_at') {
+      if (sortField === 'order') {
+        comparison = a.order - b.order
+      } else if (sortField === 'created_at') {
         comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       } else if (sortField === 'amount') {
         comparison = (a.amount || 0) - (b.amount || 0)
@@ -106,6 +108,7 @@ const DealCategoryPage = () => {
   }
 
   const sortFieldLabels: Record<string, string> = {
+    order: 'Порядок',
     created_at: 'Дата создания',
     amount: 'Сумма',
     title: 'Название',
@@ -159,15 +162,14 @@ const DealCategoryPage = () => {
   Object.keys(dealsByStageMap).forEach((stageId) => {
     dealsByStageMap[stageId].sort((a, b) => {
       let comparison = 0
-      if (sortField === 'created_at') {
+      if (sortField === 'order') {
+        comparison = a.order - b.order
+      } else if (sortField === 'created_at') {
         comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
       } else if (sortField === 'amount') {
         comparison = (a.amount || 0) - (b.amount || 0)
       } else if (sortField === 'title') {
         comparison = a.title.localeCompare(b.title)
-      } else {
-        // По умолчанию сортируем по order
-        comparison = a.order - b.order
       }
       return sortDirection === 'asc' ? comparison : -comparison
     })
@@ -624,6 +626,12 @@ const DealCategoryPage = () => {
                     {sortFieldLabels[sortField]}
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
+                    <Dropdown.Item 
+                      active={sortField === 'order'} 
+                      onClick={() => setSortField('order')}
+                    >
+                      Порядок
+                    </Dropdown.Item>
                     <Dropdown.Item 
                       active={sortField === 'created_at'} 
                       onClick={() => setSortField('created_at')}
