@@ -47,20 +47,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'deals',
     icon: 'iconamoon:shopping-bag-duotone',
     label: 'Сделки',
-    children: [
-      {
-        key: 'deals-mock-1',
-        label: 'mock 1',
-        url: '/deals/mock-1',
-        parentKey: 'deals',
-      },
-      {
-        key: 'deals-mock-2',
-        label: 'mock 2',
-        url: '/deals/mock-2',
-        parentKey: 'deals',
-      },
-    ],
+    children: [], // Заполнение из API
   },
   {
     key: 'sellers',

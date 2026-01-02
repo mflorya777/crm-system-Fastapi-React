@@ -110,6 +110,9 @@ const GridjsTable = lazy(() => import('@/app/(admin)/tables/gridjs/page'))
 const BoxIcons = lazy(() => import('@/app/(admin)/icons/boxicons/page'))
 const IconaMoonIcons = lazy(() => import('@/app/(admin)/icons/iconamoon/page'))
 
+// Deals Routes
+const DealCategoryPage = lazy(() => import('@/app/(admin)/deals/category/[categoryId]/page'))
+
 // Not Found Routes
 const NotFoundAdmin = lazy(() => import('@/app/(admin)/not-found'))
 const NotFound = lazy(() => import('@/app/(other)/(error-pages)/error-404/page'))
@@ -276,6 +279,11 @@ const customRoutes: RoutesProps[] = [
     name: 'Account',
     path: '/account/',
     element: <Profile />,
+  },
+  {
+    name: 'Deal Category',
+    path: '/deals/category/:categoryId',
+    element: <DealCategoryPage />,
   },
   {
     name: 'Contact Us',

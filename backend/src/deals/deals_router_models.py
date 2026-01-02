@@ -20,6 +20,7 @@ from src.deals.deals_storage_models import (
 
 class DealStageRequest(BaseModel):
     """Модель стадии для запроса"""
+    id: Optional[UUID] = Field(default=None, description="ID стадии (если обновляем существующую)")
     name: str = Field(..., description="Название стадии")
     order: int = Field(..., description="Порядок стадии в воронке")
     color: Optional[str] = Field(default=None, description="Цвет стадии (hex код)")
@@ -31,6 +32,7 @@ class DealStageResponse(BaseModel):
     name: str = Field(...)
     order: int = Field(...)
     color: Optional[str] = Field(default=None)
+    is_active: bool = Field(default=True)
     created_at: dt.datetime = Field(...)
     updated_at: Optional[dt.datetime] = Field(default=None)
 
@@ -41,6 +43,7 @@ class DealStageResponse(BaseModel):
             name=stage.name,
             order=stage.order,
             color=stage.color,
+            is_active=stage.is_active,
             created_at=stage.created_at,
             updated_at=stage.updated_at,
         )
@@ -114,6 +117,7 @@ class CreateDealParams(BaseModel):
     currency: Optional[str] = Field(default="RUB", description="Валюта сделки")
     client_id: Optional[UUID] = Field(default=None, description="ID клиента")
     responsible_user_id: UUID = Field(..., description="ID ответственного пользователя")
+    order: Optional[int] = Field(default=None, description="Порядок сделки в стадии")
 
 
 class UpdateDealParams(BaseModel):
@@ -129,6 +133,7 @@ class UpdateDealParams(BaseModel):
 class MoveDealToStageParams(BaseModel):
     """Параметры для перемещения сделки в стадию"""
     stage_id: UUID = Field(..., description="ID новой стадии")
+    order: Optional[int] = Field(default=None, description="Порядок сделки в новой стадии")
 
 
 class DealResponse(BaseModel):
@@ -142,6 +147,7 @@ class DealResponse(BaseModel):
     currency: Optional[str] = Field(default="RUB")
     client_id: Optional[UUID] = Field(default=None)
     responsible_user_id: UUID = Field(...)
+    order: int = Field(default=0, description="Порядок сделки в стадии")
     created_at: dt.datetime = Field(...)
     created_by: UUID | None = Field(...)
     updated_at: dt.datetime | None = Field(default=None)
@@ -162,6 +168,7 @@ class DealResponse(BaseModel):
             currency=deal.currency,
             client_id=deal.client_id,
             responsible_user_id=deal.responsible_user_id,
+            order=deal.order,
             created_at=deal.created_at,
             created_by=deal.created_by,
             updated_at=deal.updated_at,
@@ -180,3 +187,25 @@ class DealApiResponse(ApiResponse):
 class DealsListApiResponse(ApiResponse):
     """API ответ со списком сделок"""
     data: List[DealResponse] | dict = Field(default={})
+
+
+class DealsCountResponse(BaseModel):
+    """Модель для ответа с количеством сделок"""
+    count: int = Field(..., description="Количество сделок")
+    category_id: UUID = Field(..., description="ID категории")
+
+
+class DealsCountApiResponse(ApiResponse):
+    """API ответ с количеством сделок"""
+    data: DealsCountResponse | dict = Field(default={})
+
+
+class DealsSumResponse(BaseModel):
+    """Модель для ответа с суммой сделок"""
+    total_amount: float = Field(..., description="Сумма всех сделок")
+    category_id: UUID = Field(..., description="ID категории")
+
+
+class DealsSumApiResponse(ApiResponse):
+    """API ответ с суммой сделок"""
+    data: DealsSumResponse | dict = Field(default={})

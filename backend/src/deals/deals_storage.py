@@ -266,6 +266,57 @@ class DealsStorage:
             update_query,
         )
 
+    async def soft_delete_category(
+        self,
+        actor_id: UUID,
+        category_id: UUID,
+    ):
+        """Мягкое удаление категории (установка is_active = False)"""
+        _LOG.info(f"Мягкое удаление категории: {category_id}")
+        
+        update_query = {
+            "$set": {
+                "is_active": False,
+            }
+        }
+        
+        await self.update_category_with_revision(
+            actor_id=actor_id,
+            category_id=category_id,
+            update_query=update_query,
+        )
+
+    async def soft_delete_stage(
+        self,
+        actor_id: UUID,
+        category_id: UUID,
+        stage_id: UUID,
+    ):
+        """Мягкое удаление стадии (установка is_active = False)"""
+        _LOG.info(f"Мягкое удаление стадии: {stage_id} в категории: {category_id}")
+        
+        # Получаем категорию
+        category = await self.get_category(category_id)
+        
+        # Находим и обновляем стадию
+        stage_found = False
+        for stage in category.stages:
+            if stage.id == stage_id:
+                stage.is_active = False
+                stage.updated_at = utc_now()
+                stage_found = True
+                break
+        
+        if not stage_found:
+            raise DealsStorageException(f"Стадия {stage_id} не найдена в категории {category_id}")
+        
+        # Обновляем категорию с новыми стадиями
+        await self.update_category_stages(
+            actor_id=actor_id,
+            category_id=category_id,
+            stages=category.stages,
+        )
+
     async def add_deal(
         self,
         actor_id: UUID | None,
@@ -277,11 +328,20 @@ class DealsStorage:
         amount: Optional[float] = None,
         currency: Optional[str] = "RUB",
         client_id: Optional[UUID] = None,
+        order: Optional[int] = None,
     ) -> DealToGet:
         """Создать новую сделку"""
         new_deal_id = uuid4()
         if not actor_id:
             actor_id = new_deal_id
+        
+        # Если order не указан, вычисляем максимальный order для стадии + 1
+        if order is None:
+            max_order_deal = await self.deals_collection.find_one(
+                {"stage_id": stage_id},
+                sort=[("order", -1)],
+            )
+            order = (max_order_deal.get("order", -1) + 1) if max_order_deal else 0
         
         deal = DealToCreate(
             id=new_deal_id,
@@ -295,6 +355,7 @@ class DealsStorage:
             currency=currency,
             client_id=client_id,
             responsible_user_id=responsible_user_id,
+            order=order,
         )
         
         result = await self.deals_collection.insert_one(
@@ -365,27 +426,100 @@ class DealsStorage:
         self,
         category_id: UUID,
         active_only: bool = True,
+        search: Optional[str] = None,
+        stage_id: Optional[UUID] = None,
+        sort_field: str = "order",
+        sort_direction: str = "asc",
     ) -> List[DealToGet]:
-        """Получить все сделки в категории"""
+        """Получить все сделки в категории с поддержкой поиска, фильтрации и сортировки"""
         _LOG.info(f"Запрашиваю сделки по категории: {category_id}")
+        query: dict = {
+            "category_id": category_id,
+        }
+        if active_only:
+            query["is_active"] = True
+        
+        # Фильтр по стадии
+        if stage_id:
+            query["stage_id"] = stage_id
+        
+        # Поиск по названию (регистронезависимый)
+        if search:
+            query["title"] = {"$regex": search, "$options": "i"}
+        
+        projection = {"_id": False}
+        for key in DealToGet.model_fields:
+            projection[key] = True
+        
+        # Определяем направление сортировки
+        sort_dir = 1 if sort_direction == "asc" else -1
+        
+        # Маппинг полей сортировки
+        sort_field_map = {
+            "order": "order",
+            "created_at": "created_at",
+            "amount": "amount",
+            "title": "title",
+        }
+        mongo_sort_field = sort_field_map.get(
+            sort_field,
+            "order",
+        )
+        
+        cursor = self.deals_collection.find(
+            query,
+            projection=projection,
+        ).sort(mongo_sort_field, sort_dir)
+        
+        deals = []
+        async for deal in cursor:
+            deals.append(DealToGet(**deal))
+        return deals
+
+    async def count_deals_by_category(
+        self,
+        category_id: UUID,
+        active_only: bool = True,
+    ) -> int:
+        """Получить количество сделок в категории"""
+        _LOG.info(f"Считаю сделки по категории: {category_id}")
         query = {
             "category_id": category_id,
         }
         if active_only:
             query["is_active"] = True
         
-        projection = {"_id": False}
-        for key in DealToGet.model_fields:
-            projection[key] = True
+        count = await self.deals_collection.count_documents(query)
+        return count
+
+    async def sum_deals_amount_by_category(
+        self,
+        category_id: UUID,
+        active_only: bool = True,
+    ) -> float:
+        """Получить сумму всех сделок в категории"""
+        _LOG.info(f"Суммирую сделки по категории: {category_id}")
+        match_query = {
+            "category_id": category_id,
+        }
+        if active_only:
+            match_query["is_active"] = True
         
-        cursor = self.deals_collection.find(
-            query,
-            projection=projection,
-        )
-        deals = []
-        async for deal in cursor:
-            deals.append(DealToGet(**deal))
-        return deals
+        pipeline = [
+            {
+                "$match": match_query,
+                },
+            {
+                "$group": {"_id": None, "total": {"$sum": "$amount"}},
+                },
+        ]
+        
+        cursor = self.deals_collection.aggregate(pipeline)
+        result = await cursor.to_list(length=1)
+        
+        if result and len(result) > 0:
+            return result[0].get("total", 0.0)
+        return 0.0
 
     async def get_deals_by_responsible_user(
         self,
@@ -409,7 +543,7 @@ class DealsStorage:
         cursor = self.deals_collection.find(
             query,
             projection=projection,
-        )
+        ).sort("order", 1)  # Сортируем по order по возрастанию
         deals = []
         async for deal in cursor:
             deals.append(DealToGet(**deal))
@@ -474,16 +608,80 @@ class DealsStorage:
             return DealToCreate(**data)
         return None
 
+    async def soft_delete_deal(
+        self,
+        actor_id: UUID,
+        deal_id: UUID,
+    ):
+        """Мягкое удаление сделки (установка is_active = False)"""
+        _LOG.info(f"Мягкое удаление сделки: {deal_id}")
+        
+        update_query = {
+            "$set": {
+                "is_active": False,
+                "closed_at": utc_now(),
+            }
+        }
+        
+        await self.update_deal_with_revision(
+            actor_id=actor_id,
+            deal_id=deal_id,
+            update_query=update_query,
+        )
+
     async def move_deal_to_stage(
         self,
         actor_id: UUID,
         deal_id: UUID,
         new_stage_id: UUID,
+        order: Optional[int] = None,
     ):
         """Переместить сделку в другую стадию"""
+        # Получаем текущую сделку
+        current_deal = await self.get_deal(deal_id)
+        old_stage_id = current_deal.stage_id
+        old_order = current_deal.order
+        
+        # Если order не указан, вычисляем максимальный order для новой стадии + 1
+        if order is None:
+            max_order_deal = await self.deals_collection.find_one(
+                {"stage_id": new_stage_id},
+                sort=[("order", -1)],
+            )
+            order = (max_order_deal.get("order", -1) + 1) if max_order_deal else 0
+        
+        # Если перемещаем в ту же стадию, нужно обновить порядок других сделок
+        if old_stage_id == new_stage_id:
+            # Если порядок не изменился, ничего не делаем
+            if old_order == order:
+                return
+            # Сдвигаем порядок других сделок в стадии
+            await self._reorder_deals_in_stage(new_stage_id, deal_id, old_order, order)
+        else:
+            # Если перемещаем в другую стадию, нужно:
+            # 1. Сдвинуть порядок сделок в старой стадии (уменьшить order всех сделок после старой позиции)
+            await self.deals_collection.update_many(
+                {
+                    "stage_id": old_stage_id,
+                    "id": {"$ne": deal_id},
+                    "order": {"$gt": old_order},
+                },
+                {"$inc": {"order": -1}},
+            )
+            # 2. Сдвинуть порядок сделок в новой стадии (увеличить order всех сделок начиная с новой позиции)
+            await self.deals_collection.update_many(
+                {
+                    "stage_id": new_stage_id,
+                    "id": {"$ne": deal_id},
+                    "order": {"$gte": order},
+                },
+                {"$inc": {"order": 1}},
+            )
+        
         update_query = {
             "$set": {
                 "stage_id": new_stage_id,
+                "order": order,
             },
         }
         await self.update_deal_with_revision(
@@ -491,6 +689,40 @@ class DealsStorage:
             deal_id,
             update_query,
         )
+    
+    async def _reorder_deals_in_stage(
+        self,
+        stage_id: UUID,
+        moved_deal_id: UUID,
+        old_order: int,
+        new_order: int,
+    ):
+        """Переупорядочить сделки в стадии при перемещении в той же стадии"""
+        if old_order == new_order:
+            return  # Порядок не изменился
+        
+        # Если перемещаем вперед (уменьшаем order)
+        if new_order < old_order:
+            # Увеличиваем order всех сделок между new_order и old_order
+            await self.deals_collection.update_many(
+                {
+                    "stage_id": stage_id,
+                    "id": {"$ne": moved_deal_id},
+                    "order": {"$gte": new_order, "$lt": old_order},
+                },
+                {"$inc": {"order": 1}},
+            )
+        # Если перемещаем назад (увеличиваем order)
+        else:
+            # Уменьшаем order всех сделок между old_order и new_order
+            await self.deals_collection.update_many(
+                {
+                    "stage_id": stage_id,
+                    "id": {"$ne": moved_deal_id},
+                    "order": {"$gt": old_order, "$lte": new_order},
+                },
+                {"$inc": {"order": -1}},
+            )
 
     async def close_deal(
         self,

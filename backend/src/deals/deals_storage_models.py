@@ -22,6 +22,7 @@ class DealStage(BaseModel):
     name: str = Field(..., description="Название стадии")
     order: int = Field(..., description="Порядок стадии в воронке")
     color: Optional[str] = Field(default=None, description="Цвет стадии (hex код)")
+    is_active: bool = Field(default=True, description="Активна ли стадия")
     created_at: dt.datetime = Field(default_factory=utc_now)
     updated_at: Optional[dt.datetime] = Field(default=None)
 
@@ -65,6 +66,7 @@ class DealToCreate(BaseModel):
     currency: Optional[str] = Field(default="RUB", description="Валюта сделки")
     client_id: Optional[UUID] = Field(default=None, description="ID клиента")
     responsible_user_id: UUID = Field(..., description="ID ответственного пользователя")
+    order: int = Field(default=0, description="Порядок сделки в стадии")
     created_at: dt.datetime = Field(default_factory=utc_now)
     created_by: UUID | None = Field(...)
     updated_at: dt.datetime | None = Field(default=None)
@@ -85,6 +87,7 @@ class DealToGet(BaseModel):
     currency: Optional[str] = Field(default="RUB")
     client_id: Optional[UUID] = Field(default=None)
     responsible_user_id: UUID = Field(...)
+    order: int = Field(default=0, description="Порядок сделки в стадии")
     created_at: dt.datetime = Field(...)
     created_by: UUID | None = Field(...)
     updated_at: dt.datetime | None = Field(default=None)

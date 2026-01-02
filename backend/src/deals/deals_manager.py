@@ -183,6 +183,53 @@ class DealsManager:
                 f"Ошибка при обновлении категории: {str(e)}",
             )
 
+    async def delete_category(
+        self,
+        actor_id: UUID,
+        category_id: UUID,
+    ):
+        """Мягкое удаление категории (установка is_active = False)"""
+        # Проверяем, что категория существует
+        await self.get_category(actor_id, category_id)
+        
+        try:
+            await self.deals_storage.soft_delete_category(
+                actor_id=actor_id,
+                category_id=category_id,
+            )
+        except Exception as e:
+            _LOG.error(e)
+            raise DealsManagerException(
+                f"Ошибка при удалении категории: {str(e)}",
+            )
+
+    async def delete_stage(
+        self,
+        actor_id: UUID,
+        category_id: UUID,
+        stage_id: UUID,
+    ):
+        """Мягкое удаление стадии (установка is_active = False)"""
+        # Проверяем, что категория существует
+        category = await self.get_category(actor_id, category_id)
+        
+        # Проверяем, что стадия существует
+        stage_exists = any(stage.id == stage_id for stage in category.stages)
+        if not stage_exists:
+            raise InvalidStageError(f"Стадия {stage_id} не найдена в категории {category_id}")
+        
+        try:
+            await self.deals_storage.soft_delete_stage(
+                actor_id=actor_id,
+                category_id=category_id,
+                stage_id=stage_id,
+            )
+        except Exception as e:
+            _LOG.error(e)
+            raise DealsManagerException(
+                f"Ошибка при удалении стадии: {str(e)}",
+            )
+
     async def create_deal(
         self,
         actor_id: UUID,
@@ -194,6 +241,7 @@ class DealsManager:
         amount: Optional[float] = None,
         currency: Optional[str] = "RUB",
         client_id: Optional[UUID] = None,
+        order: Optional[int] = None,
     ) -> DealToGet:
         """Создать новую сделку"""
         category = await self.get_category(
@@ -227,6 +275,7 @@ class DealsManager:
                 currency=currency,
                 client_id=client_id,
                 responsible_user_id=responsible_user_id,
+                order=order,
             )
             return deal
         except DealsStorageException as e:
@@ -252,8 +301,12 @@ class DealsManager:
         actor_id: UUID,
         category_id: UUID,
         active_only: bool = True,
+        search: Optional[str] = None,
+        stage_id: Optional[UUID] = None,
+        sort_field: str = "order",
+        sort_direction: str = "asc",
     ) -> List[DealToGet]:
-        """Получить все сделки в категории"""
+        """Получить все сделки в категории с поддержкой поиска, фильтрации и сортировки"""
         # Проверяем, что категория существует
         await self.get_category(actor_id, category_id)
         
@@ -261,6 +314,10 @@ class DealsManager:
             return await self.deals_storage.get_deals_by_category(
                 category_id=category_id,
                 active_only=active_only,
+                search=search,
+                stage_id=stage_id,
+                sort_field=sort_field,
+                sort_direction=sort_direction,
             )
         except Exception as e:
             _LOG.error(e)
@@ -291,6 +348,53 @@ class DealsManager:
             _LOG.error(e)
             raise DealsManagerException(
                 f"Ошибка при получении сделок: {str(e)}",
+            )
+
+    async def count_deals_by_category(
+        self,
+        actor_id: UUID,
+        category_id: UUID,
+        active_only: bool = True,
+    ) -> int:
+        """Получить количество сделок в категории"""
+        # Проверяем, что категория существует
+        await self.get_category(
+            actor_id,
+            category_id,
+            )
+        
+        try:
+            return await self.deals_storage.count_deals_by_category(
+                category_id=category_id,
+                active_only=active_only,
+            )
+        except Exception as e:
+            _LOG.error(e)
+            raise DealsManagerException(
+                f"Ошибка при подсчете сделок: {str(e)}",
+            )
+
+    async def sum_deals_amount_by_category(
+        self,
+        actor_id: UUID,
+        category_id: UUID,
+        active_only: bool = True,
+    ) -> float:
+        """Получить сумму всех сделок в категории"""
+        await self.get_category(
+            actor_id,
+            category_id,
+        )
+        
+        try:
+            return await self.deals_storage.sum_deals_amount_by_category(
+                category_id=category_id,
+                active_only=active_only,
+            )
+        except Exception as e:
+            _LOG.error(e)
+            raise DealsManagerException(
+                f"Ошибка при суммировании сделок: {str(e)}",
             )
 
     async def update_deal(
@@ -355,11 +459,32 @@ class DealsManager:
                 f"Ошибка при обновлении сделки: {str(e)}",
             )
 
+    async def delete_deal(
+        self,
+        actor_id: UUID,
+        deal_id: UUID,
+    ):
+        """Мягкое удаление сделки (установка is_active = False)"""
+        # Проверяем, что сделка существует
+        await self.get_deal(actor_id, deal_id)
+        
+        try:
+            await self.deals_storage.soft_delete_deal(
+                actor_id=actor_id,
+                deal_id=deal_id,
+            )
+        except Exception as e:
+            _LOG.error(e)
+            raise DealsManagerException(
+                f"Ошибка при удалении сделки: {str(e)}",
+            )
+
     async def move_deal_to_stage(
         self,
         actor_id: UUID,
         deal_id: UUID,
         new_stage_id: UUID,
+        order: Optional[int] = None,
     ) -> DealToGet:
         """Переместить сделку в другую стадию"""
         deal = await self.get_deal(
@@ -383,6 +508,7 @@ class DealsManager:
                 actor_id=actor_id,
                 deal_id=deal_id,
                 new_stage_id=new_stage_id,
+                order=order,
             )
             return await self.get_deal(
                 actor_id,

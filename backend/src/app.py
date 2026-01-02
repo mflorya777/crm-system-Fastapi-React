@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from dotenv import load_dotenv
 
 from fastapi import (
     FastAPI,
@@ -12,20 +13,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from typing import Optional
-
-# Загружаем переменные окружения из local.env перед созданием конфигурации
-try:
-    from dotenv import load_dotenv
-    env_file = Path(__file__).parent.parent.parent / "local.env"
-    if env_file.exists():
-        load_dotenv(env_file, override=False)
-        _LOG = logging.getLogger("uvicorn")
-        _LOG.info(f"Loaded environment variables from {env_file}")
-except ImportError:
-    pass
-except Exception as e:
-    _LOG = logging.getLogger("uvicorn")
-    _LOG.warning(f"Failed to load .env file: {e}")
 
 from src.clients.mongo.client import MClient
 from src.model import AppConfig
@@ -48,6 +35,23 @@ from src.authorization.authorization_router import router as authorization_route
 from src.users.users_router import router as users_router
 from src.signs.signs_router import router as signs_router
 from src.deals.deals_router import router as deals_router
+
+
+# Загружаем переменные окружения из local.env перед созданием конфигурации
+try:
+    env_file = Path(__file__).parent.parent.parent / "local.env"
+    if env_file.exists():
+        load_dotenv(
+            env_file,
+            override=False,
+        )
+        _LOG = logging.getLogger("uvicorn")
+        _LOG.info(f"Loaded environment variables from {env_file}")
+except ImportError:
+    pass
+except Exception as e:
+    _LOG = logging.getLogger("uvicorn")
+    _LOG.warning(f"Failed to load .env file: {e}")
 
 
 _LOG = logging.getLogger("uvicorn")
@@ -170,6 +174,7 @@ def setup_app(
         allow_methods=[
             "GET",
             "POST",
+            "PATCH",
             "HEAD",
             "OPTIONS",
             "PUT",
