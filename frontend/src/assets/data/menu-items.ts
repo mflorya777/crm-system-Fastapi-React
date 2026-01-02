@@ -68,6 +68,12 @@ export const MENU_ITEMS: MenuItemType[] = [
     url: '/lists',
   },
   {
+    key: 'chat',
+    icon: 'iconamoon:comment-dots-duotone',
+    label: 'Чаты',
+    url: '/apps/chat',
+  },
+  {
     key: 'mail',
     icon: 'iconamoon:email-duotone',
     label: 'Почта',

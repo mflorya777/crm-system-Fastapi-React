@@ -33,11 +33,15 @@ from src.deals.deals_storage import DealsStorage
 from src.deals.deals_manager import DealsManager
 from src.buyers.buyers_storage import BuyersStorage
 from src.buyers.buyers_manager import BuyersManager
+from src.chats.chats_storage import ChatsStorage
+from src.chats.chats_manager import ChatsManager
+from src.chats import create_chats_indexes
 from src.authorization.authorization_router import router as authorization_router
 from src.users.users_router import router as users_router
 from src.signs.signs_router import router as signs_router
 from src.deals.deals_router import router as deals_router
 from src.buyers.buyers_router import router as buyers_router
+from src.chats.chats_router import router as chats_router
 
 
 # Загружаем переменные окружения из local.env перед созданием конфигурации
@@ -98,6 +102,12 @@ async def startup():
         )
 
         await users_manager.create_system_users()
+        
+        # Создаем индексы для чатов
+        try:
+            await create_chats_indexes(MONGO_CLIENT.client, MONGO_CLIENT.db_name)
+        except Exception as e:
+            _LOG.error(f"Failed to create chats indexes: {e}")
 
 
 def setup_app(
@@ -115,6 +125,7 @@ def setup_app(
             signs_storage = SignsStorage(mongo_client)
             deals_storage = DealsStorage(mongo_client)
             buyers_storage = BuyersStorage(mongo_client)
+            chats_storage = ChatsStorage(mongo_client.client, mongo_client.db_name)
 
             notifications_manager = NotificationManager(
                 notifications_storage,
@@ -142,11 +153,15 @@ def setup_app(
                 users_storage=users_storage,
                 permissions_manager=permissions_manager,
             )
+            chats_manager = ChatsManager(
+                chats_storage=chats_storage,
+            )
 
             app_instance.state.users_manager = users_manager
             app_instance.state.signs_manager = signs_manager
             app_instance.state.deals_manager = deals_manager
             app_instance.state.buyers_manager = buyers_manager
+            app_instance.state.chats_manager = chats_manager
             _LOG.info("Managers initialized successfully")
         except Exception as e:
             _LOG.error(f"Failed to initialize managers: {e}")
@@ -211,6 +226,7 @@ def setup_app(
     app_instance.include_router(signs_router)
     app_instance.include_router(deals_router)
     app_instance.include_router(buyers_router)
+    app_instance.include_router(chats_router)
 
 
 setup_app(
