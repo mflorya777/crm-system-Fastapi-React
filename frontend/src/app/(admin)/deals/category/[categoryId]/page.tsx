@@ -30,6 +30,7 @@ const DealCategoryPage = () => {
   const [dragOverPosition, setDragOverPosition] = useState<{ stageId: string; index: number } | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const dragStartedRef = useRef(false)
+  const [viewMode, setViewMode] = useState<'columns' | 'list'>('columns')
 
   const { moveDealToStage } = useMoveDealToStage(() => {
     refetchDeals()
@@ -447,8 +448,32 @@ const DealCategoryPage = () => {
           {/* Стадии и сделки в одной обертке */}
           <Card>
             <CardBody>
-              <h5 className="mb-3">Воронка продаж</h5>
-              {/* Колонки со сделками под стадиями */}
+              <div className="d-flex align-items-center justify-content-between mb-3">
+                <h5 className="mb-0">Воронка продаж</h5>
+                <div className="d-flex gap-1">
+                  <Button
+                    variant={viewMode === 'columns' ? 'primary' : 'light'}
+                    size="sm"
+                    onClick={() => setViewMode('columns')}
+                    title="Отображение колонками"
+                    style={{ padding: '0.25rem 0.5rem' }}
+                  >
+                    <IconifyIcon icon="bx:columns" className="fs-18" />
+                  </Button>
+                  <Button
+                    variant={viewMode === 'list' ? 'primary' : 'light'}
+                    size="sm"
+                    onClick={() => setViewMode('list')}
+                    title="Отображение списком"
+                    style={{ padding: '0.25rem 0.5rem' }}
+                  >
+                    <IconifyIcon icon="bx:list-ul" className="fs-18" />
+                  </Button>
+                </div>
+              </div>
+              
+              {/* Отображение колонками */}
+              {viewMode === 'columns' && (
               <div className="overflow-x-auto pb-2">
                 <div className="d-flex gap-3" style={{ flexWrap: 'nowrap' }}>
                   {sortedStages.map((stage, idx) => {
@@ -596,6 +621,114 @@ const DealCategoryPage = () => {
                   </div>
                 </div>
               </div>
+              )}
+              
+              {/* Отображение списком */}
+              {viewMode === 'list' && (
+                <div>
+                  {/* Заголовок таблицы */}
+                  <div 
+                    className="d-flex align-items-center py-2 px-3 mb-2" 
+                    style={{ 
+                      backgroundColor: '#f7f8fa', 
+                      borderRadius: '0.35rem',
+                      fontWeight: 600,
+                      fontSize: '0.875rem',
+                    }}
+                  >
+                    <div style={{ flex: 2 }}>Название</div>
+                    <div style={{ flex: 1 }}>Стадия</div>
+                    <div style={{ flex: 1 }}>Сумма</div>
+                    <div style={{ flex: 1 }}>Дата создания</div>
+                  </div>
+                  
+                  {/* Список сделок */}
+                  {deals.length > 0 ? (
+                    deals
+                      .slice()
+                      .sort((a, b) => a.order - b.order)
+                      .map((deal) => {
+                        const stage = sortedStages.find((s) => s.id === deal.stage_id)
+                        const stageColor = stage?.color || '#6c757d'
+                        
+                        return (
+                          <div
+                            key={deal.id}
+                            className="d-flex align-items-center py-2 px-3 mb-1"
+                            style={{
+                              backgroundColor: '#fff',
+                              borderRadius: '0.35rem',
+                              border: '1px solid #e9ecef',
+                              cursor: 'pointer',
+                              transition: 'all 0.15s ease',
+                            }}
+                            onClick={() => handleDealClick(deal)}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = '#f8f9fa'
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = '#fff'
+                            }}
+                          >
+                            <div style={{ flex: 2 }}>
+                              <span className="fw-semibold">{deal.title}</span>
+                              {deal.description && (
+                                <div className="text-muted small text-truncate" style={{ maxWidth: '300px' }}>
+                                  {deal.description}
+                                </div>
+                              )}
+                            </div>
+                            <div style={{ flex: 1 }}>
+                              <span 
+                                className="badge" 
+                                style={{ 
+                                  backgroundColor: stageColor,
+                                  color: '#fff',
+                                }}
+                              >
+                                {stage?.name || 'Без стадии'}
+                              </span>
+                            </div>
+                            <div style={{ flex: 1 }}>
+                              {deal.amount ? (
+                                <span className="fw-semibold">
+                                  {deal.amount.toLocaleString('ru-RU')} {deal.currency || 'RUB'}
+                                </span>
+                              ) : (
+                                <span className="text-muted">—</span>
+                              )}
+                            </div>
+                            <div style={{ flex: 1 }} className="text-muted small">
+                              {new Date(deal.created_at).toLocaleDateString('ru-RU', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                              })}
+                            </div>
+                          </div>
+                        )
+                      })
+                  ) : (
+                    <div className="text-center py-4 text-muted">
+                      <IconifyIcon icon="bx:inbox" className="fs-32 mb-2" />
+                      <div>Нет сделок</div>
+                    </div>
+                  )}
+                  
+                  {/* Кнопка добавления сделки */}
+                  <div className="mt-3">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => setShowAddDealModal(true)}
+                      className="d-flex align-items-center gap-2"
+                    >
+                      <IconifyIcon icon="bx:plus" />
+                      Добавить сделку
+                    </Button>
+                  </div>
+                </div>
+              )}
             </CardBody>
           </Card>
         </Col>
