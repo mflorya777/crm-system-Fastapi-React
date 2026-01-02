@@ -413,6 +413,35 @@ class DealsStorage:
         count = await self.deals_collection.count_documents(query)
         return count
 
+    async def sum_deals_amount_by_category(
+        self,
+        category_id: UUID,
+        active_only: bool = True,
+    ) -> float:
+        """Получить сумму всех сделок в категории"""
+        _LOG.info(f"Суммирую сделки по категории: {category_id}")
+        match_query = {
+            "category_id": category_id,
+        }
+        if active_only:
+            match_query["is_active"] = True
+        
+        pipeline = [
+            {
+                "$match": match_query,
+                },
+            {
+                "$group": {"_id": None, "total": {"$sum": "$amount"}},
+                },
+        ]
+        
+        cursor = self.deals_collection.aggregate(pipeline)
+        result = await cursor.to_list(length=1)
+        
+        if result and len(result) > 0:
+            return result[0].get("total", 0.0)
+        return 0.0
+
     async def get_deals_by_responsible_user(
         self,
         user_id: UUID,

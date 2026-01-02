@@ -451,7 +451,10 @@ const DealCategoryPage = () => {
               <div className="d-flex align-items-center justify-content-between mb-3">
                 <div className="d-flex align-items-center gap-2">
                   <h5 className="mb-0">Воронка продаж</h5>
-                  <span className="text-muted small">({deals.length} {deals.length === 1 ? 'сделка' : deals.length >= 2 && deals.length <= 4 ? 'сделки' : 'сделок'})</span>
+                  <span className="text-muted small">
+                    ({deals.length} {deals.length === 1 ? 'сделка' : deals.length >= 2 && deals.length <= 4 ? 'сделки' : 'сделок'}
+                    {deals.length > 0 && `, ожидается ${deals.reduce((sum, deal) => sum + (deal.amount || 0), 0).toLocaleString('ru-RU')} ₽`})
+                  </span>
                 </div>
                 <div className="d-flex gap-1">
                   <Button

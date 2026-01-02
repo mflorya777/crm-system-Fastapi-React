@@ -36,6 +36,8 @@ from src.deals.deals_router_models import (
     DealsListApiResponse,
     DealsCountResponse,
     DealsCountApiResponse,
+    DealsSumResponse,
+    DealsSumApiResponse,
 )
 from src.deals.deals_storage_models import DealStage
 
@@ -524,6 +526,59 @@ async def count_deals_by_category(
         return DealsCountApiResponse.error_response(
             errors=errors,
             message_text="Ошибка при подсчете сделок.",
+        )
+
+
+@router.get(
+    "/category/{category_id}/deals/sum",
+    dependencies=[Depends(CookieAuthMiddleware())],
+)
+async def sum_deals_by_category(
+    request: Request,
+    category_id: UUID,
+    active_only: bool = Query(
+        default=True,
+        description="Только активные сделки",
+    ),
+) -> DealsSumApiResponse | None:
+    """Получить сумму всех сделок в категории"""
+    deals_manager: DealsManager = request.app.state.deals_manager
+    user_id = request.state.jwt_payload["user_id"]
+
+    errors = []
+    try:
+        total_amount = await deals_manager.sum_deals_amount_by_category(
+            actor_id=user_id,
+            category_id=category_id,
+            active_only=active_only,
+        )
+        sum_response = DealsSumResponse(
+            total_amount=total_amount,
+            category_id=category_id,
+        )
+
+        return DealsSumApiResponse.success_response(
+            data=sum_response,
+        )
+    except NoSuchDealCategoryError as e:
+        _LOG.error(e)
+        error = ResponseError(
+            code=ApiErrorCodes.BASE_EXCEPTION,
+            text=str(e),
+        )
+        errors.append(error)
+    except Exception as e:
+        _LOG.error(e)
+        error = ResponseError(
+            code=ApiErrorCodes.BASE_EXCEPTION,
+            text=f"Неизвестная ошибка. {str(e)}",
+        )
+        errors.append(error)
+
+    if errors:
+        return DealsSumApiResponse.error_response(
+            errors=errors,
+            message_text="Ошибка при суммировании сделок.",
         )
 
 

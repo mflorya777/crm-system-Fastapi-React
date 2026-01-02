@@ -196,3 +196,14 @@ class DealsCountResponse(BaseModel):
 class DealsCountApiResponse(ApiResponse):
     """API ответ с количеством сделок"""
     data: DealsCountResponse | dict = Field(default={})
+
+
+class DealsSumResponse(BaseModel):
+    """Модель для ответа с суммой сделок"""
+    total_amount: float = Field(..., description="Сумма всех сделок")
+    category_id: UUID = Field(..., description="ID категории")
+
+
+class DealsSumApiResponse(ApiResponse):
+    """API ответ с суммой сделок"""
+    data: DealsSumResponse | dict = Field(default={})

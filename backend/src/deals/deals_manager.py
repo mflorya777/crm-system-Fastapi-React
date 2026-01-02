@@ -319,6 +319,29 @@ class DealsManager:
                 f"Ошибка при подсчете сделок: {str(e)}",
             )
 
+    async def sum_deals_amount_by_category(
+        self,
+        actor_id: UUID,
+        category_id: UUID,
+        active_only: bool = True,
+    ) -> float:
+        """Получить сумму всех сделок в категории"""
+        await self.get_category(
+            actor_id,
+            category_id,
+        )
+        
+        try:
+            return await self.deals_storage.sum_deals_amount_by_category(
+                category_id=category_id,
+                active_only=active_only,
+            )
+        except Exception as e:
+            _LOG.error(e)
+            raise DealsManagerException(
+                f"Ошибка при суммировании сделок: {str(e)}",
+            )
+
     async def update_deal(
         self,
         actor_id: UUID,
