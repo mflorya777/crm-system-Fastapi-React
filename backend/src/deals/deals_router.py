@@ -249,6 +249,50 @@ async def update_category(
         )
 
 
+@router.delete(
+    "/categories/{category_id}",
+    dependencies=[Depends(CookieAuthMiddleware())],
+)
+async def delete_category(
+    request: Request,
+    category_id: UUID,
+) -> DealCategoryApiResponse | None:
+    """Мягкое удаление категории (установка is_active = False)"""
+    deals_manager: DealsManager = request.app.state.deals_manager
+    user_id = request.state.jwt_payload["user_id"]
+
+    errors = []
+    try:
+        await deals_manager.delete_category(
+            actor_id=user_id,
+            category_id=category_id,
+        )
+
+        return DealCategoryApiResponse.success_response(
+            message_text="Категория успешно удалена.",
+        )
+    except NoSuchDealCategoryError as e:
+        _LOG.error(e)
+        error = ResponseError(
+            code=ApiErrorCodes.BASE_EXCEPTION,
+            text=str(e),
+        )
+        errors.append(error)
+    except Exception as e:
+        _LOG.error(e)
+        error = ResponseError(
+            code=ApiErrorCodes.BASE_EXCEPTION,
+            text=f"Неизвестная ошибка. {str(e)}",
+        )
+        errors.append(error)
+
+    if errors:
+        return DealCategoryApiResponse.error_response(
+            errors=errors,
+            message_text="Ошибка при удалении категории.",
+        )
+
+
 @router.put(
     "/categories/{category_id}/stages",
     dependencies=[Depends(CookieAuthMiddleware())],
@@ -709,6 +753,57 @@ async def update_deal(
         return DealApiResponse.error_response(
             errors=errors,
             message_text="Ошибка при обновлении сделки.",
+        )
+
+
+@router.delete(
+    "/{deal_id}",
+    dependencies=[Depends(CookieAuthMiddleware())],
+)
+async def delete_deal(
+    request: Request,
+    deal_id: UUID,
+) -> DealApiResponse | None:
+    """Мягкое удаление сделки (установка is_active = False)"""
+    deals_manager: DealsManager = request.app.state.deals_manager
+    user_id = request.state.jwt_payload["user_id"]
+
+    errors = []
+    try:
+        await deals_manager.delete_deal(
+            actor_id=user_id,
+            deal_id=deal_id,
+        )
+
+        return DealApiResponse.success_response(
+            message_text="Сделка успешно удалена.",
+        )
+    except NoSuchDealError as e:
+        _LOG.error(e)
+        error = ResponseError(
+            code=ApiErrorCodes.BASE_EXCEPTION,
+            text=str(e),
+        )
+        errors.append(error)
+    except DealsManagerException as e:
+        _LOG.error(e)
+        error = ResponseError(
+            code=ApiErrorCodes.BASE_EXCEPTION,
+            text=str(e),
+        )
+        errors.append(error)
+    except Exception as e:
+        _LOG.error(e)
+        error = ResponseError(
+            code=ApiErrorCodes.BASE_EXCEPTION,
+            text=f"Неизвестная ошибка. {str(e)}",
+        )
+        errors.append(error)
+
+    if errors:
+        return DealApiResponse.error_response(
+            errors=errors,
+            message_text="Ошибка при удалении сделки.",
         )
 
 

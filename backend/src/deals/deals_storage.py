@@ -266,6 +266,26 @@ class DealsStorage:
             update_query,
         )
 
+    async def soft_delete_category(
+        self,
+        actor_id: UUID,
+        category_id: UUID,
+    ):
+        """Мягкое удаление категории (установка is_active = False)"""
+        _LOG.info(f"Мягкое удаление категории: {category_id}")
+        
+        update_query = {
+            "$set": {
+                "is_active": False,
+            }
+        }
+        
+        await self.update_category_with_revision(
+            actor_id=actor_id,
+            category_id=category_id,
+            update_query=update_query,
+        )
+
     async def add_deal(
         self,
         actor_id: UUID | None,
@@ -556,6 +576,27 @@ class DealsStorage:
         if data:
             return DealToCreate(**data)
         return None
+
+    async def soft_delete_deal(
+        self,
+        actor_id: UUID,
+        deal_id: UUID,
+    ):
+        """Мягкое удаление сделки (установка is_active = False)"""
+        _LOG.info(f"Мягкое удаление сделки: {deal_id}")
+        
+        update_query = {
+            "$set": {
+                "is_active": False,
+                "closed_at": utc_now(),
+            }
+        }
+        
+        await self.update_deal_with_revision(
+            actor_id=actor_id,
+            deal_id=deal_id,
+            update_query=update_query,
+        )
 
     async def move_deal_to_stage(
         self,

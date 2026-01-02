@@ -183,6 +183,26 @@ class DealsManager:
                 f"Ошибка при обновлении категории: {str(e)}",
             )
 
+    async def delete_category(
+        self,
+        actor_id: UUID,
+        category_id: UUID,
+    ):
+        """Мягкое удаление категории (установка is_active = False)"""
+        # Проверяем, что категория существует
+        await self.get_category(actor_id, category_id)
+        
+        try:
+            await self.deals_storage.soft_delete_category(
+                actor_id=actor_id,
+                category_id=category_id,
+            )
+        except Exception as e:
+            _LOG.error(e)
+            raise DealsManagerException(
+                f"Ошибка при удалении категории: {str(e)}",
+            )
+
     async def create_deal(
         self,
         actor_id: UUID,
@@ -410,6 +430,26 @@ class DealsManager:
             _LOG.error(e)
             raise DealsManagerException(
                 f"Ошибка при обновлении сделки: {str(e)}",
+            )
+
+    async def delete_deal(
+        self,
+        actor_id: UUID,
+        deal_id: UUID,
+    ):
+        """Мягкое удаление сделки (установка is_active = False)"""
+        # Проверяем, что сделка существует
+        await self.get_deal(actor_id, deal_id)
+        
+        try:
+            await self.deals_storage.soft_delete_deal(
+                actor_id=actor_id,
+                deal_id=deal_id,
+            )
+        except Exception as e:
+            _LOG.error(e)
+            raise DealsManagerException(
+                f"Ошибка при удалении сделки: {str(e)}",
             )
 
     async def move_deal_to_stage(

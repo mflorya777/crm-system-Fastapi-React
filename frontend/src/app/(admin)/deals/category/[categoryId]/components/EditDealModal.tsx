@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from 'react-bootstrap'
 
 import TextAreaFormInput from '@/components/form/TextAreaFormInput'
 import TextFormInput from '@/components/form/TextFormInput'
 import { useUpdateDeal } from '@/hooks/useUpdateDeal'
+import { useDeleteDeal } from '@/hooks/useDeleteDeal'
 import type { Deal } from '@/hooks/useDealsByCategory'
 
 interface EditDealModalProps {
@@ -10,9 +12,12 @@ interface EditDealModalProps {
   onHide: () => void
   deal: Deal
   onDealUpdated?: (deal: Deal) => void
+  onDealDeleted?: () => void
 }
 
-const EditDealModal = ({ show, onHide, deal, onDealUpdated }: EditDealModalProps) => {
+const EditDealModal = ({ show, onHide, deal, onDealUpdated, onDealDeleted }: EditDealModalProps) => {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  
   const { control, updateDeal, loading, reset } = useUpdateDeal(deal.id, deal, (updatedDeal) => {
     onHide()
     if (onDealUpdated) {
@@ -20,9 +25,21 @@ const EditDealModal = ({ show, onHide, deal, onDealUpdated }: EditDealModalProps
     }
   })
 
+  const { deleteDeal, loading: deleteLoading } = useDeleteDeal(() => {
+    onHide()
+    if (onDealDeleted) {
+      onDealDeleted()
+    }
+  })
+
   const handleClose = () => {
     reset()
+    setShowDeleteConfirm(false)
     onHide()
+  }
+
+  const handleDelete = async () => {
+    await deleteDeal(deal.id)
   }
 
   return (
@@ -90,14 +107,50 @@ const EditDealModal = ({ show, onHide, deal, onDealUpdated }: EditDealModalProps
             id="deal-client"
             placeholder="ID клиента"
           />
+
+          {/* Подтверждение удаления */}
+          {showDeleteConfirm && (
+            <div className="alert alert-danger mt-3">
+              <strong>Вы уверены, что хотите удалить эту сделку?</strong>
+              <div className="mt-2">
+                <Button 
+                  variant="danger" 
+                  size="sm" 
+                  onClick={handleDelete} 
+                  disabled={deleteLoading}
+                  className="me-2"
+                >
+                  {deleteLoading ? 'Удаление...' : 'Да, удалить'}
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  size="sm" 
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={deleteLoading}
+                >
+                  Отмена
+                </Button>
+              </div>
+            </div>
+          )}
         </ModalBody>
-        <ModalFooter>
-          <Button type="button" variant="secondary" onClick={handleClose} disabled={loading}>
-            Отмена
+        <ModalFooter className="justify-content-between">
+          <Button 
+            type="button" 
+            variant="outline-danger" 
+            onClick={() => setShowDeleteConfirm(true)} 
+            disabled={loading || deleteLoading || showDeleteConfirm}
+          >
+            Удалить
           </Button>
-          <Button type="submit" variant="primary" disabled={loading}>
-            {loading ? 'Сохранение...' : 'Сохранить'}
-          </Button>
+          <div>
+            <Button type="button" variant="secondary" onClick={handleClose} disabled={loading || deleteLoading} className="me-2">
+              Отмена
+            </Button>
+            <Button type="submit" variant="primary" disabled={loading || deleteLoading}>
+              {loading ? 'Сохранение...' : 'Сохранить'}
+            </Button>
+          </div>
         </ModalFooter>
       </form>
     </Modal>
@@ -105,4 +158,3 @@ const EditDealModal = ({ show, onHide, deal, onDealUpdated }: EditDealModalProps
 }
 
 export default EditDealModal
-

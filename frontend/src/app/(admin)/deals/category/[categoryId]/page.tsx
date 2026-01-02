@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Button, Card, CardBody, Col, Row, Form, InputGroup, Dropdown } from 'react-bootstrap'
 
 import IconifyIcon from '@/components/wrappers/IconifyIcon'
@@ -8,6 +8,7 @@ import PageMetaData from '@/components/PageTitle'
 import { useDealCategory } from '@/hooks/useDealCategory'
 import { useDealsByCategory } from '@/hooks/useDealsByCategory'
 import { useMoveDealToStage } from '@/hooks/useMoveDealToStage'
+import { useDeleteDealCategory } from '@/hooks/useDeleteDealCategory'
 import type { Deal } from '@/hooks/useDealsByCategory'
 import AddDealModal from './components/AddDealModal'
 import AddDealStageModal from './components/AddDealStageModal'
@@ -16,8 +17,12 @@ import EditDealStageModal from './components/EditDealStageModal'
 
 const DealCategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>()
+  const navigate = useNavigate()
   const { category, loading: categoryLoading, error: categoryError, refetch: refetchCategory } = useDealCategory(categoryId)
   const { deals, loading: dealsLoading, refetch: refetchDeals } = useDealsByCategory(categoryId, { activeOnly: true })
+  const { deleteCategory, loading: deleteCategoryLoading } = useDeleteDealCategory(() => {
+    navigate('/deals')
+  })
   const [showAddStageModal, setShowAddStageModal] = useState(false)
   const [showAddDealModal, setShowAddDealModal] = useState(false)
   const [showEditDealModal, setShowEditDealModal] = useState(false)
@@ -31,6 +36,7 @@ const DealCategoryPage = () => {
   const [isDragging, setIsDragging] = useState(false)
   const dragStartedRef = useRef(false)
   const [viewMode, setViewMode] = useState<'columns' | 'list'>('columns')
+  const [showDeleteCategoryConfirm, setShowDeleteCategoryConfirm] = useState(false)
   
   // Поиск, сортировка, фильтрация
   const [searchQuery, setSearchQuery] = useState('')
@@ -510,6 +516,44 @@ const DealCategoryPage = () => {
       <PageBreadcrumb subName="Сделки" title={category.name} />
       <PageMetaData title={category.name} />
 
+      {/* Заголовок с кнопкой удаления категории */}
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h4 className="mb-0">{category.name}</h4>
+        <div className="d-flex gap-2 align-items-center">
+          {showDeleteCategoryConfirm ? (
+            <div className="d-flex align-items-center gap-2">
+              <span className="text-danger small">Удалить категорию?</span>
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => categoryId && deleteCategory(categoryId)}
+                disabled={deleteCategoryLoading}
+              >
+                {deleteCategoryLoading ? 'Удаление...' : 'Да'}
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setShowDeleteCategoryConfirm(false)}
+                disabled={deleteCategoryLoading}
+              >
+                Нет
+              </Button>
+            </div>
+          ) : (
+            <Button
+              variant="outline-danger"
+              size="sm"
+              onClick={() => setShowDeleteCategoryConfirm(true)}
+              className="d-flex align-items-center gap-1"
+            >
+              <IconifyIcon icon="bx:trash" />
+              Удалить категорию
+            </Button>
+          )}
+        </div>
+      </div>
+
       <Row>
         <Col xs={12}>
           {/* Стадии и сделки в одной обертке */}
@@ -954,6 +998,7 @@ const DealCategoryPage = () => {
               }}
               deal={selectedDeal}
               onDealUpdated={handleDealUpdated}
+              onDealDeleted={handleDealUpdated}
             />
           )}
           {selectedStageId && categoryId && category && (
