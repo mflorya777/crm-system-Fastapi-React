@@ -54,7 +54,6 @@ export const useChats = (userId: string, activeOnly: boolean = true): UseChatsRe
       );
 
       if (response.data.status && response.data.data) {
-        console.log('Полученные чаты:', response.data.data);
         setChats(response.data.data);
       } else {
         throw new Error('Не удалось загрузить чаты');

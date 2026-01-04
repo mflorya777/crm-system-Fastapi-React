@@ -76,6 +76,17 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     return chat.chat_type === 'group' ? 'Групповой чат' : 'Чат';
   };
 
+  // Для личного чата определяем ID собеседника и его онлайн-статус
+  const getOtherParticipantId = (): string | null => {
+    if (chat.chat_type === 'direct' && chat.participants.length === 2) {
+      const otherParticipant = chat.participants.find((p) => p.user_id !== currentUserId);
+      return otherParticipant ? otherParticipant.user_id : null;
+    }
+    return null;
+  };
+
+  const otherParticipantId = getOtherParticipantId();
+  const isOtherParticipantOnline = otherParticipantId ? onlineUsers.includes(otherParticipantId) : false;
   const onlineCount = onlineUsers.length;
 
   return (
@@ -89,7 +100,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 Подключение...
               </Badge>
             )}
-            {connected && (
+            {connected && chat.chat_type === 'direct' && (
+              <Badge bg={isOtherParticipantOnline ? 'success' : 'secondary'} className="ms-2">
+                {isOtherParticipantOnline ? 'Онлайн' : 'Не онлайн'}
+              </Badge>
+            )}
+            {connected && chat.chat_type === 'group' && (
               <Badge bg="success" className="ms-2">
                 Онлайн
               </Badge>
@@ -101,9 +117,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 {chat.participants.length} участников
                 {onlineCount > 0 && ` • ${onlineCount} онлайн`}
               </>
-            )}
-            {chat.chat_type === 'direct' && onlineCount > 0 && (
-              `${onlineCount} онлайн`
             )}
           </small>
         </div>

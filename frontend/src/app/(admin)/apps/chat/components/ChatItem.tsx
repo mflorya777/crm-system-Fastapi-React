@@ -21,11 +21,9 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat, isSelected, onSelect, current
     if (chat.chat_type === 'direct' && chat.participants.length === 2) {
       const otherParticipant = chat.participants.find((p) => p.user_id !== currentUserId);
       if (otherParticipant) {
-        console.log('Участник чата:', otherParticipant);
         const { soname, name, father_name } = otherParticipant;
         // Формируем ФИО: Фамилия Имя Отчество
         const fullName = [soname, name, father_name].filter(Boolean).join(' ');
-        console.log('ФИО:', fullName);
         return fullName || 'Собеседник';
       }
       return 'Личный чат';

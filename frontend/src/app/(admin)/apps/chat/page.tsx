@@ -159,7 +159,7 @@ const ChatPage: React.FC = () => {
 
   return (
     <>
-      <PageBreadcrumb title="Чаты" subName="Общение в реальном времени" />
+      <PageBreadcrumb title="Чаты" subName="" />
       <Container fluid className="mt-3">
         {chatsError && (
           <Alert variant="danger" className="mb-3">
