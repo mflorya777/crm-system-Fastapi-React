@@ -13,18 +13,18 @@ import { useDeleteMessage } from '@/hooks/useDeleteMessage';
 import { useChatWebSocket } from '@/hooks/useChatWebSocket';
 import PageBreadcrumb from '@/components/layout/PageBreadcrumb';
 import IconifyIcon from '@/components/wrappers/IconifyIcon';
-
-// TODO: Получать ID текущего пользователя из контекста/сессии
-const CURRENT_USER_ID = '123e4567-e89b-12d3-a456-426614174000'; // Заглушка
+import { useAuthContext } from '@/context/useAuthContext';
 
 const ChatPage: React.FC = () => {
+  const { user } = useAuthContext();
+  const currentUserId = user?.id || '';
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [localMessages, setLocalMessages] = useState<ChatMessage[]>([]);
   const [typingUsers, setTypingUsers] = useState<Set<string>>(new Set());
 
   // Hooks для чатов
-  const { chats, loading: chatsLoading, error: chatsError, refetch: refetchChats } = useChats(CURRENT_USER_ID);
+  const { chats, loading: chatsLoading, error: chatsError, refetch: refetchChats } = useChats(currentUserId);
   const { createChat } = useCreateChat();
   const { updateMessage } = useUpdateMessage();
   const { deleteMessage } = useDeleteMessage();
@@ -84,7 +84,7 @@ const ChatPage: React.FC = () => {
     onlineUsers,
   } = useChatWebSocket(
     selectedChatId || '',
-    CURRENT_USER_ID,
+    currentUserId,
     selectedChatId ? handleNewMessage : undefined,
     selectedChatId ? handleTypingIndicator : undefined,
     selectedChatId ? handleMessageEdited : undefined,
@@ -105,7 +105,7 @@ const ChatPage: React.FC = () => {
 
   // Обработчики действий
   const handleCreateChat = async (participantIds: string[], chatType: 'direct' | 'group', title?: string) => {
-    const chat = await createChat(CURRENT_USER_ID, {
+    const chat = await createChat(currentUserId, {
       participant_ids: participantIds,
       chat_type: chatType,
       title,
@@ -128,7 +128,7 @@ const ChatPage: React.FC = () => {
 
   const handleEditMessage = async (messageId: string, content: string) => {
     if (selectedChatId) {
-      const success = await updateMessage(selectedChatId, messageId, CURRENT_USER_ID, content);
+      const success = await updateMessage(selectedChatId, messageId, currentUserId, content);
       if (success) {
         // Оптимистичное обновление уже произошло через WebSocket
         await refetchMessages();
@@ -138,7 +138,7 @@ const ChatPage: React.FC = () => {
 
   const handleDeleteMessage = async (messageId: string) => {
     if (selectedChatId) {
-      const success = await deleteMessage(selectedChatId, messageId, CURRENT_USER_ID);
+      const success = await deleteMessage(selectedChatId, messageId, currentUserId);
       if (success) {
         // Оптимистичное обновление уже произошло через WebSocket
         await refetchMessages();
@@ -156,6 +156,20 @@ const ChatPage: React.FC = () => {
   );
 
   const selectedChat = chats.find((chat) => chat.id === selectedChatId);
+
+  // Проверка авторизации
+  if (!user || !currentUserId) {
+    return (
+      <>
+        <PageBreadcrumb title="Чаты" subName="" />
+        <Container fluid className="mt-3">
+          <Alert variant="warning">
+            Необходима авторизация для просмотра чатов
+          </Alert>
+        </Container>
+      </>
+    );
+  }
 
   return (
     <>
@@ -180,7 +194,7 @@ const ChatPage: React.FC = () => {
               selectedChatId={selectedChatId || undefined}
               onChatSelect={setSelectedChatId}
               onCreateChat={() => setShowCreateModal(true)}
-              currentUserId={CURRENT_USER_ID}
+              currentUserId={currentUserId}
             />
           </Col>
           <Col md={8} className="ps-2" style={{ height: '100%' }}>
@@ -189,7 +203,7 @@ const ChatPage: React.FC = () => {
                 chat={selectedChat}
                 messages={localMessages}
                 loading={messagesLoading}
-                currentUserId={CURRENT_USER_ID}
+                currentUserId={currentUserId}
                 onSendMessage={handleSendMessage}
                 onEditMessage={handleEditMessage}
                 onDeleteMessage={handleDeleteMessage}
