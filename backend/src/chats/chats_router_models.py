@@ -49,13 +49,20 @@ class ChatParticipantResponse(BaseModel):
     user_id: UUID = Field(...)
     joined_at: dt.datetime = Field(...)
     last_read_at: Optional[dt.datetime] = Field(default=None)
+    # Информация о пользователе
+    name: Optional[str] = Field(default=None, description="Имя")
+    soname: Optional[str] = Field(default=None, description="Фамилия")
+    father_name: Optional[str] = Field(default=None, description="Отчество")
 
     @classmethod
-    def from_participant(cls, participant: ChatParticipant):
+    def from_participant(cls, participant: ChatParticipant, user_info: Optional[dict] = None):
         return cls(
             user_id=participant.user_id,
             joined_at=participant.joined_at,
-            last_read_at=participant.last_read_at
+            last_read_at=participant.last_read_at,
+            name=user_info.get('name') if user_info else None,
+            soname=user_info.get('soname') if user_info else None,
+            father_name=user_info.get('father_name') if user_info else None,
         )
 
 
@@ -75,12 +82,25 @@ class ChatResponse(BaseModel):
     unread_count: int = Field(default=0)
 
     @classmethod
-    def from_chat(cls, chat: ChatToGet):
+    def from_chat(cls, chat: ChatToGet, users_info: Optional[dict] = None):
+        """
+        Создать ChatResponse из ChatToGet с информацией о пользователях
+        
+        Args:
+            chat: объект чата
+            users_info: словарь {user_id: {name, soname, father_name}}
+        """
+        users_info = users_info or {}
         return cls(
             id=chat.id,
             title=chat.title,
             chat_type=chat.chat_type,
-            participants=[ChatParticipantResponse.from_participant(p) for p in chat.participants],
+            participants=[
+                ChatParticipantResponse.from_participant(
+                    p, 
+                    users_info.get(str(p.user_id))
+                ) for p in chat.participants
+            ],
             created_at=chat.created_at,
             created_by=chat.created_by,
             updated_at=chat.updated_at,

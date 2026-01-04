@@ -155,6 +155,7 @@ def setup_app(
             )
             chats_manager = ChatsManager(
                 chats_storage=chats_storage,
+                users_storage=users_storage,
             )
 
             app_instance.state.users_manager = users_manager

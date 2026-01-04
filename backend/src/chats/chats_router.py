@@ -187,9 +187,13 @@ async def create_chat(
             buyer_id=params.buyer_id
         )
         
+        # Получаем информацию о пользователях
+        participant_ids = [p.user_id for p in chat.participants]
+        users_info = await chats_manager._get_users_info(participant_ids)
+        
         return ChatApiResponse(
             status=True,
-            data=ChatResponse.from_chat(chat)
+            data=ChatResponse.from_chat(chat, users_info)
         )
     except Exception as e:
         logger.error(f"Ошибка создания чата: {e}")
@@ -216,9 +220,26 @@ async def get_user_chats(
     try:
         chats = await chats_manager.get_user_chats(user_id, active_only, skip, limit)
         
+        # Собираем всех уникальных участников из всех чатов
+        all_participant_ids = set()
+        for chat in chats:
+            for participant in chat.participants:
+                all_participant_ids.add(participant.user_id)
+        
+        logger.info(f"Собрано участников для загрузки: {all_participant_ids}")
+        
+        # Получаем информацию о всех пользователях одним запросом
+        users_info = await chats_manager._get_users_info(list(all_participant_ids))
+        
+        logger.info(f"Получена информация о пользователях: {users_info}")
+        
+        # Формируем ответ
+        response_data = [ChatResponse.from_chat(chat, users_info) for chat in chats]
+        logger.info(f"Сформирован ответ для {len(response_data)} чатов")
+        
         return ChatsListApiResponse(
             status=True,
-            data=[ChatResponse.from_chat(chat) for chat in chats]
+            data=response_data
         )
     except Exception as e:
         logger.error(f"Ошибка получения чатов: {e}")
@@ -248,9 +269,13 @@ async def get_chat(
                 detail="Чат не найден"
             )
         
+        # Получаем информацию о пользователях
+        participant_ids = [p.user_id for p in chat.participants]
+        users_info = await chats_manager._get_users_info(participant_ids)
+        
         return ChatApiResponse(
             status=True,
-            data=ChatResponse.from_chat(chat)
+            data=ChatResponse.from_chat(chat, users_info)
         )
     except HTTPException:
         raise

@@ -61,9 +61,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const getChatTitle = (): string => {
     if (chat.title) return chat.title;
     
+    // Для личного чата показываем ФИО собеседника
     if (chat.chat_type === 'direct' && chat.participants.length === 2) {
       const otherParticipant = chat.participants.find((p) => p.user_id !== currentUserId);
-      return otherParticipant ? `Пользователь ${otherParticipant.user_id.substring(0, 8)}...` : 'Чат';
+      if (otherParticipant) {
+        const { soname, name, father_name } = otherParticipant;
+        // Формируем ФИО: Фамилия Имя Отчество
+        const fullName = [soname, name, father_name].filter(Boolean).join(' ');
+        return fullName || 'Собеседник';
+      }
+      return 'Личный чат';
     }
     
     return chat.chat_type === 'group' ? 'Групповой чат' : 'Чат';
@@ -89,8 +96,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             )}
           </h5>
           <small className="text-muted">
-            {chat.participants.length} участников
-            {onlineCount > 0 && ` • ${onlineCount} онлайн`}
+            {chat.chat_type === 'group' && (
+              <>
+                {chat.participants.length} участников
+                {onlineCount > 0 && ` • ${onlineCount} онлайн`}
+              </>
+            )}
+            {chat.chat_type === 'direct' && onlineCount > 0 && (
+              `${onlineCount} онлайн`
+            )}
           </small>
         </div>
       </Card.Header>

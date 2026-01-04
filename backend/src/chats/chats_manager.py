@@ -18,6 +18,7 @@ from src.chats.chats_storage_models import (
     ChatParticipant,
     TypingIndicator,
 )
+from src.users.users_storage import UsersStorage
 from src.misc.misc_lib import utc_now
 
 
@@ -107,11 +108,38 @@ class ConnectionManager:
 class ChatsManager:
     """Менеджер для бизнес-логики чатов"""
 
-    def __init__(self, chats_storage: ChatsStorage):
+    def __init__(self, chats_storage: ChatsStorage, users_storage: UsersStorage):
         self.chats_storage = chats_storage
+        self.users_storage = users_storage
         self.connection_manager = ConnectionManager()
 
     # ==================== Методы для работы с чатами ====================
+
+    async def _get_users_info(self, user_ids: List[UUID]) -> Dict[str, dict]:
+        """
+        Получить информацию о пользователях
+        
+        Returns:
+            Словарь {user_id: {name, soname, father_name}}
+        """
+        logger.info(f"Получение информации о пользователях: {user_ids}")
+        users_info = {}
+        for user_id in user_ids:
+            try:
+                user = await self.users_storage.get(user_id)
+                if user:
+                    user_data = {
+                        'name': user.name,
+                        'soname': user.soname,
+                        'father_name': user.father_name,
+                    }
+                    users_info[str(user_id)] = user_data
+                    logger.info(f"Пользователь {user_id}: {user_data}")
+            except Exception as e:
+                logger.warning(f"Не удалось получить информацию о пользователе {user_id}: {e}")
+        
+        logger.info(f"Итого информация о пользователях: {users_info}")
+        return users_info
 
     async def create_chat(
         self,

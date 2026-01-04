@@ -17,10 +17,18 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat, isSelected, onSelect, current
       return chat.title;
     }
     
-    // Для личного чата показываем имя собеседника
+    // Для личного чата показываем ФИО собеседника
     if (chat.chat_type === 'direct' && chat.participants.length === 2) {
       const otherParticipant = chat.participants.find((p) => p.user_id !== currentUserId);
-      return otherParticipant ? `Пользователь ${otherParticipant.user_id.substring(0, 8)}...` : 'Чат';
+      if (otherParticipant) {
+        console.log('Участник чата:', otherParticipant);
+        const { soname, name, father_name } = otherParticipant;
+        // Формируем ФИО: Фамилия Имя Отчество
+        const fullName = [soname, name, father_name].filter(Boolean).join(' ');
+        console.log('ФИО:', fullName);
+        return fullName || 'Собеседник';
+      }
+      return 'Личный чат';
     }
     
     return chat.chat_type === 'group' ? 'Групповой чат' : 'Чат';
@@ -82,9 +90,11 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat, isSelected, onSelect, current
           </div>
           <div className="flex-grow-1">
             <div className="fw-bold">{getChatTitle()}</div>
-            <small className="text-muted">
-              {chat.participants.length} {chat.participants.length === 1 ? 'участник' : 'участника'}
-            </small>
+            {chat.chat_type === 'group' && (
+              <small className="text-muted">
+                {chat.participants.length} {chat.participants.length === 1 ? 'участник' : 'участника'}
+              </small>
+            )}
           </div>
         </div>
       </div>

@@ -5,6 +5,10 @@ export interface ChatParticipant {
   user_id: string;
   joined_at: string;
   last_read_at?: string;
+  // Информация о пользователе
+  name?: string;
+  soname?: string;
+  father_name?: string;
 }
 
 export interface Chat {
@@ -50,6 +54,7 @@ export const useChats = (userId: string, activeOnly: boolean = true): UseChatsRe
       );
 
       if (response.data.status && response.data.data) {
+        console.log('Полученные чаты:', response.data.data);
         setChats(response.data.data);
       } else {
         throw new Error('Не удалось загрузить чаты');
