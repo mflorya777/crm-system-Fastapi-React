@@ -105,11 +105,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 {isOtherParticipantOnline ? 'Онлайн' : 'Не онлайн'}
               </Badge>
             )}
-            {connected && chat.chat_type === 'group' && (
-              <Badge bg="success" className="ms-2">
-                Онлайн
-              </Badge>
-            )}
           </h5>
           <small className="text-muted">
             {chat.chat_type === 'group' && (
