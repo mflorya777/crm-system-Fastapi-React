@@ -6,10 +6,12 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from src.chats.chats_storage_models import ChatToGet, ChatMessageToGet, ChatParticipant
+from src.chats.chats_storage_models import (
+    ChatToGet,
+    ChatMessageToGet,
+    ChatParticipant,
+)
 
-
-# ==================== Запросы ====================
 
 class CreateChatParams(BaseModel):
     """Параметры для создания чата"""
@@ -41,8 +43,6 @@ class TypingIndicatorParams(BaseModel):
     """Параметры индикатора набора текста"""
     is_typing: bool = Field(..., description="Печатает ли пользователь")
 
-
-# ==================== Ответы ====================
 
 class ChatParticipantResponse(BaseModel):
     """Ответ с информацией об участнике чата"""
@@ -164,8 +164,6 @@ class SuccessResponse(BaseModel):
     data: Optional[dict] = Field(default=None)
     message: Optional[dict] = Field(default=None)
 
-
-# ==================== WebSocket сообщения ====================
 
 class WSMessage(BaseModel):
     """Базовое WebSocket сообщение"""

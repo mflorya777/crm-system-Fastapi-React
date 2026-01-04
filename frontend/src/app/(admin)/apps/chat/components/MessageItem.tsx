@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Dropdown, Form, Button } from 'react-bootstrap';
 import { ChatMessage } from '@/hooks/useChatMessages';
+import IconifyIcon from '@/components/wrappers/IconifyIcon';
 
 interface MessageItemProps {
   message: ChatMessage;
@@ -118,15 +119,15 @@ const MessageItem: React.FC<MessageItemProps> = ({ message, isOwn, onEdit, onDel
                       opacity: 0.7,
                     }}
                   >
-                    <i className="bi bi-three-dots-vertical"></i>
+                    <IconifyIcon icon="bx:dots-vertical-rounded" />
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={() => setIsEditing(true)}>
-                      <i className="bi bi-pencil me-2"></i>
+                      <IconifyIcon icon="bx:pencil" className="me-2" />
                       Редактировать
                     </Dropdown.Item>
                     <Dropdown.Item onClick={handleDelete} className="text-danger">
-                      <i className="bi bi-trash me-2"></i>
+                      <IconifyIcon icon="bx:trash" className="me-2" />
                       Удалить
                     </Dropdown.Item>
                   </Dropdown.Menu>

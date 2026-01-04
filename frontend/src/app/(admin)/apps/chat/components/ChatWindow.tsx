@@ -4,6 +4,7 @@ import { Chat } from '@/hooks/useChats';
 import { ChatMessage } from '@/hooks/useChatMessages';
 import MessageItem from './MessageItem';
 import MessageInput from './MessageInput';
+import IconifyIcon from '@/components/wrappers/IconifyIcon';
 
 interface ChatWindowProps {
   chat: Chat;
@@ -111,7 +112,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </div>
         ) : messages.length === 0 ? (
           <div className="text-center text-muted" style={{ margin: 'auto' }}>
-            <i className="bi bi-chat-text" style={{ fontSize: '3rem' }}></i>
+            <IconifyIcon icon="bx:message-dots" style={{ fontSize: '3rem' }} />
             <p className="mt-2">Нет сообщений</p>
             <small>Начните переписку</small>
           </div>
@@ -150,7 +151,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             {typingUsers.size > 0 && (
               <div className="mb-2">
                 <small className="text-muted">
-                  <i className="bi bi-three-dots"></i> Печатает...
+                  <IconifyIcon icon="bx:dots-horizontal-rounded" className="me-1" /> Печатает...
                 </small>
               </div>
             )}

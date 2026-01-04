@@ -1,6 +1,7 @@
 import React from 'react';
 import { ListGroup, Badge } from 'react-bootstrap';
 import { Chat } from '@/hooks/useChats';
+import IconifyIcon from '@/components/wrappers/IconifyIcon';
 
 interface ChatItemProps {
   chat: Chat;
@@ -74,7 +75,10 @@ const ChatItem: React.FC<ChatItemProps> = ({ chat, isSelected, onSelect, current
               fontSize: '1.2rem',
             }}
           >
-            <i className={`bi ${chat.chat_type === 'direct' ? 'bi-person' : 'bi-people'}`}></i>
+            <IconifyIcon 
+              icon={chat.chat_type === 'direct' ? 'bx:user' : 'bx:group'} 
+              className="fs-20"
+            />
           </div>
           <div className="flex-grow-1">
             <div className="fw-bold">{getChatTitle()}</div>

@@ -12,6 +12,7 @@ import { useUpdateMessage } from '@/hooks/useUpdateMessage';
 import { useDeleteMessage } from '@/hooks/useDeleteMessage';
 import { useChatWebSocket } from '@/hooks/useChatWebSocket';
 import PageBreadcrumb from '@/components/layout/PageBreadcrumb';
+import IconifyIcon from '@/components/wrappers/IconifyIcon';
 
 // TODO: Получать ID текущего пользователя из контекста/сессии
 const CURRENT_USER_ID = '123e4567-e89b-12d3-a456-426614174000'; // Заглушка
@@ -207,7 +208,7 @@ const ChatPage: React.FC = () => {
                 }}
               >
                 <div className="text-center text-muted">
-                  <i className="bi bi-chat-dots" style={{ fontSize: '4rem' }}></i>
+                  <IconifyIcon icon="bx:chat" style={{ fontSize: '4rem' }} />
                   <p className="mt-3">Выберите чат для начала общения</p>
                 </div>
               </div>

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Form, Button, InputGroup } from 'react-bootstrap';
+import IconifyIcon from '@/components/wrappers/IconifyIcon';
 
 interface MessageInputProps {
   onSendMessage: (content: string) => void;
@@ -95,7 +96,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage, onTyping, di
           paddingRight: '1.5rem',
         }}
       >
-        <i className="bi bi-send-fill"></i>
+        <IconifyIcon icon="bx:send" className="fs-18" />
       </Button>
     </InputGroup>
   );

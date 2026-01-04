@@ -2,10 +2,17 @@
 
 import json
 import logging
-from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, HTTPException, Query, Request
+from fastapi import (
+    APIRouter,
+    WebSocket,
+    WebSocketDisconnect,
+    Depends,
+    HTTPException,
+    Query,
+    Request,
+)
 from starlette import status
 
 from src.chats.chats_manager import ChatsManager
@@ -24,6 +31,7 @@ from src.chats.chats_router_models import (
     ChatMessageResponse,
 )
 
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/chats", tags=["Chats"])
@@ -33,8 +41,6 @@ def get_chats_manager(request: Request) -> ChatsManager:
     """Получить менеджер чатов из состояния приложения"""
     return request.app.state.chats_manager
 
-
-# ==================== WebSocket endpoint ====================
 
 @router.websocket("/ws/{chat_id}")
 async def websocket_endpoint(
@@ -150,8 +156,6 @@ async def websocket_endpoint(
             str(chat_id)
         )
 
-
-# ==================== REST endpoints для чатов ====================
 
 @router.post(
     "",
@@ -352,8 +356,6 @@ async def remove_participant(
             detail=f"Ошибка удаления участника: {str(e)}"
         )
 
-
-# ==================== REST endpoints для сообщений ====================
 
 @router.post(
     "/{chat_id}/messages",

@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, ListGroup, Button, Spinner, Badge } from 'react-bootstrap';
 import { Chat } from '@/hooks/useChats';
 import ChatItem from './ChatItem';
+import IconifyIcon from '@/components/wrappers/IconifyIcon';
 
 interface ChatListProps {
   chats: Chat[];
@@ -34,7 +35,7 @@ const ChatList: React.FC<ChatListProps> = ({
           )}
         </div>
         <Button variant="primary" size="sm" onClick={onCreateChat}>
-          <i className="bi bi-plus-lg me-1"></i>
+          <IconifyIcon icon="bx:plus" className="me-1" />
           Новый чат
         </Button>
       </Card.Header>
@@ -45,7 +46,7 @@ const ChatList: React.FC<ChatListProps> = ({
           </div>
         ) : chats.length === 0 ? (
           <div className="text-center text-muted p-4">
-            <i className="bi bi-chat-dots" style={{ fontSize: '3rem' }}></i>
+            <IconifyIcon icon="bx:chat" style={{ fontSize: '3rem' }} />
             <p className="mt-2">Нет чатов</p>
             <Button variant="outline-primary" size="sm" onClick={onCreateChat}>
               Создать первый чат
