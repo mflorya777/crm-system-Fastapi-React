@@ -112,7 +112,6 @@ const DealCategoryPage = () => {
   }
 
   const handleDragStart = (e: React.DragEvent, dealId: string) => {
-    console.log('[Deals] Drag start:', dealId)
     setDraggedDealId(dealId)
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/plain', dealId)
@@ -583,14 +582,30 @@ const DealCategoryPage = () => {
               
               {/* Отображение колонками */}
               {viewMode === 'columns' && (
-                <Row className="g-3" style={{ minHeight: 'calc(100vh - 400px)' }}>
+                <div 
+                  className="d-flex gap-3"
+                  style={{ 
+                    overflowX: 'auto',
+                    overflowY: 'hidden',
+                    minHeight: 'calc(100vh - 400px)',
+                    paddingBottom: '1rem',
+                  }}
+                >
                   {filteredStages.map((stage) => {
                     const stageDeals = dealsByStageMap[stage.id] || []
                     const isFirstStage = stage.order === filteredStages[0]?.order
                     const stageColor = stage.color || '#6c757d'
 
                     return (
-                      <Col key={stage.id} md={3} className="d-flex flex-column">
+                      <div 
+                        key={stage.id} 
+                        className="d-flex flex-column"
+                        style={{
+                          minWidth: '300px',
+                          width: '300px',
+                          flexShrink: 0,
+                        }}
+                      >
                         <Card
                           style={{
                             height: '100%',
@@ -719,11 +734,18 @@ const DealCategoryPage = () => {
                             </div>
                           </CardBody>
                         </Card>
-                      </Col>
+                      </div>
                     )
                   })}
                   {/* Кнопка добавления стадии справа */}
-                  <Col md={3} className="d-flex flex-column">
+                  <div 
+                    className="d-flex flex-column"
+                    style={{
+                      minWidth: '300px',
+                      width: '300px',
+                      flexShrink: 0,
+                    }}
+                  >
                     <Card
                       style={{
                         height: '100%',
@@ -752,8 +774,8 @@ const DealCategoryPage = () => {
                         </div>
                       </CardHeader>
                     </Card>
-                  </Col>
-                </Row>
+                  </div>
+                </div>
               )}
               
               {/* Отображение списком */}
@@ -871,7 +893,7 @@ const DealCategoryPage = () => {
             show={showAddStageModal}
             onHide={() => setShowAddStageModal(false)}
             categoryId={categoryId}
-            currentStages={category?.stages || []}
+            currentStages={sortedStages}
             onStageAdded={handleStageAdded}
           />
           {categoryId && category && (
@@ -903,7 +925,7 @@ const DealCategoryPage = () => {
                 setSelectedStageId(null)
               }}
               categoryId={categoryId}
-              currentStages={category.stages}
+              currentStages={sortedStages}
               stageId={selectedStageId}
               onStageUpdated={handleStageUpdated}
               onStageDeleted={handleStageUpdated}
