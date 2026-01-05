@@ -1,3 +1,4 @@
+import json
 import logging
 from typing import Optional
 from uuid import UUID
@@ -8,9 +9,14 @@ from fastapi import (
     Depends,
     Request,
     Query,
+    WebSocket,
+    WebSocketDisconnect,
+    HTTPException,
+    status,
 )
 
 from src.auth.auth_cookie import CookieAuthMiddleware
+from src.auth.auth_handler import decode_jwt
 from src.common.common_router_models import (
     ResponseError,
     ApiErrorCodes,
@@ -370,4 +376,99 @@ async def get_statistics(
             errors=errors,
             message_text="Failed to get statistics",
         )
+
+
+@router.websocket("/ws")
+async def telephony_websocket_endpoint(
+    websocket: WebSocket,
+    user_id: str = Query(..., description="ID пользователя"),
+):
+    """
+    WebSocket endpoint для real-time событий телефонии
+    
+    Параметры:
+    - user_id: ID пользователя (query параметр)
+    
+    Типы исходящих сообщений:
+    - incoming_call: входящий звонок
+    - call_status_changed: изменение статуса звонка
+    - new_call_record: новая запись в истории звонков
+    - connected: подтверждение подключения
+    """
+    try:
+        # Проверяем аутентификацию через cookies
+        cookies = websocket.cookies
+        token = cookies.get("EPS-Auth")
+        
+        if not token:
+            await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
+            _LOG.warning("WebSocket connection rejected: no token")
+            return
+        
+        # Проверяем токен
+        try:
+            payload = decode_jwt(token)
+            if not payload:
+                await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
+                _LOG.warning(f"WebSocket connection rejected: invalid token for user {user_id}")
+                return
+            
+            # Проверяем, что user_id совпадает
+            token_user_id = str(payload.get("user_id", ""))
+            if token_user_id != user_id:
+                await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
+                _LOG.warning(f"WebSocket connection rejected: user_id mismatch. Token: {token_user_id}, Query: {user_id}")
+                return
+            
+            # Проверяем срок действия токена
+            expires = payload.get("expires", 0)
+            import time
+            if expires <= time.time():
+                await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
+                _LOG.warning(f"WebSocket connection rejected: token expired for user {user_id}")
+                return
+        except Exception as e:
+            _LOG.error(f"Error verifying token: {e}")
+            await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
+            return
+        
+        # Принимаем соединение
+        await websocket.accept()
+        
+        # Отправляем подтверждение подключения
+        await websocket.send_text(json.dumps({
+            "type": "connected",
+            "user_id": user_id
+        }))
+        
+        _LOG.info(f"Telephony WebSocket connected: user {user_id}")
+        
+        # Обрабатываем входящие сообщения (ping/pong для поддержания соединения)
+        while True:
+            try:
+                data = await websocket.receive_text()
+                message_data = json.loads(data)
+                message_type = message_data.get("type")
+                
+                if message_type == "ping":
+                    # Пинг для поддержания соединения
+                    await websocket.send_text(json.dumps({"type": "pong"}))
+                else:
+                    _LOG.warning(f"Unknown message type: {message_type}")
+            
+            except WebSocketDisconnect:
+                _LOG.info(f"Telephony WebSocket disconnected: user {user_id}")
+                break
+            except Exception as e:
+                _LOG.error(f"Error processing WebSocket message: {e}")
+                break
+    
+    except WebSocketDisconnect:
+        _LOG.info(f"Telephony WebSocket disconnected: user {user_id}")
+    except Exception as e:
+        _LOG.error(f"Telephony WebSocket error: {e}")
+        try:
+            await websocket.close()
+        except:
+            pass
 

@@ -83,7 +83,10 @@ class TelephonyManager:
         try:
             client = await self._ensure_client()
             return await client.test_connection()
-        except TelephonyManagerError:
+        except TelephonyManagerError as e:
+            if "No active telephony integration found" in str(e):
+                _LOG.warning("No active telephony integration found for connection test")
+                return False
             raise
         except Exception as e:
             _LOG.error(f"Error testing telephony connection: {e}")
@@ -107,7 +110,10 @@ class TelephonyManager:
                 to_number=to_number,
                 limit=limit,
             )
-        except TelephonyManagerError:
+        except TelephonyManagerError as e:
+            if "No active telephony integration found" in str(e):
+                _LOG.warning("No active telephony integration found for call history")
+                return []
             raise
         except MangoOfficeClientError as e:
             _LOG.error(f"Error getting call history: {e}")
@@ -127,7 +133,10 @@ class TelephonyManager:
                 to_number=to_number,
                 line_number=line_number,
             )
-        except TelephonyManagerError:
+        except TelephonyManagerError as e:
+            if "No active telephony integration found" in str(e):
+                _LOG.warning("No active telephony integration found for making call")
+                raise
             raise
         except MangoOfficeClientError as e:
             _LOG.error(f"Error making call: {e}")
@@ -145,7 +154,10 @@ class TelephonyManager:
                 date_from=date_from,
                 date_to=date_to,
             )
-        except TelephonyManagerError:
+        except TelephonyManagerError as e:
+            if "No active telephony integration found" in str(e):
+                _LOG.warning("No active telephony integration found for statistics")
+                return CallStatistic(total_calls=0, successful_calls=0, failed_calls=0)
             raise
         except MangoOfficeClientError as e:
             _LOG.error(f"Error getting statistics: {e}")

@@ -4,6 +4,7 @@ import { DEFAULT_PAGE_TITLE } from '@/context/constants'
 import { AuthProvider } from '@/context/useAuthContext'
 import { LayoutProvider } from '@/context/useLayoutContext'
 import { NotificationProvider } from '@/context/useNotificationContext'
+import { TelephonyProvider } from '@/context/useTelephonyContext'
 import type { ChildrenType } from '@/types/component-props'
 
 
@@ -27,8 +28,10 @@ const AppProvidersWrapper = ({ children }: ChildrenType) => {
     <AuthProvider>
       <LayoutProvider>
         <NotificationProvider>
-          {children}
-          <ToastContainer theme="colored" />
+          <TelephonyProvider>
+            {children}
+            <ToastContainer theme="colored" />
+          </TelephonyProvider>
         </NotificationProvider>
       </LayoutProvider>
     </AuthProvider>

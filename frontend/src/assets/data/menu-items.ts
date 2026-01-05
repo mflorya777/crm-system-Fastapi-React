@@ -89,7 +89,14 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'integrations',
     icon: 'iconamoon:link-duotone',
     label: 'Интеграции',
-    url: '/integrations',
+    children: [
+      {
+        key: 'telephony',
+        label: 'Телефония',
+        url: '/integrations/telephony',
+        parentKey: 'integrations',
+      },
+    ],
   },
   {
     key: 'plugins',
@@ -101,6 +108,12 @@ export const MENU_ITEMS: MenuItemType[] = [
     icon: 'iconamoon:comment-dots-duotone',
     label: 'ChatGPT',
     url: '/chatgpt',
+  },
+  {
+    key: 'telephony',
+    icon: 'iconamoon:comment-dots-duotone',
+    label: 'Телефония',
+    url: '/telephony',
   },
   {
     key: 'general',
