@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Button, Card, CardBody, Col, Row, Form, InputGroup, Dropdown } from 'react-bootstrap'
+import { Button, Card, CardBody, CardHeader, Col, Row, Form, InputGroup, Dropdown, Badge } from 'react-bootstrap'
 
 import IconifyIcon from '@/components/wrappers/IconifyIcon'
 import PageBreadcrumb from '@/components/layout/PageBreadcrumb'
@@ -444,30 +444,33 @@ const DealCategoryPage = () => {
     : sortedStages
 
   const renderPlaceholder = (stageId: string, index: number) => {
-    const isActive = dragOverPosition?.stageId === stageId && dragOverPosition.index === index
-    if (!isActive) return null
-    return (
-      <div
-        style={{
-          height: `${draggedCardHeight}px`,
-          margin: '0 0 8px 0',
-          borderRadius: '0.35rem',
-          border: '1px dashed #0d6efd',
-          backgroundColor: 'rgba(13,110,253,0.06)',
-          transition: 'all 0.1s ease',
-        }}
-      />
-    )
+    if (
+      dragOverPosition &&
+      dragOverPosition.stageId === stageId &&
+      dragOverPosition.index === index &&
+      draggedDealId
+    ) {
+      return (
+        <div
+          style={{
+            height: '4px',
+            backgroundColor: '#0d6efd',
+            borderRadius: '2px',
+            margin: '4px 0',
+            transition: 'all 0.2s ease',
+          }}
+        />
+      )
+    }
+    return null
   }
 
   // Компонент карточки сделки
-  const DealCard = ({ deal }: { deal: Deal }) => {
+  const DealCard = ({ deal, stageColor }: { deal: Deal; stageColor: string }) => {
     return (
-      <Card 
-        className="mb-2" 
-        style={{ cursor: 'grab' }}
-        draggable
+      <Card
         data-deal-id={deal.id}
+        draggable
         onDragStart={(e) => handleDragStart(e, deal.id)}
         onDragEnd={handleDragEnd}
         onDragOver={(e) => {
@@ -481,37 +484,61 @@ const DealCategoryPage = () => {
           }
           handleDealClick(deal)
         }}
+        style={{
+          marginBottom: '8px',
+          cursor: 'grab',
+          borderLeft: `3px solid ${stageColor}`,
+        }}
+        className="shadow-sm"
       >
         <CardBody className="p-3">
           <div className="d-flex justify-content-between align-items-start mb-2">
-            <h6 className="mb-0 fw-semibold">{deal.title}</h6>
+            <h6 className="mb-0" style={{ fontSize: '0.9rem' }}>
+              {deal.title}
+            </h6>
+            <Dropdown align="end">
+              <Dropdown.Toggle
+                as="button"
+                className="btn btn-link btn-sm p-0"
+                style={{
+                  border: 'none',
+                  background: 'transparent',
+                  color: '#6c757d',
+                }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                }}
+              >
+                <IconifyIcon icon="bx:dots-vertical-rounded" />
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => handleDealClick(deal)}>
+                  <IconifyIcon icon="bx:pencil" className="me-2" />
+                  Редактировать
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
-          {deal.description && <p className="text-muted small mb-2">{deal.description}</p>}
-          <div className="d-flex flex-wrap gap-2 mb-2">
-            {deal.amount && (
-              <div className="d-flex align-items-center gap-1">
-                <IconifyIcon icon="bx:dollar" className="fs-14" />
-                <span className="small fw-semibold">
-                  {deal.amount.toLocaleString('ru-RU')} {deal.currency || 'RUB'}
-                </span>
-              </div>
-            )}
-            <div className="d-flex align-items-center gap-1 text-muted">
-              <IconifyIcon icon="bx:calendar" className="fs-14" />
-              <span className="small">
-                {new Date(deal.created_at).toLocaleDateString('ru-RU', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                })}
-              </span>
-            </div>
-          </div>
-          {!deal.is_active && (
-            <div className="mt-2">
-              <span className="badge bg-secondary">Закрыта</span>
-            </div>
+          {deal.description && (
+            <p className="text-muted small mb-2" style={{ fontSize: '0.8rem' }}>
+              {deal.description}
+            </p>
           )}
+          <div className="d-flex flex-wrap gap-2 align-items-center">
+            {deal.amount && (
+              <span className="small fw-semibold">
+                <IconifyIcon icon="bx:dollar" className="me-1" />
+                {deal.amount.toLocaleString('ru-RU')} {deal.currency || 'RUB'}
+              </span>
+            )}
+            <span className="small text-muted">
+              <IconifyIcon icon="bx:calendar" className="me-1" />
+              {new Date(deal.created_at).toLocaleDateString('ru-RU')}
+            </span>
+            {!deal.is_active && (
+              <Badge bg="secondary">Закрыта</Badge>
+            )}
+          </div>
         </CardBody>
       </Card>
     )
@@ -722,153 +749,154 @@ const DealCategoryPage = () => {
               
               {/* Отображение колонками */}
               {viewMode === 'columns' && (
-              <div className="overflow-x-auto pb-2">
-                <div className="d-flex gap-3" style={{ flexWrap: 'nowrap' }}>
-                  {filteredStages.map((stage, idx) => {
+                <Row className="g-3" style={{ minHeight: 'calc(100vh - 400px)' }}>
+                  {filteredStages.map((stage) => {
                     const stageDeals = dealsByStageMap[stage.id] || []
                     const isFirstStage = stage.order === filteredStages[0]?.order
                     const stageColor = stage.color || '#6c757d'
-                    const baseBg = idx % 2 === 0 ? 'transparent' : '#f7f8fa'
-                    const hoverBg = 'rgba(0, 123, 255, 0.04)'
 
                     return (
-                  <div 
-                    key={stage.id} 
-                    style={{ 
-                      minWidth: '280px', 
-                      flexShrink: 0,
-                      backgroundColor: dragOverStageId === stage.id ? hoverBg : baseBg,
-                      padding: '6px',
-                      borderRadius: '0.35rem',
-                      transition: 'all 0.15s ease',
-                    }}
-                    onDragEnter={(e) => {
-                      e.preventDefault()
-                      setDragOverStageId(stage.id)
-                      // Если ещё не выбрана позиция, ставим в конец по умолчанию
-                      if (!dragOverPosition || dragOverPosition.stageId !== stage.id) {
-                        setDragOverPosition({ stageId: stage.id, index: stageDeals.length })
-                      }
-                    }}
-                    onDragOver={(e) => {
-                      e.preventDefault()
-                      handleDragOver(e, stage.id)
-                    }}
-                    onDragLeave={handleDragLeave}
-                    onDrop={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      handleDrop(e, stage.id)
-                    }}
-                  >
-                        <div className="h-100">
-                          <div
-                            className="d-flex justify-content-between align-items-center mb-2 py-2"
+                      <Col key={stage.id} md={3} className="d-flex flex-column">
+                        <Card
+                          style={{
+                            height: '100%',
+                            borderRadius: '0.5rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                          }}
+                          onDragEnter={(e) => {
+                            e.preventDefault()
+                            setDragOverStageId(stage.id)
+                            if (!dragOverPosition || dragOverPosition.stageId !== stage.id) {
+                              setDragOverPosition({ stageId: stage.id, index: stageDeals.length })
+                            }
+                          }}
+                          onDragOver={(e) => {
+                            e.preventDefault()
+                            handleDragOver(e, stage.id)
+                          }}
+                          onDragLeave={handleDragLeave}
+                          onDrop={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            handleDrop(e, stage.id)
+                          }}
+                        >
+                          <CardHeader
                             style={{
-                              borderTop: `2px solid ${stageColor}`,
-                              borderBottom: `2px solid ${stageColor}`,
-                              borderRadius: '0.3rem',
-                              boxShadow: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)',
-                              paddingLeft: '1.25rem',
-                              paddingRight: '1.25rem',
+                              borderTop: `3px solid ${stageColor}`,
+                              backgroundColor: '#f8f9fa',
                               cursor: 'pointer',
                             }}
-                            onClick={() => handleStageClick(stage.id)}>
-                            <h6 className="mb-0 fw-semibold">{stage.name}</h6>
-                            <span className="badge bg-light text-dark">{stageDeals.length}</span>
-                          </div>
-                          {/* Кнопка добавления сделки только для первой стадии */}
-                          {isFirstStage && (
-                            <div className="mb-2">
-                              <Button
-                                variant="primary"
-                                size="sm"
-                                onClick={() => setShowAddDealModal(true)}
-                                className="w-100 d-flex align-items-center justify-content-center gap-2">
-                                <IconifyIcon icon="bx:plus" />
-                                Добавить сделку
-                              </Button>
+                            onClick={() => handleStageClick(stage.id)}
+                          >
+                            <div className="d-flex justify-content-between align-items-center">
+                              <h6 className="mb-0 fw-semibold">{stage.name}</h6>
+                              <Badge bg="light" text="dark">
+                                {stageDeals.length}
+                              </Badge>
                             </div>
-                          )}
-                          {/* Список сделок для этой стадии */}
-                          <div 
-                            className="d-flex flex-column" 
-                            style={{ 
-                              minHeight: '120px',
-                              transition: 'all 0.2s ease',
+                          </CardHeader>
+                          <CardBody
+                            className="p-2"
+                            style={{
+                              flex: 1,
+                              overflowY: 'auto',
+                              minHeight: '400px',
                             }}
                           >
-                            {stageDeals.length > 0 ? (
-                              <>
-                                {renderPlaceholder(stage.id, 0)}
-                                {stageDeals.map((deal, index) => (
-                                  <div key={deal.id}>
-                                    <DealCard deal={deal} />
-                                    {renderPlaceholder(stage.id, index + 1)}
-                                  </div>
-                                ))}
-                              </>
-                            ) : (
-                              <div 
-                                className="text-center py-3 text-muted small"
-                                onDragOver={(e) => {
-                                  e.preventDefault()
-                                  setDragOverStageId(stage.id)
-                                  setDragOverPosition({ stageId: stage.id, index: 0 })
-                                }}
-                                onDrop={(e) => {
-                                  e.preventDefault()
-                                  e.stopPropagation()
-                                  setDragOverStageId(stage.id)
-                                  setDragOverPosition({ stageId: stage.id, index: 0 })
-                                  handleDrop(e, stage.id)
-                                }}
+                            {/* Кнопка добавления сделки только для первой стадии */}
+                            {isFirstStage && (
+                              <Button
+                                variant="outline-primary"
+                                size="sm"
+                                className="w-100 mb-2"
+                                style={{ fontSize: '0.875rem' }}
+                                onClick={() => setShowAddDealModal(true)}
                               >
-                                {dragOverStageId === stage.id ? (
-                                  <div className="py-3">
-                                    <IconifyIcon icon="bx:move" className="fs-24 mb-2" />
-                                    <div>Отпустите для перемещения</div>
-                                  </div>
-                                ) : (
-                                  <>
-                                    <IconifyIcon icon="bx:inbox" className="fs-24 mb-2" />
-                                    <div>Нет сделок</div>
-                                  </>
-                                )}
-                              </div>
+                                <IconifyIcon icon="bx:plus" className="me-1" />
+                                Добавить сделку
+                              </Button>
                             )}
-                          </div>
-                        </div>
-                      </div>
+
+                            <div className="d-flex flex-column">
+                              {stageDeals.length > 0 ? (
+                                <>
+                                  {renderPlaceholder(stage.id, 0)}
+                                  {stageDeals.map((deal, index) => (
+                                    <div key={deal.id}>
+                                      <DealCard deal={deal} stageColor={stageColor} />
+                                      {renderPlaceholder(stage.id, index + 1)}
+                                    </div>
+                                  ))}
+                                </>
+                              ) : (
+                                <div
+                                  className="text-center py-3 text-muted small"
+                                  onDragOver={(e) => {
+                                    e.preventDefault()
+                                    setDragOverStageId(stage.id)
+                                    setDragOverPosition({ stageId: stage.id, index: 0 })
+                                  }}
+                                  onDrop={(e) => {
+                                    e.preventDefault()
+                                    e.stopPropagation()
+                                    setDragOverStageId(stage.id)
+                                    setDragOverPosition({ stageId: stage.id, index: 0 })
+                                    handleDrop(e, stage.id)
+                                  }}
+                                >
+                                  {dragOverStageId === stage.id ? (
+                                    <div className="py-3">
+                                      <IconifyIcon icon="bx:move" className="fs-24 mb-2" />
+                                      <div>Отпустите для перемещения</div>
+                                    </div>
+                                  ) : (
+                                    <>
+                                      <IconifyIcon icon="bx:inbox" className="fs-24 mb-2" />
+                                      <div>Нет сделок</div>
+                                    </>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </CardBody>
+                        </Card>
+                      </Col>
                     )
                   })}
                   {/* Кнопка добавления стадии справа */}
-                  <div style={{ minWidth: '280px', flexShrink: 0 }}>
-                    <div className="h-100">
-                      <div
-                        className="d-flex justify-content-center align-items-center mb-2 py-2"
+                  <Col md={3} className="d-flex flex-column">
+                    <Card
+                      style={{
+                        height: '100%',
+                        borderRadius: '0.5rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        border: '2px dashed #dee2e6',
+                      }}
+                    >
+                      <CardHeader
                         style={{
-                          border: '2px dashed #dee2e6',
-                          borderRadius: '0.3rem',
-                          boxShadow: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)',
-                          paddingLeft: '1.25rem',
-                          paddingRight: '1.25rem',
-                          minHeight: '43px',
-                        }}>
-                        <Button
-                          variant="light"
-                          size="sm"
-                          onClick={() => setShowAddStageModal(true)}
-                          className="d-flex align-items-center justify-content-center gap-2"
-                          style={{ border: 'none', padding: '0', background: 'transparent' }}>
-                          <IconifyIcon icon="bx:plus" className="fs-18" />
-                          <span className="small">Добавить стадию</span>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                          backgroundColor: '#f8f9fa',
+                        }}
+                      >
+                        <div className="d-flex justify-content-center align-items-center">
+                          <Button
+                            variant="light"
+                            size="sm"
+                            onClick={() => setShowAddStageModal(true)}
+                            className="d-flex align-items-center justify-content-center gap-2"
+                            style={{ border: 'none', padding: '0', background: 'transparent' }}
+                          >
+                            <IconifyIcon icon="bx:plus" className="fs-18" />
+                            <span className="small">Добавить стадию</span>
+                          </Button>
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  </Col>
+                </Row>
               )}
               
               {/* Отображение списком */}

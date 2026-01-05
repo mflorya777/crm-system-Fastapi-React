@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vixon", "Vixon.csproj", "{9005D2A7-493D-4620-AD1E-58859CEB8970}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9005D2A7-493D-4620-AD1E-58859CEB8970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9005D2A7-493D-4620-AD1E-58859CEB8970}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9005D2A7-493D-4620-AD1E-58859CEB8970}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9005D2A7-493D-4620-AD1E-58859CEB8970}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F3DD55F5-4DD1-4658-AAB4-CEA997906272}
+	EndGlobalSection
+EndGlobal

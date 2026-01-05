@@ -16,6 +16,7 @@ const EcommerceOrders = lazy(() => import('@/app/(admin)/ecommerce/orders/page')
 const EcommerceOrderDetails = lazy(() => import('@/app/(admin)/ecommerce/orders/[orderId]/page'))
 const EcommerceInventory = lazy(() => import('@/app/(admin)/ecommerce/inventory/page'))
 const Chat = lazy(() => import('@/app/(admin)/apps/chat/page'))
+const Tasks = lazy(() => import('@/app/(admin)/tasks/page'))
 const Email = lazy(() => import('@/app/(admin)/apps/email/page'))
 const Schedule = lazy(() => import('@/app/(admin)/calendar/schedule/page'))
 const Integration = lazy(() => import('@/app/(admin)/calendar/integration/page'))
@@ -214,6 +215,11 @@ const appsRoutes: RoutesProps[] = [
     name: 'Chat',
     path: '/apps/chat',
     element: <Chat />,
+  },
+  {
+    name: 'Tasks',
+    path: '/tasks',
+    element: <Tasks />,
   },
   {
     name: 'Email',
