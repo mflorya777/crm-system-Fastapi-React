@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react'
+import { useState, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Button, Card, CardBody, Col, Row, Form, InputGroup, Dropdown } from 'react-bootstrap'
+import { Button, Card, CardBody, CardHeader, Col, Row, Form, InputGroup, Dropdown, Badge } from 'react-bootstrap'
 
 import IconifyIcon from '@/components/wrappers/IconifyIcon'
 import PageBreadcrumb from '@/components/layout/PageBreadcrumb'
@@ -30,11 +30,8 @@ const BuyerCategoryPage = () => {
   const [showEditStageModal, setShowEditStageModal] = useState(false)
   const [selectedStageId, setSelectedStageId] = useState<string | null>(null)
   const [draggedBuyerId, setDraggedBuyerId] = useState<string | null>(null)
-  const [draggedCardHeight, setDraggedCardHeight] = useState<number>(80)
   const [dragOverStageId, setDragOverStageId] = useState<string | null>(null)
   const [dragOverPosition, setDragOverPosition] = useState<{ stageId: string; index: number } | null>(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const dragStartedRef = useRef(false)
   const [viewMode, setViewMode] = useState<'columns' | 'list'>('columns')
   const [showDeleteCategoryConfirm, setShowDeleteCategoryConfirm] = useState(false)
   
@@ -115,153 +112,125 @@ const BuyerCategoryPage = () => {
   }
 
   const handleDragStart = (e: React.DragEvent, buyerId: string) => {
-    dragStartedRef.current = true
-    setIsDragging(true)
     setDraggedBuyerId(buyerId)
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/plain', buyerId)
-    if (e.currentTarget instanceof HTMLElement) {
-      const rect = e.currentTarget.getBoundingClientRect()
-      setDraggedCardHeight(rect.height || 80)
-      e.currentTarget.style.opacity = '0.4'
-    }
   }
 
-  const handleDragEnd = (e: React.DragEvent) => {
-    setIsDragging(false)
+  const handleDragEnd = () => {
     setDraggedBuyerId(null)
     setDragOverStageId(null)
     setDragOverPosition(null)
-    // сбрасываем флаг начала драга, чтобы клик после дропа не открывал модалку
-    setTimeout(() => {
-      dragStartedRef.current = false
-    }, 0)
-    if (e.currentTarget instanceof HTMLElement) {
-      e.currentTarget.style.opacity = '1'
-    }
   }
 
   // Группируем покупателей по стадиям (выносим выше, чтобы использовать в обработчиках)
   // Применяем поиск для фильтрации в режиме колонок
-  const filteredBuyersForColumns = buyers.filter((buyer) => {
-    if (searchQuery && !buyer.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false
-    }
-    return true
-  })
-  
-  const buyersByStageMap: Record<string, Buyer[]> = {}
-  filteredBuyersForColumns.forEach((buyer) => {
-    if (!buyersByStageMap[buyer.stage_id]) {
-      buyersByStageMap[buyer.stage_id] = []
-    }
-    buyersByStageMap[buyer.stage_id].push(buyer)
-  })
-  
-  // Сортируем покупателей внутри каждой стадии по выбранному полю
-  Object.keys(buyersByStageMap).forEach((stageId) => {
-    buyersByStageMap[stageId].sort((a, b) => {
-      let comparison = 0
-      if (sortField === 'order') {
-        comparison = a.order - b.order
-      } else if (sortField === 'created_at') {
-        comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      } else if (sortField === 'potential_value') {
-        comparison = (a.potential_value || 0) - (b.potential_value || 0)
-      } else if (sortField === 'name') {
-        comparison = a.name.localeCompare(b.name)
+  const buyersByStageMap = useMemo(() => {
+    const filteredBuyersForColumns = (buyers || []).filter((buyer) => {
+      if (searchQuery && !buyer.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false
       }
-      return sortDirection === 'asc' ? comparison : -comparison
+      return true
     })
-  })
+    
+    const map: Record<string, Buyer[]> = {}
+    filteredBuyersForColumns.forEach((buyer) => {
+      if (!map[buyer.stage_id]) {
+        map[buyer.stage_id] = []
+      }
+      map[buyer.stage_id].push(buyer)
+    })
+    
+    // Сортируем покупателей внутри каждой стадии по выбранному полю
+    Object.keys(map).forEach((stageId) => {
+      map[stageId].sort((a, b) => {
+        let comparison = 0
+        if (sortField === 'order') {
+          comparison = a.order - b.order
+        } else if (sortField === 'created_at') {
+          comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        } else if (sortField === 'potential_value') {
+          comparison = (a.potential_value || 0) - (b.potential_value || 0)
+        } else if (sortField === 'name') {
+          comparison = a.name.localeCompare(b.name)
+        }
+        return sortDirection === 'asc' ? comparison : -comparison
+      })
+    })
+    
+    return map
+  }, [buyers, searchQuery, sortField, sortDirection])
 
   const handleDragOver = (e: React.DragEvent, stageId: string) => {
     e.preventDefault()
     e.dataTransfer.dropEffect = 'move'
     setDragOverStageId(stageId)
-    
-    const stageBuyers = buyersByStageMap[stageId] || []
-    const container = e.currentTarget as HTMLElement
-    const rect = container.getBoundingClientRect()
+
+    if (!draggedBuyerId) return
+
+    const card = e.currentTarget as HTMLElement
+    // Находим CardBody для правильного вычисления координат
+    const cardBody = card.querySelector('.card-body') as HTMLElement
+    if (!cardBody) {
+      setDragOverPosition({ stageId, index: 0 })
+      return
+    }
+
+    // Используем CardBody для вычисления координат, но ищем элементы внутри всего Card
+    const rect = cardBody.getBoundingClientRect()
     const y = e.clientY - rect.top
-    const threshold = Math.max(12, draggedCardHeight / 6) // слегка расширяем верх/низ зоны карточки
-    
-    // Находим все карточки в контейнере
-    const buyerElements = container.querySelectorAll('[data-buyer-id]')
-    let insertIndex = stageBuyers.length
-    
+
+    const buyerElements = card.querySelectorAll('[data-buyer-id]')
+    let insertIndex = buyerElements.length
+
     if (buyerElements.length === 0) {
-      // Нет карточек, вставляем в начало
       insertIndex = 0
     } else {
-      // Проверяем позицию курсора относительно карточек
-      let foundPosition = false
+      let found = false
       
-      buyerElements.forEach((element, idx) => {
-        if (foundPosition) return
-        
+      // Проверяем каждый элемент
+      for (let index = 0; index < buyerElements.length; index++) {
+        const element = buyerElements[index] as HTMLElement
         const elementRect = element.getBoundingClientRect()
         const elementTop = elementRect.top - rect.top
         const elementBottom = elementRect.bottom - rect.top
         const elementCenter = (elementTop + elementBottom) / 2
-        
-        if (y >= elementTop - threshold && y <= elementBottom + threshold) {
-          // Курсор в расширенной зоне карточки
-          if (y <= elementTop + threshold) {
-            insertIndex = idx
-          } else if (y >= elementBottom - threshold) {
-            insertIndex = idx + 1
-          } else {
-            insertIndex = y < elementCenter ? idx : idx + 1
-          }
-          foundPosition = true
-        } else if (y < elementTop && idx === 0) {
-          // Курсор выше первой карточки
-          insertIndex = 0
-          foundPosition = true
-        } else if (idx === buyerElements.length - 1 && y > elementBottom) {
-          // Курсор ниже последней карточки
-          insertIndex = stageBuyers.length
-          foundPosition = true
+
+        // Если курсор находится в пределах элемента
+        if (y >= elementTop && y <= elementBottom) {
+          insertIndex = y < elementCenter ? index : index + 1
+          found = true
+          break
         }
-      })
+        
+        // Если курсор выше первого элемента
+        if (index === 0 && y < elementTop) {
+          insertIndex = 0
+          found = true
+          break
+        }
+        
+        // Если курсор между элементами
+        if (index < buyerElements.length - 1) {
+          const nextElement = buyerElements[index + 1] as HTMLElement
+          const nextElementRect = nextElement.getBoundingClientRect()
+          const nextElementTop = nextElementRect.top - rect.top
+          
+          if (y > elementBottom && y < nextElementTop) {
+            insertIndex = index + 1
+            found = true
+            break
+          }
+        }
+      }
+      
+      // Если не нашли позицию, значит курсор ниже последнего элемента
+      if (!found) {
+        insertIndex = buyerElements.length
+      }
     }
-    
+
     setDragOverPosition({ stageId, index: insertIndex })
-  }
-
-  const handleCardDragOver = (e: React.DragEvent, stageId: string, buyerIndex: number) => {
-    e.preventDefault()
-    e.dataTransfer.dropEffect = 'move'
-    const threshold = Math.max(12, draggedCardHeight / 6)
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
-    const y = e.clientY - rect.top
-    const elementTop = 0
-    const elementBottom = rect.height
-    const elementCenter = rect.height / 2
-
-    let insertIndex = buyerIndex
-    if (y <= elementTop + threshold) {
-      insertIndex = buyerIndex
-    } else if (y >= elementBottom - threshold) {
-      insertIndex = buyerIndex + 1
-    } else {
-      insertIndex = y < elementCenter ? buyerIndex : buyerIndex + 1
-    }
-
-    setDragOverStageId(stageId)
-    setDragOverPosition({ stageId, index: insertIndex })
-  }
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    // Проверяем, что мы действительно покинули контейнер
-    const currentTarget = e.currentTarget as HTMLElement
-    const relatedTarget = e.relatedTarget as HTMLElement
-    
-    if (!currentTarget.contains(relatedTarget)) {
-      setDragOverStageId(null)
-      setDragOverPosition(null)
-    }
   }
 
   const handleDrop = async (e: React.DragEvent, targetStageId: string) => {
@@ -287,43 +256,14 @@ const BuyerCategoryPage = () => {
     // Используем сохраненную позицию из dragOverPosition
     if (currentDragOverPosition && currentDragOverPosition.stageId === targetStageId) {
       insertIndex = currentDragOverPosition.index
-    } else {
-      // Если позиция не определена, вычисляем на основе координат
-      const container = e.currentTarget as HTMLElement
-      const rect = container.getBoundingClientRect()
-      const y = e.clientY - rect.top
-      const threshold = Math.max(12, draggedCardHeight / 6)
-      
-      const buyerElements = container.querySelectorAll('[data-buyer-id]')
-      if (buyerElements.length === 0) {
-        insertIndex = 0
-      } else {
-        let foundPosition = false
-        buyerElements.forEach((element, index) => {
-          if (foundPosition) return
-          
-          const elementRect = element.getBoundingClientRect()
-          const elementTop = elementRect.top - rect.top
-          const elementBottom = elementRect.bottom - rect.top
-          const elementCenter = (elementTop + elementBottom) / 2
-          
-          if (y >= elementTop - threshold && y <= elementBottom + threshold) {
-            if (y <= elementTop + threshold) {
-              insertIndex = index
-            } else if (y >= elementBottom - threshold) {
-              insertIndex = index + 1
-            } else {
-              insertIndex = y < elementCenter ? index : index + 1
-            }
-            foundPosition = true
-          } else if (y < elementTop && index === 0) {
-            insertIndex = 0
-            foundPosition = true
-          } else if (index === buyerElements.length - 1 && y > elementBottom) {
-            insertIndex = stageBuyers.length
-            foundPosition = true
-          }
-        })
+    }
+
+    // Проверяем, изменилась ли позиция (если перемещаем в ту же стадию)
+    if (buyer.stage_id === targetStageId) {
+      const currentIndex = stageBuyers.findIndex((b) => b.id === buyerId)
+      if (currentIndex === insertIndex || (currentIndex === insertIndex - 1 && insertIndex > 0)) {
+        setDragOverPosition(null)
+        return // Позиция не изменилась
       }
     }
 
@@ -335,11 +275,6 @@ const BuyerCategoryPage = () => {
         order = 0
       } else {
         const firstBuyer = stageBuyers[0]
-        // Если перемещаем в ту же стадию и это та же карточка, не меняем порядок
-        if (buyer.stage_id === targetStageId && buyer.id === firstBuyer.id) {
-          setDragOverPosition(null)
-          return
-        }
         order = firstBuyer.order - 1
       }
     } else if (insertIndex >= stageBuyers.length) {
@@ -348,11 +283,6 @@ const BuyerCategoryPage = () => {
         order = 0
       } else {
         const lastBuyer = stageBuyers[stageBuyers.length - 1]
-        // Если перемещаем в ту же стадию и это та же карточка, не меняем порядок
-        if (buyer.stage_id === targetStageId && buyer.id === lastBuyer.id) {
-          setDragOverPosition(null)
-          return
-        }
         order = lastBuyer.order + 1
       }
     } else {
@@ -360,32 +290,14 @@ const BuyerCategoryPage = () => {
       const prevBuyer = stageBuyers[insertIndex - 1]
       const nextBuyer = stageBuyers[insertIndex]
       
-      // Если перемещаем в ту же стадию и позиция не изменилась, не делаем ничего
-      if (buyer.stage_id === targetStageId) {
-        const currentIndex = stageBuyers.findIndex((b) => b.id === buyerId)
-        if (currentIndex === insertIndex - 1 || currentIndex === insertIndex) {
-          setDragOverPosition(null)
-          return
-        }
-      }
-      
       // Вычисляем средний order между предыдущей и следующей карточками
       const orderDiff = nextBuyer.order - prevBuyer.order
       if (orderDiff > 1) {
         // Есть место между порядками
         order = Math.floor((prevBuyer.order + nextBuyer.order) / 2)
       } else {
-        // Порядки слишком близки, нужно пересчитать порядки всех карточек
-        // Для простоты используем порядок следующей карточки
+        // Порядки слишком близки, используем порядок следующей карточки
         order = nextBuyer.order
-      }
-    }
-
-    // Если перемещаем в ту же стадию, проверяем, изменилась ли позиция
-    if (buyer.stage_id === targetStageId) {
-      const currentIndex = stageBuyers.findIndex((b) => b.id === buyerId)
-      if (currentIndex === insertIndex || (currentIndex === insertIndex - 1 && insertIndex > 0)) {
-        return // Позиция не изменилась
       }
     }
 
@@ -444,80 +356,27 @@ const BuyerCategoryPage = () => {
     : sortedStages
 
   const renderPlaceholder = (stageId: string, index: number) => {
-    const isActive = dragOverPosition?.stageId === stageId && dragOverPosition.index === index
-    if (!isActive) return null
-    return (
-      <div
-        style={{
-          height: `${draggedCardHeight}px`,
-          margin: '0 0 8px 0',
-          borderRadius: '0.35rem',
-          border: '1px dashed #0d6efd',
-          backgroundColor: 'rgba(13,110,253,0.06)',
-          transition: 'all 0.1s ease',
-        }}
-      />
-    )
+    if (
+      dragOverPosition &&
+      dragOverPosition.stageId === stageId &&
+      dragOverPosition.index === index &&
+      draggedBuyerId
+    ) {
+      return (
+        <div
+          style={{
+            height: '4px',
+            backgroundColor: '#0d6efd',
+            borderRadius: '2px',
+            margin: '4px 0',
+            transition: 'all 0.2s ease',
+          }}
+        />
+      )
+    }
+    return null
   }
 
-  // Компонент карточки покупателя
-  const BuyerCard = ({ buyer }: { buyer: Buyer }) => {
-    return (
-      <Card 
-        className="mb-2" 
-        style={{ cursor: 'grab' }}
-        draggable
-        data-buyer-id={buyer.id}
-        onDragStart={(e) => handleDragStart(e, buyer.id)}
-        onDragEnd={handleDragEnd}
-        onDragOver={(e) => {
-          if (!isDragging || !draggedBuyerId) return
-          handleCardDragOver(e, buyer.stage_id, (buyersByStageMap[buyer.stage_id] || []).findIndex((b) => b.id === buyer.id))
-        }}
-        onClick={() => {
-          // Предотвращаем открытие модального окна при перетаскивании
-          if (dragStartedRef.current || isDragging) {
-            return
-          }
-          handleBuyerClick(buyer)
-        }}
-      >
-        <CardBody className="p-3">
-          <div className="d-flex justify-content-between align-items-start mb-2">
-            <h6 className="mb-0 fw-semibold">{buyer.name}</h6>
-          </div>
-          {buyer.email && <p className="text-muted small mb-1">{buyer.email}</p>}
-          {buyer.phone && <p className="text-muted small mb-1">{buyer.phone}</p>}
-          {buyer.company && <p className="text-muted small mb-2"><strong>Компания:</strong> {buyer.company}</p>}
-          <div className="d-flex flex-wrap gap-2 mb-2">
-            {buyer.potential_value && (
-              <div className="d-flex align-items-center gap-1">
-                <IconifyIcon icon="bx:dollar" className="fs-14" />
-                <span className="small fw-semibold">
-                  {buyer.potential_value.toLocaleString('ru-RU')} {buyer.currency || 'RUB'}
-                </span>
-              </div>
-            )}
-            <div className="d-flex align-items-center gap-1 text-muted">
-              <IconifyIcon icon="bx:calendar" className="fs-14" />
-              <span className="small">
-                {new Date(buyer.created_at).toLocaleDateString('ru-RU', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                })}
-              </span>
-            </div>
-          </div>
-          {!buyer.is_active && (
-            <div className="mt-2">
-              <span className="badge bg-secondary">Закрыт</span>
-            </div>
-          )}
-        </CardBody>
-      </Card>
-    )
-  }
 
   return (
     <>
@@ -724,153 +583,183 @@ const BuyerCategoryPage = () => {
               
               {/* Отображение колонками */}
               {viewMode === 'columns' && (
-              <div className="overflow-x-auto pb-2">
-                <div className="d-flex gap-3" style={{ flexWrap: 'nowrap' }}>
-                  {filteredStages.map((stage, idx) => {
-                    const stageBuyers = buyersByStageMap[stage.id] || []
-                    const isFirstStage = stage.order === filteredStages[0]?.order
-                    const stageColor = stage.color || '#6c757d'
-                    const baseBg = idx % 2 === 0 ? 'transparent' : '#f7f8fa'
-                    const hoverBg = 'rgba(0, 123, 255, 0.04)'
+                <div className="overflow-x-auto pb-2" style={{ overflowY: 'hidden' }}>
+                  <div className="d-flex gap-3" style={{ flexWrap: 'nowrap' }}>
+                    {filteredStages.map((stage) => {
+                      const stageBuyers = buyersByStageMap[stage.id] || []
+                      const isFirstStage = stage.order === filteredStages[0]?.order
+                      const stageColor = stage.color || '#6c757d'
 
-                    return (
-                  <div 
-                    key={stage.id} 
-                    style={{ 
-                      minWidth: '280px', 
-                      flexShrink: 0,
-                      backgroundColor: dragOverStageId === stage.id ? hoverBg : baseBg,
-                      padding: '6px',
-                      borderRadius: '0.35rem',
-                      transition: 'all 0.15s ease',
-                    }}
-                    onDragEnter={(e) => {
-                      e.preventDefault()
-                      setDragOverStageId(stage.id)
-                      // Если ещё не выбрана позиция, ставим в конец по умолчанию
-                      if (!dragOverPosition || dragOverPosition.stageId !== stage.id) {
-                        setDragOverPosition({ stageId: stage.id, index: stageBuyers.length })
-                      }
-                    }}
-                    onDragOver={(e) => {
-                      e.preventDefault()
-                      handleDragOver(e, stage.id)
-                    }}
-                    onDragLeave={handleDragLeave}
-                    onDrop={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      handleDrop(e, stage.id)
-                    }}
-                  >
-                        <div className="h-100">
-                          <div
-                            className="d-flex justify-content-between align-items-center mb-2 py-2"
+                      return (
+                        <div 
+                          key={stage.id} 
+                          className="d-flex flex-column"
+                          style={{
+                            minWidth: '300px',
+                            width: '300px',
+                            flexShrink: 0,
+                          }}
+                        >
+                          <Card
                             style={{
-                              borderTop: `2px solid ${stageColor}`,
-                              borderBottom: `2px solid ${stageColor}`,
-                              borderRadius: '0.3rem',
-                              boxShadow: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)',
-                              paddingLeft: '1.25rem',
-                              paddingRight: '1.25rem',
-                              cursor: 'pointer',
+                              height: '100%',
+                              borderRadius: '0.5rem',
+                              display: 'flex',
+                              flexDirection: 'column',
                             }}
-                            onClick={() => handleStageClick(stage.id)}>
-                            <h6 className="mb-0 fw-semibold">{stage.name}</h6>
-                            <span className="badge bg-light text-dark">{stageBuyers.length}</span>
-                          </div>
-                          {/* Кнопка добавления покупателя только для первой стадии */}
-                          {isFirstStage && (
-                            <div className="mb-2">
-                              <Button
-                                variant="primary"
-                                size="sm"
-                                onClick={() => setShowAddBuyerModal(true)}
-                                className="w-100 d-flex align-items-center justify-content-center gap-2">
-                                <IconifyIcon icon="bx:plus" />
-                                Добавить покупателя
-                              </Button>
-                            </div>
-                          )}
-                          {/* Список покупателей для этой стадии */}
-                          <div 
-                            className="d-flex flex-column" 
-                            style={{ 
-                              minHeight: '120px',
-                              transition: 'all 0.2s ease',
-                            }}
+                            onDragOver={(e) => handleDragOver(e, stage.id)}
+                            onDrop={(e) => handleDrop(e, stage.id)}
                           >
-                            {stageBuyers.length > 0 ? (
-                              <>
-                                {renderPlaceholder(stage.id, 0)}
-                                {stageBuyers.map((buyer, index) => (
-                                  <div key={buyer.id}>
-                                    <BuyerCard buyer={buyer} />
-                                    {renderPlaceholder(stage.id, index + 1)}
-                                  </div>
-                                ))}
-                              </>
-                            ) : (
-                              <div 
-                                className="text-center py-3 text-muted small"
-                                onDragOver={(e) => {
-                                  e.preventDefault()
-                                  setDragOverStageId(stage.id)
-                                  setDragOverPosition({ stageId: stage.id, index: 0 })
-                                }}
-                                onDrop={(e) => {
-                                  e.preventDefault()
-                                  e.stopPropagation()
-                                  setDragOverStageId(stage.id)
-                                  setDragOverPosition({ stageId: stage.id, index: 0 })
-                                  handleDrop(e, stage.id)
-                                }}
-                              >
-                                {dragOverStageId === stage.id ? (
-                                  <div className="py-3">
-                                    <IconifyIcon icon="bx:move" className="fs-24 mb-2" />
-                                    <div>Отпустите для перемещения</div>
-                                  </div>
-                                ) : (
+                            <CardHeader
+                              style={{
+                                borderTop: `3px solid ${stageColor}`,
+                                backgroundColor: '#f8f9fa',
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => handleStageClick(stage.id)}
+                            >
+                              <div className="d-flex justify-content-between align-items-center">
+                                <h6 className="mb-0 fw-semibold">{stage.name}</h6>
+                                <Badge bg="light" text="dark">
+                                  {stageBuyers.length}
+                                </Badge>
+                              </div>
+                            </CardHeader>
+                            <CardBody
+                              className="p-2"
+                              style={{
+                                flex: 1,
+                                overflowY: 'auto',
+                                minHeight: '400px',
+                              }}
+                            >
+                              {/* Кнопка добавления покупателя только для первой стадии */}
+                              {isFirstStage && (
+                                <Button
+                                  variant="outline-primary"
+                                  size="sm"
+                                  className="w-100 mb-2"
+                                  style={{ fontSize: '0.875rem' }}
+                                  onClick={() => setShowAddBuyerModal(true)}
+                                >
+                                  <IconifyIcon icon="bx:plus" className="me-1" />
+                                  Добавить покупателя
+                                </Button>
+                              )}
+
+                              <div className="d-flex flex-column">
+                                {stageBuyers.length > 0 ? (
                                   <>
+                                    {renderPlaceholder(stage.id, 0)}
+                                    {stageBuyers.map((buyer, index) => (
+                                      <div key={buyer.id}>
+                                        <Card
+                                          data-buyer-id={buyer.id}
+                                          draggable
+                                          onDragStart={(e) => handleDragStart(e, buyer.id)}
+                                          onDragEnd={handleDragEnd}
+                                          style={{
+                                            marginBottom: '8px',
+                                            cursor: 'grab',
+                                            borderLeft: `3px solid ${stageColor}`,
+                                          }}
+                                          className="shadow-sm"
+                                          onClick={() => handleBuyerClick(buyer)}
+                                        >
+                                          <CardBody className="p-3">
+                                            <div className="d-flex justify-content-between align-items-start mb-2">
+                                              <h6 className="mb-0" style={{ fontSize: '0.9rem' }}>
+                                                {buyer.name}
+                                              </h6>
+                                            </div>
+                                            {buyer.email && (
+                                              <p className="text-muted small mb-1" style={{ fontSize: '0.8rem' }}>
+                                                {buyer.email}
+                                              </p>
+                                            )}
+                                            {buyer.phone && (
+                                              <p className="text-muted small mb-1" style={{ fontSize: '0.8rem' }}>
+                                                {buyer.phone}
+                                              </p>
+                                            )}
+                                            {buyer.company && (
+                                              <p className="text-muted small mb-2" style={{ fontSize: '0.8rem' }}>
+                                                <strong>Компания:</strong> {buyer.company}
+                                              </p>
+                                            )}
+                                            <div className="d-flex flex-wrap gap-2 align-items-center">
+                                              {buyer.potential_value && (
+                                                <span className="small fw-semibold">
+                                                  <IconifyIcon icon="bx:dollar" className="me-1" />
+                                                  {buyer.potential_value.toLocaleString('ru-RU')} {buyer.currency || 'RUB'}
+                                                </span>
+                                              )}
+                                              <span className="small text-muted">
+                                                <IconifyIcon icon="bx:calendar" className="me-1" />
+                                                {new Date(buyer.created_at).toLocaleDateString('ru-RU')}
+                                              </span>
+                                              {!buyer.is_active && (
+                                                <Badge bg="secondary">Закрыт</Badge>
+                                              )}
+                                            </div>
+                                          </CardBody>
+                                        </Card>
+                                        {renderPlaceholder(stage.id, index + 1)}
+                                      </div>
+                                    ))}
+                                  </>
+                                ) : (
+                                  <div className="text-center py-3 text-muted small">
                                     <IconifyIcon icon="bx:inbox" className="fs-24 mb-2" />
                                     <div>Нет покупателей</div>
-                                  </>
+                                  </div>
                                 )}
                               </div>
-                            )}
-                          </div>
+                            </CardBody>
+                          </Card>
                         </div>
-                      </div>
-                    )
-                  })}
-                  {/* Кнопка добавления стадии справа */}
-                  <div style={{ minWidth: '280px', flexShrink: 0 }}>
-                    <div className="h-100">
-                      <div
-                        className="d-flex justify-content-center align-items-center mb-2 py-2"
+                      )
+                    })}
+                    {/* Кнопка добавления стадии справа */}
+                    <div 
+                      className="d-flex flex-column"
+                      style={{
+                        minWidth: '300px',
+                        width: '300px',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <Card
                         style={{
+                          height: '100%',
+                          borderRadius: '0.5rem',
+                          display: 'flex',
+                          flexDirection: 'column',
                           border: '2px dashed #dee2e6',
-                          borderRadius: '0.3rem',
-                          boxShadow: '0px 3px 4px 0px rgba(0, 0, 0, 0.03)',
-                          paddingLeft: '1.25rem',
-                          paddingRight: '1.25rem',
-                          minHeight: '43px',
-                        }}>
-                        <Button
-                          variant="light"
-                          size="sm"
-                          onClick={() => setShowAddStageModal(true)}
-                          className="d-flex align-items-center justify-content-center gap-2"
-                          style={{ border: 'none', padding: '0', background: 'transparent' }}>
-                          <IconifyIcon icon="bx:plus" className="fs-18" />
-                          <span className="small">Добавить стадию</span>
-                        </Button>
-                      </div>
+                        }}
+                      >
+                        <CardHeader
+                          style={{
+                            backgroundColor: '#f8f9fa',
+                          }}
+                        >
+                          <div className="d-flex justify-content-center align-items-center">
+                            <Button
+                              variant="light"
+                              size="sm"
+                              onClick={() => setShowAddStageModal(true)}
+                              className="d-flex align-items-center justify-content-center gap-2"
+                              style={{ border: 'none', padding: '0', background: 'transparent' }}
+                            >
+                              <IconifyIcon icon="bx:plus" className="fs-18" />
+                              <span className="small">Добавить стадию</span>
+                            </Button>
+                          </div>
+                        </CardHeader>
+                      </Card>
                     </div>
                   </div>
                 </div>
-              </div>
               )}
               
               {/* Отображение списком */}
