@@ -110,12 +110,6 @@ export const MENU_ITEMS: MenuItemType[] = [
     url: '/chatgpt',
   },
   {
-    key: 'telephony',
-    icon: 'iconamoon:comment-dots-duotone',
-    label: 'Телефония',
-    url: '/telephony',
-  },
-  {
     key: 'general',
     label: 'ОБЩЕЕ (test)',
     isTitle: true,
