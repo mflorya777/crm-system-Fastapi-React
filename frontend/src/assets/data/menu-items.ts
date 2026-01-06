@@ -102,6 +102,12 @@ export const MENU_ITEMS: MenuItemType[] = [
         url: '/integrations/zoom',
         parentKey: 'integrations',
       },
+      {
+        key: 'integrations-telegram',
+        label: 'Telegram',
+        url: '/integrations/telegram',
+        parentKey: 'integrations',
+      },
     ],
   },
   {
