@@ -56,7 +56,9 @@ class ZoomClient:
         if not self.client_secret:
             raise ZoomClientError("Client Secret cannot be empty")
     
-    async def _get_access_token(self) -> str:
+    async def _get_access_token(
+        self,
+    ) -> str:
         """Получить или обновить access token"""
         # Если токен еще действителен, возвращаем его
         if self._access_token and time.time() < self._token_expires_at:
