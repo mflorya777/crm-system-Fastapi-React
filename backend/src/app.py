@@ -40,6 +40,7 @@ from src.integrations.integrations_storage import IntegrationsStorage
 from src.integrations.integrations_manager import IntegrationsManager
 from src.integrations.telephony.telephony_manager import TelephonyManager
 from src.integrations.zoom.zoom_manager import ZoomManager
+from src.integrations.telegram.telegram_manager import TelegramManager
 from src.authorization.authorization_router import router as authorization_router
 from src.users.users_router import router as users_router
 from src.signs.signs_router import router as signs_router
@@ -49,6 +50,7 @@ from src.chats.chats_router import router as chats_router
 from src.integrations.integrations_router import router as integrations_router
 from src.integrations.telephony.telephony_router import router as telephony_router
 from src.integrations.zoom.zoom_router import router as zoom_router
+from src.integrations.telegram.telegram_router import router as telegram_router
 
 
 # Загружаем переменные окружения из local.env перед созданием конфигурации
@@ -174,6 +176,10 @@ def setup_app(
             zoom_manager = ZoomManager(
                 integrations_storage=integrations_storage,
             )
+            telegram_manager = TelegramManager(
+                integrations_storage=integrations_storage,
+                integrations_manager=integrations_manager,
+            )
 
             app_instance.state.users_manager = users_manager
             app_instance.state.signs_manager = signs_manager
@@ -183,6 +189,7 @@ def setup_app(
             app_instance.state.integrations_manager = integrations_manager
             app_instance.state.telephony_manager = telephony_manager
             app_instance.state.zoom_manager = zoom_manager
+            app_instance.state.telegram_manager = telegram_manager
             _LOG.info("Managers initialized successfully")
         except Exception as e:
             _LOG.error(f"Failed to initialize managers: {e}")
@@ -251,6 +258,7 @@ def setup_app(
     app_instance.include_router(integrations_router)
     app_instance.include_router(telephony_router)
     app_instance.include_router(zoom_router)
+    app_instance.include_router(telegram_router)
 
 
 setup_app(

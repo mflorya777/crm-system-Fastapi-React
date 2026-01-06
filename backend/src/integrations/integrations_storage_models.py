@@ -22,6 +22,7 @@ class IntegrationType:
     TELEPHONY = "telephony"
     ONE_C = "one_c"
     ZOOM = "zoom"
+    TELEGRAM = "telegram"
 
 
 class IntegrationToCreate(BaseModel):
