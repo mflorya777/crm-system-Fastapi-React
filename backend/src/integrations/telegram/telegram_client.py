@@ -39,7 +39,14 @@ class TelegramClient:
         if not self.bot_token:
             raise TelegramClientError("Bot Token cannot be empty")
         
+        # Проверяем формат Bot Token (должен быть в формате "число:строка")
+        if ':' not in self.bot_token:
+            raise TelegramClientError("Invalid Bot Token format. Bot Token should be in format 'number:string' (e.g., '1234567890:ABCdefGHIjklMNOpqrsTUVwxyz')")
+        
+        # Формируем URL для Telegram API
+        # Формат: https://api.telegram.org/bot<token>/<method>
         self.api_url = f"{self.BASE_URL}{self.bot_token}"
+        _LOG.info(f"Telegram client initialized. API URL base: {self.BASE_URL}...bot_token (length: {len(self.bot_token)})")
     
     async def _make_request(
         self,
@@ -52,6 +59,15 @@ class TelegramClient:
         """Выполнить запрос к Telegram API"""
         url = f"{self.api_url}/{endpoint}"
         
+        # Логируем URL без токена для безопасности
+        safe_url = url.replace(self.bot_token, "***TOKEN***")
+        _LOG.info(f"Making Telegram API request: {method} {safe_url}")
+        if params:
+            _LOG.info(f"Request params: {params}")
+        if data:
+            # Не логируем данные, которые могут содержать секреты
+            _LOG.info(f"Request data keys: {list(data.keys())}")
+        
         try:
             async with httpx.AsyncClient(timeout=30.0) as client:
                 if files:
@@ -62,12 +78,20 @@ class TelegramClient:
                 else:
                     response = await client.get(url, params=params)
                 
+                _LOG.info(f"Telegram API response status: {response.status_code}")
+                _LOG.info(f"Telegram API response headers: {dict(response.headers)}")
+                
+                # Логируем тело ответа для диагностики
+                response_text = response.text
+                _LOG.info(f"Telegram API response body: {response_text[:500]}")  # Первые 500 символов
+                
                 response.raise_for_status()
                 result = response.json()
                 
                 if not result.get("ok"):
                     error_description = result.get("description", "Unknown error")
                     error_code = result.get("error_code", 0)
+                    _LOG.error(f"Telegram API returned error: {error_code} - {error_description}")
                     raise TelegramClientError(f"Telegram API error {error_code}: {error_description}")
                 
                 return result.get("result", {})
@@ -88,10 +112,24 @@ class TelegramClient:
     async def get_me(self) -> BotInfo:
         """Получить информацию о боте"""
         try:
+            _LOG.info(f"Getting bot info from Telegram API")
+            _LOG.info(f"Bot token length: {len(self.bot_token)}")
+            _LOG.info(f"Bot token format check: contains ':' = {':' in self.bot_token}")
+            
+            # Проверяем, что токен имеет правильный формат (число:строка)
+            token_parts = self.bot_token.split(':')
+            if len(token_parts) != 2:
+                raise TelegramClientError(f"Invalid Bot Token format. Expected format: 'number:string', got token with {len(token_parts)} parts")
+            
+            _LOG.info(f"Bot token parts: first part length={len(token_parts[0])}, second part length={len(token_parts[1])}")
+            
             result = await self._make_request("GET", "getMe")
+            _LOG.info(f"Bot info received successfully")
             return BotInfo(**result)
+        except TelegramClientError:
+            raise
         except Exception as e:
-            _LOG.error(f"Error getting bot info: {e}")
+            _LOG.error(f"Error getting bot info: {e}", exc_info=True)
             raise TelegramClientError(f"Failed to get bot info: {e}") from e
     
     async def test_connection(self) -> bool:
