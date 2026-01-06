@@ -89,7 +89,14 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'integrations',
     icon: 'iconamoon:link-duotone',
     label: 'Интеграции',
-    url: '/integrations',
+    children: [
+      {
+        key: 'telephony',
+        label: 'Телефония',
+        url: '/integrations/telephony',
+        parentKey: 'integrations',
+      },
+    ],
   },
   {
     key: 'plugins',
