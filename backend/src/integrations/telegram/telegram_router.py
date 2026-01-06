@@ -680,3 +680,45 @@ async def delete_webhook(
             message_text="Failed to delete webhook",
         )
 
+
+@router.get(
+    "/chat-info/{chat_id}",
+    dependencies=[Depends(CookieAuthMiddleware())],
+)
+async def get_chat_info(
+    request: Request,
+    chat_id: str = Path(...),
+) -> ApiResponse:
+    """Получить информацию о чате"""
+    telegram_manager: TelegramManager = request.app.state.telegram_manager
+    
+    errors = []
+    try:
+        chat_info = await telegram_manager.get_chat_info(chat_id)
+        
+        response_data = {
+            "id": chat_info.id,
+            "type": chat_info.type,
+            "title": chat_info.title,
+            "username": chat_info.username,
+            "first_name": chat_info.first_name,
+            "last_name": chat_info.last_name,
+        }
+        
+        return ApiResponse.success_response(
+            data=response_data,
+            message_text="Chat info retrieved successfully",
+        )
+    except TelegramManagerError as e:
+        _LOG.error(f"Error getting chat info: {e}")
+        errors.append(
+            ResponseError(
+                code=ApiErrorCodes.BASE_EXCEPTION,
+                text=str(e),
+            )
+        )
+        return ApiResponse.error_response(
+            errors=errors,
+            message_text="Failed to get chat info",
+        )
+

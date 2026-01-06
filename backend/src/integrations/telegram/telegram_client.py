@@ -12,6 +12,7 @@ from .telegram_models import (
     SendDocumentParams,
     Update,
     TelegramMessage,
+    TelegramChat,
 )
 
 
@@ -97,13 +98,29 @@ class TelegramClient:
                 return result.get("result", {})
         except httpx.HTTPStatusError as e:
             error_detail = "Unknown error"
+            error_code = None
             try:
                 error_data = e.response.json()
                 error_detail = error_data.get("description") or error_data.get("error") or str(e)
-                _LOG.error(f"Telegram API HTTP error {e.response.status_code}: {error_detail}")
+                error_code = error_data.get("error_code", 0)
+                
+                # Улучшенные сообщения об ошибках
+                if "chat not found" in error_detail.lower():
+                    error_detail = "Чат не найден. Убедитесь, что Chat ID правильный и бот имеет доступ к чату. Для групп: добавьте бота в группу. Для личных сообщений: начните диалог с ботом."
+                elif "bot was blocked" in error_detail.lower() or "bot blocked" in error_detail.lower():
+                    error_detail = "Бот заблокирован пользователем. Пользователь должен разблокировать бота."
+                elif "chat_id is empty" in error_detail.lower():
+                    error_detail = "Chat ID не указан. Пожалуйста, укажите корректный Chat ID или username."
+                elif "unauthorized" in error_detail.lower():
+                    error_detail = "Бот не авторизован. Проверьте Bot Token."
+                elif "bad request" in error_detail.lower():
+                    error_detail = f"Неверный запрос: {error_detail}. Проверьте параметры запроса."
+                
+                _LOG.error(f"Telegram API HTTP error {e.response.status_code} (code: {error_code}): {error_detail}")
                 _LOG.error(f"Response body: {e.response.text}")
             except:
                 _LOG.error(f"Telegram API HTTP error {e.response.status_code}: {e.response.text}")
+            
             raise TelegramClientError(f"Telegram API error: {error_detail}") from e
         except Exception as e:
             _LOG.error(f"Error making request to Telegram API: {e}")
@@ -250,4 +267,14 @@ class TelegramClient:
         except Exception as e:
             _LOG.error(f"Error deleting webhook: {e}")
             raise TelegramClientError(f"Failed to delete webhook: {e}") from e
+    
+    async def get_chat(self, chat_id: str) -> TelegramChat:
+        """Получить информацию о чате"""
+        try:
+            params = {"chat_id": chat_id}
+            result = await self._make_request("GET", "getChat", params=params)
+            return TelegramChat(**result)
+        except Exception as e:
+            _LOG.error(f"Error getting chat info: {e}")
+            raise TelegramClientError(f"Failed to get chat info: {e}") from e
 

@@ -17,6 +17,7 @@ from .telegram_models import (
     SendPhotoParams,
     SendDocumentParams,
     TelegramMessage,
+    TelegramChat,
 )
 
 
@@ -222,4 +223,9 @@ class TelegramManager:
         """Удалить webhook"""
         client = await self._ensure_client()
         return await client.delete_webhook()
+    
+    async def get_chat_info(self, chat_id: str) -> TelegramChat:
+        """Получить информацию о чате"""
+        client = await self._ensure_client()
+        return await client.get_chat(chat_id)
 
