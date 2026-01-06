@@ -63,8 +63,12 @@ class IntegrationsStorage:
             integration_dict["_id"] = ObjectId()
             integration_dict["id"] = str(integration.id)
             
+            # Убеждаемся, что is_active установлен (по умолчанию True)
+            if "is_active" not in integration_dict or integration_dict["is_active"] is None:
+                integration_dict["is_active"] = True
+            
             await self.integrations_collection.insert_one(integration_dict)
-            _LOG.info(f"Integration created: {integration.id}, type: {integration.type}, name: {integration.name}")
+            _LOG.info(f"Integration created: {integration.id}, type: {integration.type}, name: {integration.name}, is_active: {integration_dict.get('is_active')}")
             
             return await self.get_by_id(integration.id)
         except DuplicateKeyError as e:
@@ -158,6 +162,8 @@ class IntegrationsStorage:
             if updated_by is not None:
                 update_dict["updated_by"] = str(updated_by)
             
+            _LOG.info(f"Updating integration {integration_id}: update_dict keys: {list(update_dict.keys())}, is_active={is_active}")
+            
             result = await self.integrations_collection.update_one(
                 {"id": str(integration_id)},
                 {"$set": update_dict},
@@ -166,8 +172,9 @@ class IntegrationsStorage:
             if result.matched_count == 0:
                 raise NoSuchIntegrationError(f"Integration with id {integration_id} not found")
             
-            _LOG.info(f"Integration updated: {integration_id}")
-            return await self.get_by_id(integration_id)
+            updated = await self.get_by_id(integration_id)
+            _LOG.info(f"Integration updated: {integration_id}, is_active: {updated.is_active}")
+            return updated
         except NoSuchIntegrationError:
             raise
         except Exception as e:

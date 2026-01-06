@@ -15,6 +15,8 @@ API корень: http://localhost:8000/
 Просмотреть все эндпоинты
 Протестировать API прямо в браузере
 Увидеть схемы данных
+
+Integration Zoom: https://marketplace.zoom.us/develop/apps/juTbkrDRSjymn5fSl2fgTA/scope
 ```
 
 Crm-system — это CRM-система, которая ...

@@ -91,9 +91,15 @@ export const MENU_ITEMS: MenuItemType[] = [
     label: 'Интеграции',
     children: [
       {
-        key: 'telephony',
+        key: 'integrations-telephony',
         label: 'Телефония',
         url: '/integrations/telephony',
+        parentKey: 'integrations',
+      },
+      {
+        key: 'integrations-zoom',
+        label: 'Zoom',
+        url: '/integrations/zoom',
         parentKey: 'integrations',
       },
     ],

@@ -39,6 +39,7 @@ from src.chats import create_chats_indexes
 from src.integrations.integrations_storage import IntegrationsStorage
 from src.integrations.integrations_manager import IntegrationsManager
 from src.integrations.telephony.telephony_manager import TelephonyManager
+from src.integrations.zoom.zoom_manager import ZoomManager
 from src.authorization.authorization_router import router as authorization_router
 from src.users.users_router import router as users_router
 from src.signs.signs_router import router as signs_router
@@ -47,6 +48,7 @@ from src.buyers.buyers_router import router as buyers_router
 from src.chats.chats_router import router as chats_router
 from src.integrations.integrations_router import router as integrations_router
 from src.integrations.telephony.telephony_router import router as telephony_router
+from src.integrations.zoom.zoom_router import router as zoom_router
 
 
 # Загружаем переменные окружения из local.env перед созданием конфигурации
@@ -169,6 +171,9 @@ def setup_app(
             telephony_manager = TelephonyManager(
                 integrations_storage=integrations_storage,
             )
+            zoom_manager = ZoomManager(
+                integrations_storage=integrations_storage,
+            )
 
             app_instance.state.users_manager = users_manager
             app_instance.state.signs_manager = signs_manager
@@ -177,6 +182,7 @@ def setup_app(
             app_instance.state.chats_manager = chats_manager
             app_instance.state.integrations_manager = integrations_manager
             app_instance.state.telephony_manager = telephony_manager
+            app_instance.state.zoom_manager = zoom_manager
             _LOG.info("Managers initialized successfully")
         except Exception as e:
             _LOG.error(f"Failed to initialize managers: {e}")
@@ -244,6 +250,7 @@ def setup_app(
     app_instance.include_router(chats_router)
     app_instance.include_router(integrations_router)
     app_instance.include_router(telephony_router)
+    app_instance.include_router(zoom_router)
 
 
 setup_app(
