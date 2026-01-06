@@ -5,7 +5,14 @@ from pydantic import BaseModel, Field
 class CreateTelegramIntegrationParams(BaseModel):
     """Параметры для создания интеграции Telegram"""
     name: str = Field(..., description="Название интеграции")
-    bot_token: str = Field(..., description="Bot Token от BotFather")
+    integration_type: str = Field(default="bot", description="Тип интеграции: bot или user")
+    # Для бота
+    bot_token: Optional[str] = Field(default=None, description="Bot Token от BotFather (для типа bot)")
+    # Для пользователя
+    phone_number: Optional[str] = Field(default=None, description="Номер телефона (для типа user)")
+    api_id: Optional[str] = Field(default=None, description="API ID от https://my.telegram.org/apps (для типа user)")
+    api_hash: Optional[str] = Field(default=None, description="API Hash от https://my.telegram.org/apps (для типа user)")
+    # Общее
     chat_id: Optional[str] = Field(default=None, description="ID чата для отправки уведомлений (опционально)")
     is_active: bool = Field(default=True, description="Активна ли интеграция")
 
@@ -13,7 +20,14 @@ class CreateTelegramIntegrationParams(BaseModel):
 class UpdateTelegramIntegrationParams(BaseModel):
     """Параметры для обновления интеграции Telegram"""
     name: Optional[str] = Field(default=None, description="Название интеграции")
+    integration_type: Optional[str] = Field(default=None, description="Тип интеграции: bot или user")
+    # Для бота
     bot_token: Optional[str] = Field(default=None, description="Bot Token")
+    # Для пользователя
+    phone_number: Optional[str] = Field(default=None, description="Номер телефона")
+    api_id: Optional[str] = Field(default=None, description="API ID")
+    api_hash: Optional[str] = Field(default=None, description="API Hash")
+    # Общее
     chat_id: Optional[str] = Field(default=None, description="ID чата")
     is_active: Optional[bool] = Field(default=None, description="Активна ли интеграция")
 

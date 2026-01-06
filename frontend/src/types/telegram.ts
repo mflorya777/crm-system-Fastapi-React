@@ -5,19 +5,36 @@ export interface TelegramIntegration {
   is_active: boolean
   created_at: string
   updated_at?: string
+  integration_type?: 'bot' | 'user'
   has_chat_id?: boolean
+  has_bot_token?: boolean
+  has_user_credentials?: boolean
 }
 
 export interface CreateTelegramIntegrationParams {
   name: string
-  bot_token: string
+  integration_type?: 'bot' | 'user'
+  // Для бота
+  bot_token?: string
+  // Для пользователя
+  phone_number?: string
+  api_id?: string
+  api_hash?: string
+  // Общее
   chat_id?: string
   is_active?: boolean
 }
 
 export interface UpdateTelegramIntegrationParams {
   name?: string
+  integration_type?: 'bot' | 'user'
+  // Для бота
   bot_token?: string
+  // Для пользователя
+  phone_number?: string
+  api_id?: string
+  api_hash?: string
+  // Общее
   chat_id?: string
   is_active?: boolean
 }

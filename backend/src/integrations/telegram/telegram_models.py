@@ -1,11 +1,38 @@
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Literal
 from datetime import datetime
 from pydantic import BaseModel, Field
 
 
-class TelegramConfig(BaseModel):
+class TelegramIntegrationType:
+    """Типы интеграции Telegram"""
+    BOT = "bot"
+    USER = "user"
+
+
+class TelegramBotConfig(BaseModel):
     """Конфигурация для Telegram Bot"""
     bot_token: str = Field(..., description="Bot Token от BotFather")
+    chat_id: Optional[str] = Field(default=None, description="ID чата для отправки уведомлений (опционально)")
+
+
+class TelegramUserConfig(BaseModel):
+    """Конфигурация для Telegram User (личный аккаунт)"""
+    phone_number: str = Field(..., description="Номер телефона (например, +79991234567)")
+    api_id: str = Field(..., description="API ID от https://my.telegram.org/apps")
+    api_hash: str = Field(..., description="API Hash от https://my.telegram.org/apps")
+    chat_id: Optional[str] = Field(default=None, description="ID чата для отправки уведомлений (опционально)")
+
+
+class TelegramConfig(BaseModel):
+    """Конфигурация для Telegram (Bot или User)"""
+    integration_type: Literal["bot", "user"] = Field(default="bot", description="Тип интеграции: bot или user")
+    # Для бота
+    bot_token: Optional[str] = Field(default=None, description="Bot Token от BotFather (для типа bot)")
+    # Для пользователя
+    phone_number: Optional[str] = Field(default=None, description="Номер телефона (для типа user)")
+    api_id: Optional[str] = Field(default=None, description="API ID (для типа user)")
+    api_hash: Optional[str] = Field(default=None, description="API Hash (для типа user)")
+    # Общее
     chat_id: Optional[str] = Field(default=None, description="ID чата для отправки уведомлений (опционально)")
 
 

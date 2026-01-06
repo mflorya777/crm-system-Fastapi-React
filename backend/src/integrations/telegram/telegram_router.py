@@ -63,8 +63,40 @@ async def create_telegram_integration(
     errors = []
     try:
         config = {
-            "bot_token": params.bot_token,
+            "integration_type": params.integration_type or "bot",
         }
+        
+        if params.integration_type == "user":
+            # Конфигурация для личного аккаунта
+            if not params.phone_number or not params.api_id or not params.api_hash:
+                errors.append(
+                    ResponseError(
+                        code=ApiErrorCodes.BASE_EXCEPTION,
+                        text="Для типа 'user' необходимо указать phone_number, api_id и api_hash",
+                    )
+                )
+                return ApiResponse.error_response(
+                    errors=errors,
+                    message_text="Missing required fields for user integration",
+                )
+            config["phone_number"] = params.phone_number
+            config["api_id"] = params.api_id
+            config["api_hash"] = params.api_hash
+        else:
+            # Конфигурация для бота
+            if not params.bot_token:
+                errors.append(
+                    ResponseError(
+                        code=ApiErrorCodes.BASE_EXCEPTION,
+                        text="Для типа 'bot' необходимо указать bot_token",
+                    )
+                )
+                return ApiResponse.error_response(
+                    errors=errors,
+                    message_text="Missing required fields for bot integration",
+                )
+            config["bot_token"] = params.bot_token
+        
         if params.chat_id:
             config["chat_id"] = params.chat_id
         
@@ -114,7 +146,8 @@ async def get_telegram_integration(
                 message_text="No active Telegram integration found",
             )
         
-        # Не возвращаем bot_token в ответе для безопасности
+        # Не возвращаем секретные данные в ответе для безопасности
+        integration_type = integration.config.get("integration_type", "bot")
         response_data = {
             "id": integration.id,
             "type": integration.type,
@@ -122,7 +155,10 @@ async def get_telegram_integration(
             "is_active": integration.is_active,
             "created_at": integration.created_at,
             "updated_at": integration.updated_at,
+            "integration_type": integration_type,
             "has_chat_id": bool(integration.config.get("chat_id")),
+            "has_bot_token": bool(integration.config.get("bot_token")) if integration_type == "bot" else False,
+            "has_user_credentials": bool(integration.config.get("phone_number") and integration.config.get("api_id") and integration.config.get("api_hash")) if integration_type == "user" else False,
         }
         
         return ApiResponse.success_response(
@@ -186,12 +222,47 @@ async def update_telegram_integration_no_id(
                         message_text="Cannot create integration without bot_token",
                     )
                 
-                # Собираем конфиг из переданных параметров
-                config = {"bot_token": params.bot_token}
+                # Определяем тип интеграции
+                integration_type = params.integration_type or "bot"
+                config = {
+                    "integration_type": integration_type,
+                }
+                
+                if integration_type == "user":
+                    # Конфигурация для личного аккаунта
+                    if not params.phone_number or not params.api_id or not params.api_hash:
+                        errors.append(
+                            ResponseError(
+                                code=ApiErrorCodes.BASE_EXCEPTION,
+                                text="Cannot create user integration: phone_number, api_id, and api_hash are required",
+                            )
+                        )
+                        return ApiResponse.error_response(
+                            errors=errors,
+                            message_text="Cannot create integration without required credentials",
+                        )
+                    config["phone_number"] = params.phone_number
+                    config["api_id"] = params.api_id
+                    config["api_hash"] = params.api_hash
+                else:
+                    # Конфигурация для бота
+                    if not params.bot_token:
+                        errors.append(
+                            ResponseError(
+                                code=ApiErrorCodes.BASE_EXCEPTION,
+                                text="Cannot create bot integration: bot_token is required",
+                            )
+                        )
+                        return ApiResponse.error_response(
+                            errors=errors,
+                            message_text="Cannot create integration without bot_token",
+                        )
+                    config["bot_token"] = params.bot_token
+                
                 if params.chat_id:
                     config["chat_id"] = params.chat_id
                 
-                _LOG.info(f"Creating Telegram integration with config keys: {list(config.keys())}")
+                _LOG.info(f"Creating Telegram integration with type: {integration_type}, config keys: {list(config.keys())}")
                 
                 new_integration = await integrations_manager.create_integration(
                     integration_type=IntegrationType.TELEGRAM,
@@ -261,8 +332,25 @@ async def update_telegram_integration_internal(
     errors = []
     try:
         config = {}
-        if params.bot_token is not None:
-            config["bot_token"] = params.bot_token
+        
+        # Обновляем тип интеграции, если указан
+        if params.integration_type is not None:
+            config["integration_type"] = params.integration_type
+        
+        # Обновляем поля в зависимости от типа
+        if params.integration_type == "user" or (params.integration_type is None and update_config and update_config.get("integration_type") == "user"):
+            # Для пользователя
+            if params.phone_number is not None:
+                config["phone_number"] = params.phone_number
+            if params.api_id is not None:
+                config["api_id"] = params.api_id
+            if params.api_hash is not None:
+                config["api_hash"] = params.api_hash
+        else:
+            # Для бота
+            if params.bot_token is not None:
+                config["bot_token"] = params.bot_token
+        
         if params.chat_id is not None:
             config["chat_id"] = params.chat_id
         
