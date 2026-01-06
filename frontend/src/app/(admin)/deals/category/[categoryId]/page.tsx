@@ -32,6 +32,7 @@ const DealCategoryPage = () => {
   const [draggedDealId, setDraggedDealId] = useState<string | null>(null)
   const [dragOverStageId, setDragOverStageId] = useState<string | null>(null)
   const [dragOverPosition, setDragOverPosition] = useState<{ stageId: string; index: number } | null>(null)
+  const [wasDragged, setWasDragged] = useState(false)
   const [viewMode, setViewMode] = useState<'columns' | 'list'>('columns')
   const [showDeleteCategoryConfirm, setShowDeleteCategoryConfirm] = useState(false)
   
@@ -67,6 +68,21 @@ const DealCategoryPage = () => {
   const handleDealClick = (deal: Deal) => {
     setSelectedDeal(deal)
     setShowEditDealModal(true)
+  }
+
+  const handleCardClick = (e: React.MouseEvent, deal: Deal) => {
+    // Проверяем, что это не клик по выпадающему меню или его элементам
+    const target = e.target as HTMLElement
+    if (target.closest('.dropdown') || target.closest('.btn-link')) {
+      return
+    }
+    
+    // Если был drag, не открываем модальное окно
+    if (wasDragged) {
+      return
+    }
+    
+    handleDealClick(deal)
   }
 
   const handleDealUpdated = () => {
@@ -113,14 +129,21 @@ const DealCategoryPage = () => {
 
   const handleDragStart = (e: React.DragEvent, dealId: string) => {
     setDraggedDealId(dealId)
+    setWasDragged(false) // Сбрасываем флаг в начале drag
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/plain', dealId)
   }
 
   const handleDragEnd = () => {
+    // Устанавливаем флаг, что был drag, чтобы предотвратить клик
+    setWasDragged(true)
     setDraggedDealId(null)
     setDragOverStageId(null)
     setDragOverPosition(null)
+    // Сбрасываем флаг через небольшую задержку
+    setTimeout(() => {
+      setWasDragged(false)
+    }, 200)
   }
 
   // Группируем сделки по стадиям (выносим выше, чтобы использовать в обработчиках)
@@ -664,6 +687,7 @@ const DealCategoryPage = () => {
                                         draggable
                                         onDragStart={(e) => handleDragStart(e, deal.id)}
                                         onDragEnd={handleDragEnd}
+                                        onClick={(e) => handleCardClick(e, deal)}
                                         style={{
                                           marginBottom: '8px',
                                           cursor: 'grab',
